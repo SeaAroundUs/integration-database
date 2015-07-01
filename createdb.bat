@@ -20,7 +20,7 @@ mkdir log
 
 :LogDirExists
 IF EXIST log\*.log del /Q .\log\*.log
-
+       
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Check if there's already a "sau_int" database present. 
 ::   If not, create the "sau_int" database and the requisite db users, then proceed to invoke the initialize.sql script.
@@ -48,7 +48,7 @@ GOTO InitializeIntSchema
 
 :ConfigureForRDS
 ECHO Amazon RDS environment detected. Re-configuring postgis environment appropriately...
-SET SQLINPUTFILE=rds_postgis_setup          
+SET SQLINPUTFILE=rds_postgis_setup
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
@@ -75,6 +75,8 @@ IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :: Adding foreign keys
 type foreign_key_master.sql >> rmv.sql
+type foreign_key_recon.sql >> rmv.sql
+type foreign_key_distribution.sql >> rmv.sql
 echo VACUUM ANALYZE; >> rmv.sql
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql

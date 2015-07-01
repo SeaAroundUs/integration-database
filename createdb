@@ -78,15 +78,15 @@ if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/master.schema; then
   ExitWithError
 fi
 
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
-  ExitWithError
-fi
+#echo Password for user sau_int
+#if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
+#  ExitWithError
+#fi
 
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
-  ExitWithError
-fi
+#echo Password for user sau_int
+#if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
+#  ExitWithError
+#fi
 
 ## Refreshing materialized views
 if ! $PSQLSAU -d ${DATABASE_NAME} -f refresh_mv.sql -t -o rmv.sql; then
@@ -94,7 +94,9 @@ if ! $PSQLSAU -d ${DATABASE_NAME} -f refresh_mv.sql -t -o rmv.sql; then
 fi
 
 ## Adding foreign keys
-cat foreign_key_mater_int.sql >> rmv.sql
+cat foreign_key_master.sql >> rmv.sql
+cat foreign_key_recon.sql >> rmv.sql
+cat foreign_key_distribution.sql >> rmv.sql
 echo "VACUUM ANALYZE;" >> rmv.sql
 
 if ! $PSQLSAU -d ${DATABASE_NAME} -f rmv.sql; then

@@ -60,11 +60,10 @@ CREATE SCHEMA log;
 \echo Creating DB Objects for the Master schema...
 \echo
 \i table_master.sql
-\i function_master.sql
+--\i function_master.sql
 --\i mat_view_master.sql
 --\i view_master.sql
 \i index_master.sql
---\i foreign_key_master.sql
 --\i populate_master.sql
 
 \echo

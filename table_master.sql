@@ -122,6 +122,11 @@ CREATE TABLE master.fishing_entity(
 
 ALTER SEQUENCE master.fishing_entity_fishing_entity_id_seq OWNED BY master.fishing_entity.fishing_entity_iD;
 
+CREATE TABLE master.commercial_groups(
+  commercial_group_id smallint PRIMARY KEY,
+  name varchar(100) NOT NULL
+);
+
 CREATE TABLE master.functional_groups(
   functional_group_id smallint PRIMARY KEY,
   target_grp int NULL,
@@ -133,6 +138,12 @@ CREATE TABLE master.gear(
   gear_id smallint PRIMARY KEY,
   name varchar(50) NOT NULL,
   super_code varchar(20) NOT NULL                              
+);
+
+CREATE TABLE master.jurisdiction(
+  jurisdiction_id int PRIMARY KEY,
+  name varchar(50) NOT NULL,
+  legacy_c_number int NOT NULL
 );
 
 CREATE TABLE master.geo_entity(
