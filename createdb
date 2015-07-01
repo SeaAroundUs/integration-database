@@ -1,0 +1,113 @@
+#!/bin/sh
+#set -x
+
+DATABASE_NAME=sau_int
+
+###########################################################
+## Function to call when error is encountered
+###########################################################
+ExitWithError () {
+  echo
+  echo #####
+  echo Error encountered trying to create ${DATABASE_NAME} db.
+  echo See ./log/$SQLINPUTFILE.log for more details...
+  echo #####
+  SQLINPUTFILE=
+  exit 1            
+}
+
+###########################################################
+## Process command line parameter(s)
+###########################################################
+if [ -z "$1" ]; then
+  DbHost=localhost
+else
+  DbHost=$1
+fi
+
+if [ -z "$2" ]; then
+  DbPort=5432
+else
+  DbPort=$2
+fi
+
+###########################################################
+## Deleting any previous log files
+###########################################################
+if [ ! -d log ]; then
+  mkdir log
+fi
+
+rm -f log/*.log
+
+PSQL="psql -U postgres -h $DbHost -p $DbPort"
+PSQLWEB="psql -U web_int -h $DbHost -p $DbPort"
+PSQLSAU="psql -U sau_int -h $DbHost -p $DbPort"
+RESTORE="pg_restore -h $DbHost -p $DbPort -Fc -a"
+
+###########################################################
+## Check if there's already a "${DATABASE_NAME}" database present. 
+##   If not, create the "${DATABASE_NAME}" database and the requisite db users, 
+##           then proceed to invoke the initialize.sql script.
+##   If yes, proceed to invoke initialize.sql script only.
+###########################################################
+ExistingDB=$($PSQL -A -t -c "select datname from pg_database where datname = '${DATABASE_NAME}'")
+if [ -z "$ExistingDB" ]; then
+  SQLINPUTFILE=create_user_and_db
+  if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+    ExitWithError
+  fi
+fi
+
+SQLINPUTFILE=initialize
+if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+  ExitWithError
+fi
+
+RdsAdmin=$($PSQL -A -t -c "select usename from pg_user where usename = 'rdsadmin'")
+if [ -n "$RdsAdmin" ]; then
+  echo Amazon RDS environment detected. Re-configuring postgis environment appropriately...
+  SQLINPUTFILE=rds_postgis_setup
+  if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+    ExitWithError
+  fi
+fi
+
+echo Password for user sau_int
+if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/master.schema; then 
+  ExitWithError
+fi
+
+echo Password for user sau_int
+if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
+  ExitWithError
+fi
+
+echo Password for user sau_int
+if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
+  ExitWithError
+fi
+
+## Refreshing materialized views
+if ! $PSQLSAU -d ${DATABASE_NAME} -f refresh_mv.sql -t -o rmv.sql; then
+  ExitWithError
+fi
+
+## Adding foreign keys
+cat foreign_key_mater_int.sql >> rmv.sql
+echo "VACUUM ANALYZE;" >> rmv.sql
+
+if ! $PSQLSAU -d ${DATABASE_NAME} -f rmv.sql; then
+  ExitWithError
+fi
+
+#
+# Success: print message and exit with successful return code
+#
+echo
+echo #####
+echo Successfully created ${DATABASE_NAME} database!
+echo #####
+SQLINPUTFILE=
+exit 0                 
+
