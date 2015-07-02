@@ -75,5 +75,6 @@ CREATE SCHEMA log;
 \echo Creating DB Objects for the Distribution schema...
 \echo
 \i table_distribution.sql
+\i index_distribution.sql
 
 \i grant.sql
