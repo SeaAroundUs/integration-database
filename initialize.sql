@@ -70,6 +70,7 @@ CREATE SCHEMA log;
 \echo Creating DB Objects for the Recon schema...
 \echo
 \i table_recon.sql
+\i index_recon.sql
 
 \echo
 \echo Creating DB Objects for the Distribution schema...
