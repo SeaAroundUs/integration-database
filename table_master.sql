@@ -176,26 +176,6 @@ CREATE TABLE master.mariculture_sub_entity(
   mariculture_entity_id int NOT NULL
 );
 
-CREATE TABLE master.habitat_index(
-  taxon_key serial PRIMARY KEY,
-  taxon_name varchar(50) NULL,
-  common_name varchar(50) NULL,
-  sl_max int NULL,
-  habitat_diversity_index decimal(50,20) NULL,
-  effective_d decimal(50,20) NULL,
-  estuaries decimal(50,20) NULL,
-  coral decimal(50,20) NULL,
-  seagrass decimal(50,20) NULL,
-  seamount decimal(50,20) NULL,
-  others decimal(50,20) NULL,
-  shelf decimal(50,20) NULL,
-  slope decimal(50,20) NULL,
-  abyssal decimal(50,20) NULL,
-  inshore decimal(50,20) NULL,
-  offshore decimal(50,20) NULL,
-  offshore_back decimal(50,20) NULL
-);
-
 CREATE TABLE master.cell (
     cell_id integer PRIMARY KEY,
     lon double precision,
@@ -237,4 +217,24 @@ CREATE TABLE master.cell (
     pp_10yr_avg double precision,
     sst_avg double precision,
     pp_annual double precision
+);
+
+CREATE TABLE master.habitat_index(
+  taxon_key serial PRIMARY KEY,
+  taxon_name varchar(50) NULL,
+  common_name varchar(50) NULL,
+  sl_max int NULL,
+  habitat_diversity_index decimal(50,20) NULL,
+  effective_d decimal(50,20) NULL,
+  estuaries decimal(50,20) NULL,
+  coral decimal(50,20) NULL,
+  seagrass decimal(50,20) NULL,
+  seamount decimal(50,20) NULL,
+  others decimal(50,20) NULL,
+  shelf decimal(50,20) NULL,
+  slope decimal(50,20) NULL,
+  abyssal decimal(50,20) NULL,
+  inshore decimal(50,20) NULL,
+  offshore decimal(50,20) NULL,
+  offshore_back decimal(50,20) NULL
 );

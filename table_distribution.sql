@@ -9,11 +9,13 @@ CREATE TABLE distribution.grid (
     id serial primary key,
     "row" integer,
     col integer,
-    geom geometry
+    geom geometry(MultiPolygon,4326)
 );
 
 CREATE TABLE distribution.taxon_habitat (
     taxon_key int primary key,
+    taxon_name character varying(255),
+    common_name character varying(255),
     cla_code integer,
     ord_code integer,
     fam_code integer,
@@ -31,5 +33,33 @@ CREATE TABLE distribution.taxon_habitat (
     abyssal double precision,
     inshore double precision,
     offshore double precision,
-    offshore_back double precision
+    offshore_back double precision,
+    max_depth integer,
+    min_depth integer,
+    lat_north integer,
+    lat_south integer,
+    found_in_fao_area_id int[],
+    fao_limits smallint,
+    sl_max integer
 );
+
+/* And here we create the dependent habitat_index view in the 'master' schema */
+CREATE VIEW master.habitat_index AS
+SELECT taxon_key,
+       taxon_name,
+       common_name,
+       sl_max,
+       habitat_diversity_index,
+       effective_distance as effective_d,
+       estuaries,
+       coral,
+       sea_grass as seagrass,
+       sea_mount as seamount,
+       others,
+       shelf,
+       slope,
+       abyssal,
+       inshore,
+       offshore,
+       offshore_back
+  FROM distribution.taxon_habitat;
