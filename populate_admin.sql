@@ -19,7 +19,6 @@ VALUES
 ,('sau_web', 'GeoEntity_MaricultureEntity_Mapping', NULL, 'web', 'geo_entity_mariculture_entity_mapping', '{}'::TEXT[])
 ,('sau_web', 'Internal_New_Taxon', NULL, 'web', 'internal_new_taxon', '{}'::TEXT[])
 ,('sau_web', 'Jurisdiction', NULL, 'web', 'jurisdiction', '{}'::TEXT[])
-,('sau_web', 'Legacy_Country', NULL, 'web', 'legacy_country', '{}'::TEXT[])
 ,('sau_web', 'LME', NULL, 'web', 'lme', '{}'::TEXT[])
 ,('sau_web', 'MaricultureData', NULL, 'web', 'mariculture_data', '{}'::TEXT[])
 ,('sau_web', 'MaricultureEntity', NULL, 'web', 'mariculture_entity', '{}'::TEXT[])
