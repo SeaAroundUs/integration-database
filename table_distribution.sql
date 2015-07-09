@@ -44,7 +44,7 @@ CREATE TABLE distribution.taxon_habitat (
 );
 
 /* And here we create the dependent habitat_index view in the 'master' schema */
-CREATE VIEW master.habitat_index AS
+CREATE OR REPLACE VIEW master.habitat_index AS
 SELECT taxon_key,
        taxon_name,
        common_name,
