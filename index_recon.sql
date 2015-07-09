@@ -28,7 +28,7 @@ CREATE INDEX catch_original_country_fishing_id_idx ON recon.catch(original_count
 
 CREATE INDEX catch_original_fao_name_id_idx ON recon.catch(original_fao_name_id);
 
-CREATE INDEX catch_sector_id_idx ON recon.catch(sector_id);
+CREATE INDEX catch_sector_type_id_idx ON recon.catch(sector_type_id);
 
 CREATE INDEX catch_fao_area_id_idx ON recon.catch(fao_area_id);
 
@@ -36,7 +36,7 @@ CREATE INDEX catch_raw_catch_id_idx ON recon.catch(raw_catch_id);
 
 CREATE INDEX catch_catch_type_id_idx ON recon.catch(catch_type_id);
 
-CREATE INDEX catch_taxon_id_idx ON recon.catch(taxon_id);
+CREATE INDEX catch_taxon_key_idx ON recon.catch(taxon_key);
 
 CREATE INDEX catch_ices_subdivision_id_idx ON recon.catch(ices_subdivision_id);
 

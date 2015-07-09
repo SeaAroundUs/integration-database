@@ -21,7 +21,7 @@ CREATE TABLE recon.template(
   original_country_fishing text,
   eez text,
   eez_sub_area text,
-  fao_area int,
+  fao_area_id int,
   sub_regional_area text,
   province text,
   ices_divison text,
@@ -51,7 +51,7 @@ CREATE TABLE recon.catch (
     id integer NOT NULL,
     fishing_entity_id integer NOT NULL,
     eez_sub_area character varying(200),
-    subregional_area character varying(200),
+    sub_regional_area character varying(200),
     province_state character varying(200),
     ccamlr_area character varying(200),
     layer integer NOT NULL,
@@ -76,8 +76,8 @@ CREATE TABLE recon.catch (
     original_taxon_name_id integer NOT NULL,
     raw_catch_id integer NOT NULL,
     reference_id integer NOT NULL,
-    sector_id integer NOT NULL,
-    taxon_id integer NOT NULL
+    sector_type_id integer NOT NULL,
+    taxon_key integer NOT NULL
 );
 
 
@@ -103,13 +103,13 @@ CREATE TABLE recon.raw_catch (
     ccamlr_area character varying(200),
     layer integer NOT NULL,
     sector character varying(200),
-    sector_id integer NOT NULL,
+    sector_type_id integer NOT NULL,
     original_sector character varying(200),
     catch_type character varying(200),
     catch_type_id integer NOT NULL,
     year integer NOT NULL,
     taxon_name character varying(200),
-    taxon_id integer NOT NULL,
+    taxon_key integer NOT NULL,
     original_taxon_name character varying(200),
     original_taxon_name_id integer,
     original_fao_name character varying(200),
