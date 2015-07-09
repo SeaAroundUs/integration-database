@@ -90,7 +90,7 @@ CREATE TABLE recon.raw_catch (
     eez character varying(200),
     eez_id integer NOT NULL,
     eez_sub_area character varying(200),
-    fao_area character varying(20),
+    fao_area character varying(200),
     fao_area_id integer,
     subregional_area character varying(200),
     province_state character varying(200),
