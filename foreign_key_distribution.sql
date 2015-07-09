@@ -1,3 +1,7 @@
+-- distribution.taxon_extent
+ALTER TABLE distribution.taxon_extent ADD CONSTRAINT taxon_key_fk
+FOREIGN KEY (taxon_key) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
+
 -- distribution.taxon_distribution
 ALTER TABLE distribution.taxon_distribution ADD CONSTRAINT taxon_key_fk
 FOREIGN KEY (taxon_key) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
