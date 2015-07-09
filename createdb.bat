@@ -62,7 +62,7 @@ IF ERRORLEVEL 1 GOTO ErrorLabel
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ::ECHO Password for user sau_int
-::pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/distribution.schema
+pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/distribution.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ::ECHO Password for user sau_int
