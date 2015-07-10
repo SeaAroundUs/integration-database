@@ -48,7 +48,8 @@ CREATE TABLE distribution.taxon_habitat (
     lat_south integer,
     found_in_fao_area_id int[],
     fao_limits smallint,
-    sl_max integer
+    sl_max integer,
+    intertidal boolean
 );
 
 /* And here we create the dependent habitat_index view in the 'master' schema */
