@@ -129,7 +129,8 @@ CREATE TABLE recon.raw_catch (
     reference_id integer,
     notes text,
     source_file_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    last_committed timestamp
 );
 
 
