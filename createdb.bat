@@ -57,8 +57,8 @@ ECHO Password for user sau_int
 pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/master.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
-::ECHO Password for user sau_int
-::pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/recon.schema
+ECHO Password for user sau_int
+pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/recon.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ECHO Password for user sau_int

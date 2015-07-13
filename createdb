@@ -78,12 +78,12 @@ if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/master.schema; then
   ExitWithError
 fi
 
-#echo Password for user sau_int
-#if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
-#  ExitWithError
-#fi
+echo Password for user sau_int
+if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
+  ExitWithError
+fi
 
-#echo Password for user sau_int
+echo Password for user sau_int
 if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
   ExitWithError
 fi
