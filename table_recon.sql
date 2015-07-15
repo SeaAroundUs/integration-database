@@ -34,7 +34,7 @@ CREATE TABLE recon.catch (
     id integer NOT NULL,
     fishing_entity_id integer NOT NULL,
     eez_sub_area character varying(200),
-    sub_regional_area character varying(200),
+    subregional_area character varying(200),
     province_state character varying(200),
     ccamlr_area character varying(200),
     layer integer NOT NULL,
@@ -113,9 +113,8 @@ CREATE TABLE recon.raw_catch (
     notes text,
     source_file_id integer NOT NULL,
     user_id integer NOT NULL,
-    last_committed timestamp
-    /*,
-    last_modified timestamp not null default current_timestamp*/
+    last_committed timestamp,
+    last_modified timestamp not null default current_timestamp
 );
 
 
