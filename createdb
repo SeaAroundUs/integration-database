@@ -97,7 +97,6 @@ fi
 cat foreign_key_master.sql >> rmv.sql
 cat foreign_key_recon.sql >> rmv.sql
 cat foreign_key_distribution.sql >> rmv.sql
-echo "VACUUM ANALYZE;" >> rmv.sql
 
 if ! $PSQLSAU -d ${DATABASE_NAME} -f rmv.sql; then
   ExitWithError

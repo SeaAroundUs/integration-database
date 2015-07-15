@@ -77,7 +77,6 @@ IF ERRORLEVEL 1 GOTO ErrorLabel
 type foreign_key_master.sql >> rmv.sql
 type foreign_key_recon.sql >> rmv.sql
 type foreign_key_distribution.sql >> rmv.sql
-echo VACUUM ANALYZE; >> rmv.sql
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql
 IF ERRORLEVEL 1 GOTO ErrorLabel
