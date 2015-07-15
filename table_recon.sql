@@ -1,21 +1,4 @@
 /* Reconstruction data tables */
-CREATE TABLE recon.ices_eez (
-    id serial primary key,
-    name character varying(200) NOT NULL
-);
-
-
-CREATE TABLE recon.nafo (
-    id serial primary key,
-    name character varying(200) NOT NULL
-);
-
-
-CREATE TABLE recon.reference (
-    id serial primary key,
-    name character varying(200) NOT NULL
-);
-
 CREATE TABLE recon.template(
   fishing_entity text,
   original_country_fishing text,
@@ -131,6 +114,8 @@ CREATE TABLE recon.raw_catch (
     source_file_id integer NOT NULL,
     user_id integer NOT NULL,
     last_committed timestamp
+    /*,
+    last_modified timestamp not null default current_timestamp*/
 );
 
 
@@ -232,3 +217,22 @@ CREATE TABLE recon.django_session (
     session_data text NOT NULL,
     expire_date timestamp with time zone NOT NULL
 );
+
+CREATE TABLE recon.reference (
+  reference_id serial primary key,
+  eez_name     varchar(255),
+  eez_id       int,
+  notes        varchar(255),
+  reference    text
+);
+
+/*
+CREATE TABLE recon.ices_eez (
+  ices_
+);
+
+CREATE TABLE recon.nafo (
+    id serial primary key,
+    name character varying(200) NOT NULL
+);
+*/

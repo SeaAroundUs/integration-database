@@ -29,20 +29,20 @@ FOREIGN KEY (catch_type_id) REFERENCES master.catch_type(catch_type_id) ON DELET
 ALTER TABLE recon.catch ADD CONSTRAINT year_fk
 FOREIGN KEY (year) REFERENCES master.time(year) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_division_id_fk 
-FOREIGN KEY (ices_division_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
+--ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_division_id_fk 
+--FOREIGN KEY (ices_division_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_subdivision_id_fk 
-FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
+--ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_subdivision_id_fk 
+--FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_nafo_division_id_fk 
-FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(id) ON DELETE CASCADE;
+--ALTER TABLE recon.catch ADD CONSTRAINT catch_nafo_division_id_fk 
+--FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_raw_catch_id_fk 
 FOREIGN KEY (raw_catch_id) REFERENCES recon.raw_catch(id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_reference_id_fk 
-FOREIGN KEY (reference_id) REFERENCES recon.reference(id) ON DELETE CASCADE;
+FOREIGN KEY (reference_id) REFERENCES recon.reference(reference_id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_sector_type_id_fk 
 FOREIGN KEY (sector_type_id) REFERENCES master.sector_type(sector_type_id) ON DELETE CASCADE;

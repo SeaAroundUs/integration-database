@@ -57,3 +57,5 @@ CREATE INDEX file_upload_user_id_idx ON recon.file_upload(user_id);
 CREATE INDEX raw_catch_source_file_id_idx ON recon.raw_catch(source_file_id);
 
 CREATE INDEX raw_catch_user_id_idx ON recon.raw_catch(user_id);
+
+CREATE INDEX reference_eez_id_idx ON recon.reference(reference_id);
