@@ -218,3 +218,8 @@ CREATE TABLE master.cell (
     sst_avg double precision,
     pp_annual double precision
 );
+
+CREATE TABLE master.input_type(
+  input_type_id smallint primary key,
+  name text
+);
