@@ -29,14 +29,14 @@ FOREIGN KEY (catch_type_id) REFERENCES master.catch_type(catch_type_id) ON DELET
 ALTER TABLE recon.catch ADD CONSTRAINT year_fk
 FOREIGN KEY (year) REFERENCES master.time(year) ON DELETE CASCADE;
 
---ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_division_id_fk 
---FOREIGN KEY (ices_division_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
+ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_division_id_fk 
+FOREIGN KEY (ices_division_id) REFERENCES recon.ices_division(ices_division_id) ON DELETE CASCADE;
 
---ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_subdivision_id_fk 
---FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_eez(id) ON DELETE CASCADE;
+ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_subdivision_id_fk 
+FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_subdivision(ices_subdivision_id) ON DELETE CASCADE;
 
---ALTER TABLE recon.catch ADD CONSTRAINT catch_nafo_division_id_fk 
---FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(id) ON DELETE CASCADE;
+ALTER TABLE recon.catch ADD CONSTRAINT catch_nafo_division_id_fk 
+FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(nafo_division_id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_raw_catch_id_fk 
 FOREIGN KEY (raw_catch_id) REFERENCES recon.raw_catch(id) ON DELETE CASCADE;
@@ -94,3 +94,17 @@ FOREIGN KEY (source_file_id) REFERENCES recon.file_upload(id) ON DELETE CASCADE;
 
 ALTER TABLE recon.raw_catch ADD CONSTRAINT raw_catch_user_id_fk 
 FOREIGN KEY (user_id) REFERENCES recon.auth_user(id) ON DELETE CASCADE;
+
+-- recon.eez_ices
+--ALTER TABLE recon.eez_ices ADD CONSTRAINT eez_ices_eez_id_fk 
+--FOREIGN KEY (eez_id) REFERENCES master.eez(eez_id) ON DELETE CASCADE;
+
+ALTER TABLE recon.eez_ices ADD CONSTRAINT eez_ices_ices_division_id_fk 
+FOREIGN KEY (ices_division_id) REFERENCES recon.ices_division(ices_division_id) ON DELETE CASCADE;
+
+ALTER TABLE recon.eez_ices ADD CONSTRAINT eez_ices_ices_subdivision_id_fk 
+FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_subdivision(ices_subdivision_id) ON DELETE CASCADE;
+
+-- recon.eez_nafo
+ALTER TABLE recon.eez_nafo ADD CONSTRAINT eez_nafo_nafo_division_id_fk 
+FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(nafo_division_id) ON DELETE CASCADE;

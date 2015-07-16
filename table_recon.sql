@@ -218,20 +218,36 @@ CREATE TABLE recon.django_session (
 );
 
 CREATE TABLE recon.reference (
-  reference_id serial primary key,
-  eez_name     varchar(255),
-  eez_id       int,
-  notes        varchar(255),
-  reference    text
+    reference_id serial primary key,
+    eez_name     varchar(255),
+    eez_id       int,
+    notes        varchar(255),
+    reference    text
 );
 
-/*
-CREATE TABLE recon.ices_eez (
-  ices_
+CREATE TABLE recon.ices_division (
+    ices_division_id serial primary key,
+    ices_division varchar(255)
+);
+
+CREATE TABLE recon.ices_subdivision (
+    ices_subdivision_id serial primary key,
+    ices_division_id int,
+    ices_subdivision varchar(255)
+);
+
+CREATE TABLE recon.eez_ices (
+    eez_id int,
+    ices_division_id int,
+    ices_subdivision_id int
 );
 
 CREATE TABLE recon.nafo (
-    id serial primary key,
-    name character varying(200) NOT NULL
+    nafo_division_id serial primary key,
+    nafo_division character varying(200) NOT NULL
 );
-*/
+
+CREATE TABLE recon.eez_nafo (
+    eez_id int,
+    nafo_division_id int
+);
