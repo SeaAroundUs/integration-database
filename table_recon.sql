@@ -31,7 +31,7 @@ CREATE TABLE recon.template(
 );
 
 CREATE TABLE recon.catch (
-    id integer NOT NULL,
+    id serial primary key,
     fishing_entity_id integer NOT NULL,
     eez_sub_area character varying(200),
     subregional_area character varying(200),
