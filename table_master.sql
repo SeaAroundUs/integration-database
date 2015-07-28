@@ -182,10 +182,9 @@ CREATE TABLE master.cell (
     lat double precision,
     cell_row int,  -- "row" is a reserved word in pgplsql
     cell_col int,  -- renamed for consistency
-    t_area double precision,
-    area double precision,
-    p_water double precision,
-    p_land double precision,
+    total_area double precision,
+    water_area double precision,
+    percent_water double precision,
     ele_min int,
     ele_max int,
     ele_avg int,
