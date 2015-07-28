@@ -94,9 +94,12 @@ if ! $PSQLSAU -d ${DATABASE_NAME} -f refresh_mv.sql -t -o rmv.sql; then
 fi
 
 ## Adding foreign keys
+cat index_master.sql >> rmv.sql
 cat foreign_key_master.sql >> rmv.sql
-cat foreign_key_recon.sql >> rmv.sql
+cat index_distribution.sql >> rmv.sql
 cat foreign_key_distribution.sql >> rmv.sql
+cat index_recon.sql >> rmv.sql
+cat foreign_key_recon.sql >> rmv.sql
 
 if ! $PSQLSAU -d ${DATABASE_NAME} -f rmv.sql; then
   ExitWithError

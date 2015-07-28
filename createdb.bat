@@ -74,8 +74,11 @@ psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -t -f refresh_mv.sql 
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :: Adding foreign keys
+type index_master.sql >> rmv.sql
 type foreign_key_master.sql >> rmv.sql
+type index_recon.sql >> rmv.sql
 type foreign_key_recon.sql >> rmv.sql
+type index_distribution.sql >> rmv.sql
 type foreign_key_distribution.sql >> rmv.sql
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql

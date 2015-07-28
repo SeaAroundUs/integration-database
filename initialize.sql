@@ -62,20 +62,17 @@ CREATE SCHEMA log;
 \i table_master.sql
 --\i function_master.sql
 --\i mat_view_master.sql
-\i index_master.sql
 --\i populate_master.sql
 
 \echo
 \echo Creating DB Objects for the Recon schema...
 \echo
 \i table_recon.sql
-\i index_recon.sql
 
 \echo
 \echo Creating DB Objects for the Distribution schema...
 \echo
 \i table_distribution.sql
 \i function_distribution.sql
-\i index_distribution.sql
 
 \i grant.sql
