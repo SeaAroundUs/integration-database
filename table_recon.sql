@@ -57,7 +57,7 @@ CREATE TABLE recon.catch (
     original_country_fishing_id integer,
     original_fao_name_id integer,
     original_taxon_name_id integer,
-    raw_catch_id integer NOT NULL,
+    raw_catch_id integer NOT NULL UNIQUE,
     reference_id integer,
     sector_type_id integer NOT NULL,
     taxon_key integer NOT NULL
@@ -114,7 +114,7 @@ CREATE TABLE recon.raw_catch (
     source_file_id integer NOT NULL,
     user_id integer NOT NULL,
     last_committed timestamp,
-    last_modified timestamp not null default current_timestamp
+    last_modified timestamp
 );
 
 

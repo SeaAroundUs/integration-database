@@ -32,8 +32,6 @@ CREATE INDEX catch_sector_type_id_idx ON recon.catch(sector_type_id);
 
 CREATE INDEX catch_fao_area_id_idx ON recon.catch(fao_area_id);
 
-CREATE INDEX catch_raw_catch_id_idx ON recon.catch(raw_catch_id);
-
 CREATE INDEX catch_catch_type_id_idx ON recon.catch(catch_type_id);
 
 CREATE INDEX catch_taxon_key_idx ON recon.catch(taxon_key);
