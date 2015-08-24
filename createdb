@@ -43,7 +43,7 @@ rm -f log/*.log
 PSQL="psql -U postgres -h $DbHost -p $DbPort"
 PSQLWEB="psql -U web_int -h $DbHost -p $DbPort"
 PSQLSAU="psql -U sau_int -h $DbHost -p $DbPort"
-RESTORE="pg_restore -h $DbHost -p $DbPort -Fc -a"
+RESTORE="pg_restore -h $DbHost -p $DbPort -Fc -a -j 4"
 
 ###########################################################
 ## Check if there's already a "${DATABASE_NAME}" database present. 

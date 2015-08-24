@@ -54,19 +54,19 @@ IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :InitializeIntSchema
 ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/master.schema
+pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/master.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/recon.schema
+pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/recon.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/distribution.schema
+pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/distribution.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 ::ECHO Password for user sau_int
-::pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -U sau_int data_dump/log.schema
+::pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/log.schema
 ::IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :: Refreshing materialized views 
