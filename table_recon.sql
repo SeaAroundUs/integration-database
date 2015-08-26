@@ -7,8 +7,7 @@ CREATE TABLE recon.template(
   fao_area_id int,
   sub_regional_area text,
   province text,
-  ices_divison text,
-  ices_subdivision text,
+  ices_area text,
   nafo_division text,
   ccamlr_area text,
   layer int,
@@ -51,8 +50,7 @@ CREATE TABLE recon.catch (
     catch_type_id integer NOT NULL,
     eez_id integer NOT NULL,
     fao_area_id integer NOT NULL,
-    ices_division_id integer,
-    ices_subdivision_id integer,
+    ices_area_id integer,
     nafo_division_id integer,
     original_country_fishing_id integer,
     original_fao_name_id integer,
@@ -77,10 +75,8 @@ CREATE TABLE recon.raw_catch (
     fao_area_id integer not null,
     subregional_area character varying(200),
     province_state character varying(200),
-    ices_division character varying(200),
-    ices_division_id integer,
-    ices_subdivision character varying(200),
-    ices_subdivision_id integer,
+    ices_area character varying(50),
+    ices_area_id integer,
     nafo_division character varying(200),
     nafo_division_id integer,
     ccamlr_area character varying(200),
@@ -234,6 +230,11 @@ CREATE TABLE recon.ices_subdivision (
     ices_subdivision_id serial primary key,
     ices_division_id int,
     ices_subdivision varchar(255)
+);
+
+CREATE TABLE recon.ices_area (
+    ices_area_id serial primary key,
+    icea_area character varying(255)
 );
 
 CREATE TABLE recon.eez_ices (

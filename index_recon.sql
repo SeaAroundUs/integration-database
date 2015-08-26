@@ -36,11 +36,9 @@ CREATE INDEX catch_catch_type_id_idx ON recon.catch(catch_type_id);
 
 CREATE INDEX catch_taxon_key_idx ON recon.catch(taxon_key);
 
-CREATE INDEX catch_ices_subdivision_id_idx ON recon.catch(ices_subdivision_id);
-
 CREATE INDEX catch_original_taxon_name_id_idx ON recon.catch(original_taxon_name_id);
 
-CREATE INDEX catch_ices_division_id_idx ON recon.catch(ices_division_id);
+CREATE INDEX catch_ices_area_id_idx ON recon.catch(ices_area_id);
 
 CREATE INDEX django_admin_log_content_type_id_idx ON recon.django_admin_log(content_type_id);
 
