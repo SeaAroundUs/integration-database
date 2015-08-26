@@ -29,11 +29,8 @@ FOREIGN KEY (catch_type_id) REFERENCES master.catch_type(catch_type_id) ON DELET
 ALTER TABLE recon.catch ADD CONSTRAINT year_fk
 FOREIGN KEY (year) REFERENCES master.time(year) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_division_id_fk 
-FOREIGN KEY (ices_division_id) REFERENCES recon.ices_division(ices_division_id) ON DELETE CASCADE;
-
-ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_subdivision_id_fk 
-FOREIGN KEY (ices_subdivision_id) REFERENCES recon.ices_subdivision(ices_subdivision_id) ON DELETE CASCADE;
+ALTER TABLE recon.catch ADD CONSTRAINT catch_ices_area_id_fk
+FOREIGN KEY (ices_area_id) REFERENCES recon.ices_area(ices_area_id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_nafo_division_id_fk 
 FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(nafo_division_id) ON DELETE CASCADE;
