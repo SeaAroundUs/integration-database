@@ -230,7 +230,7 @@ CREATE TABLE recon.ices_subdivision (
 
 CREATE TABLE recon.ices_area (
     ices_area_id serial primary key,
-    icea_area character varying(255)
+    ices_area character varying(255)
 );
 
 CREATE TABLE recon.eez_ices (
