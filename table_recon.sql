@@ -20,12 +20,11 @@ CREATE TABLE recon.template(
   original_fao_name text,
   amount numeric,
   adjustment_factor numeric,
-  gear_type gear,
+  gear_type text,
   input_type text,
   forward_carry_rule text,
   disaggregation_rule text,
   layer_rule text,
-  reference_id int,
   notes text
 );
 
@@ -215,10 +214,7 @@ CREATE TABLE recon.django_session (
 
 CREATE TABLE recon.reference (
     reference_id serial primary key,
-    eez_name     varchar(255),
-    eez_id       int,
-    notes        varchar(255),
-    reference    text
+    filename varchar(255)
 );
 
 CREATE TABLE recon.ices_division (
