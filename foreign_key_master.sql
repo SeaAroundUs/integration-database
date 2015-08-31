@@ -33,3 +33,10 @@ FOREIGN KEY (geo_entity_id) REFERENCES master.geo_entity(geo_entity_id) ON DELET
 -- master.fishing_entity 
 ALTER TABLE master.fishing_entity ADD CONSTRAINT geo_entity_id_fk
 FOREIGN KEY (geo_entity_id) REFERENCES master.geo_entity(geo_entity_id) ON DELETE CASCADE;
+
+-- master.access_agreement
+ALTER TABLE master.access_agreement ADD CONSTRAINT access_type_id_fk
+FOREIGN KEY (access_type_id) REFERENCES master.access_type(id) ON DELETE CASCADE;
+
+ALTER TABLE master.access_agreement ADD CONSTRAINT agreement_type_id_fk
+FOREIGN KEY (agreement_type_id) REFERENCES master.agreement_type(id) ON DELETE CASCADE;

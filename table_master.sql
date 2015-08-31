@@ -177,48 +177,95 @@ CREATE TABLE master.mariculture_sub_entity(
 );
 
 CREATE TABLE master.cell (
-    cell_id integer PRIMARY KEY,
-    lon double precision,
-    lat double precision,
-    cell_row int,  -- "row" is a reserved word in pgplsql
-    cell_col int,  -- renamed for consistency
-    total_area double precision,
-    water_area double precision,
-    percent_water double precision,
-    ele_min int,
-    ele_max int,
-    ele_avg int,
-    elevation_min int,
-    elevation_max int,
-    elevation_mean int,
-    bathy_min int,
-    bathy_max int,
-    bathy_mean int,
-    fao_area_id int,
-    lme_id int,
-    bgcp double precision,
-    distance double precision,
-    coastal_prop double precision,
-    shelf double precision,
-    slope double precision,
-    abyssal double precision,
-    estuary double precision,
-    mangrove double precision,
-    seamount_saup double precision,
-    seamount double precision,
-    coral double precision,
-    pprod double precision,
-    ice_con double precision,
-    sst double precision,
-    eez_count int,
-    sst_2001 double precision,
-    bt_2001 double precision,
-    pp_10yr_avg double precision,
-    sst_avg double precision,
-    pp_annual double precision
+  cell_id integer PRIMARY KEY,
+  lon double precision,
+  lat double precision,
+  cell_row int,  -- "row" is a reserved word in pgplsql
+  cell_col int,  -- renamed for consistency
+  total_area double precision,
+  water_area double precision,
+  percent_water double precision,
+  ele_min int,
+  ele_max int,
+  ele_avg int,
+  elevation_min int,
+  elevation_max int,
+  elevation_mean int,
+  bathy_min int,
+  bathy_max int,
+  bathy_mean int,
+  fao_area_id int,
+  lme_id int,
+  bgcp double precision,
+  distance double precision,
+  coastal_prop double precision,
+  shelf double precision,
+  slope double precision,
+  abyssal double precision,
+  estuary double precision,
+  mangrove double precision,
+  seamount_saup double precision,
+  seamount double precision,
+  coral double precision,
+  pprod double precision,
+  ice_con double precision,
+  sst double precision,
+  eez_count int,
+  sst_2001 double precision,
+  bt_2001 double precision,
+  pp_10yr_avg double precision,
+  sst_avg double precision,
+  pp_annual double precision
 );
 
 CREATE TABLE master.input_type(
   input_type_id smallint primary key,
   name text
+);
+
+CREATE TABLE master.access_type(
+  id INT PRIMARY KEY,
+  description TEXT
+);
+
+CREATE TABLE master.agreement_type(
+  id INT PRIMARY KEY,
+  description TEXT
+);
+
+CREATE TABLE master.access_agreement(
+  id integer primary key,  
+  fishing_entity_id int not null,
+  fishing_entity varchar(255),
+  eez_id int not null,
+  eez_name varchar(255),
+  title_of_agreement varchar(255),
+  access_category varchar(255) not null,
+  access_type_id int not null,
+  agreement_type_id int not null,
+  start_year int not null,
+  end_year int not null,
+  duration_type varchar(255),
+  duration_details varchar(255),
+  functional_group_id varchar(255),
+  functional_group_details varchar(255),
+  fees varchar(255),
+  quotas varchar(255),
+  other_restrictions varchar(255),
+  notes_on_agreement text,
+  ref_id int,
+  source_link varchar(255),
+  pdf varchar(255),
+  verified varchar(255),
+  reference_original varchar(255),
+  Location_reference_original varchar(255),
+  reference varchar(255),
+  title_of_reference varchar(255),
+  location_reference varchar(255),
+  reference_type varchar(255),
+  pages varchar(255),
+  number_of_boats varchar(255),
+  Gear varchar(255),
+  notes_on_the_references text,
+  change_log text
 );
