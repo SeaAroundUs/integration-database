@@ -1,5 +1,5 @@
 \echo
-\echo Creating SAU Database...
+\echo Creating SAU_INT Database...
 \echo
 
 DROP DATABASE IF EXISTS sau_int;
