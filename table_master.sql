@@ -152,7 +152,7 @@ CREATE TABLE master.geo_entity(
   admin_geo_entity_id int NOT NULL,             
   jurisdiction_id int NULL,
   started_eez_at varchar(50) NULL,
-  Legacy_c_number int NOT NULL,
+  legacy_c_number int NOT NULL,
   legacy_admin_c_number int NOT NULL
 );
 
@@ -258,14 +258,27 @@ CREATE TABLE master.access_agreement(
   pdf varchar(255),
   verified varchar(255),
   reference_original varchar(255),
-  Location_reference_original varchar(255),
+  location_reference_original varchar(255),
   reference varchar(255),
   title_of_reference varchar(255),
   location_reference varchar(255),
   reference_type varchar(255),
   pages varchar(255),
   number_of_boats varchar(255),
-  Gear varchar(255),
+  gear varchar(255),
   notes_on_the_references text,
   change_log text
+);
+
+CREATE TABLE master.rfb(
+  rfb_id serial primary key,
+  name varchar(20) not null unique,
+  long_name text,
+  profile_url text
+);
+
+CREATE TABLE master.country_rfb(
+  country_iso3 CHAR(3) not null,
+  rfb_id int,
+  CONSTRAINT country_rfb_pkey PRIMARY KEY(country_iso3, rfb_id)
 );

@@ -1,15 +1,7 @@
-/*
-CREATE TABLE admin.datatransfer_tables(
-  id SERIAL PRIMARY KEY,
-  source_database_name VARCHAR(256),
-  source_table_name VARCHAR(256),
-  source_key_column VARCHAR(256),
-  source_where_clause TEXT,
-  target_schema_name VARCHAR(256),
-  target_table_name VARCHAR(256),
-  target_excluded_columns TEXT[],
-  number_of_threads INT NOT NULL DEFAULT 1,
-  last_transferred TIMESTAMP,
-  last_transfer_success BOOLEAN
+CREATE TABLE log.table_edits(
+  id serial primary key,
+  auth_user_id int not null,
+  table_name varchar(256),
+  notes text,
+  created timestamp not null default now()
 );
-*/

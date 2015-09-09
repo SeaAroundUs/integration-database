@@ -80,6 +80,8 @@ type index_recon.sql >> rmv.sql
 type foreign_key_recon.sql >> rmv.sql
 type index_distribution.sql >> rmv.sql
 type foreign_key_distribution.sql >> rmv.sql
+type index_log.sql >> rmv.sql
+type foreign_key_log.sql >> rmv.sql
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql
 IF ERRORLEVEL 1 GOTO ErrorLabel

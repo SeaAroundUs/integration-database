@@ -75,4 +75,9 @@ CREATE SCHEMA log;
 \i table_distribution.sql
 \i function_distribution.sql
 
+\echo
+\echo Creating DB Objects for the Log schema...
+\echo
+\i table_log.sql
+
 \i grant.sql
