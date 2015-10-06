@@ -53,6 +53,9 @@ CREATE SCHEMA distribution;
 DROP SCHEMA IF EXISTS log CASCADE;
 CREATE SCHEMA log;
 
+DROP SCHEMA IF EXISTS catalog CASCADE;
+CREATE SCHEMA catalog;
+
 \i table_admin.sql
 --\i populate_admin.sql
 
@@ -60,7 +63,7 @@ CREATE SCHEMA log;
 \echo Creating DB Objects for the Master schema...
 \echo
 \i table_master.sql
---\i function_master.sql
+\i function_master.sql
 --\i mat_view_master.sql
 --\i populate_master.sql
 
@@ -79,5 +82,10 @@ CREATE SCHEMA log;
 \echo Creating DB Objects for the Log schema...
 \echo
 \i table_log.sql
+
+\echo
+\echo Creating DB Objects for the Catalog schema...
+\echo
+\i table_catalog.sql
 
 \i grant.sql

@@ -82,6 +82,36 @@ CREATE TABLE master.taxon(
   is_baltic_only boolean NOT NULL
 );
 
+CREATE TABLE master.country(
+  c_number int PRIMARY KEY,
+  count_code varchar(4) NOT NULL,
+  un_name varchar(10) NULL,
+  admin varchar(4) NULL,
+  fish_base varchar(4) NULL,
+  a_code varchar(4) NULL,
+  cia varchar(2) NULL,
+  fao_fisheries varchar(4) NULL,
+  country varchar(50) NULL,
+  eez_area decimal(50,20) NULL,
+  sea_mount decimal(50,20) NULL,
+  per_sea_mount decimal(50,20) NULL,
+  area_reef decimal(50,20) NULL,
+  per_reef decimal(50,20) NULL,
+  shelf_area decimal(50,20) NULL,
+  avg_pprate decimal(50,20) NULL,
+  eez_ppr bigint NULL,
+  has_estuary smallint NULL,
+  has_mpa smallint NULL,
+  has_survey smallint NULL,
+  territory smallint NULL,
+  has_saup_profile smallint NULL,
+  fao_profile_url_direct_link varchar(100) NULL,
+  is_active boolean NOT NULL,
+  fao_profile_url_v1 varchar(255) NULL,
+  fao_profile_url varchar(255) NULL,
+  fao_code varchar(50) NULL,
+  admin_c_number int NULL
+);
 
 CREATE TABLE master.eez(
   eez_id int PRIMARY KEY,
@@ -270,15 +300,31 @@ CREATE TABLE master.access_agreement(
   change_log text
 );
 
-CREATE TABLE master.rfb(
-  rfb_id serial primary key,
-  name varchar(20) not null unique,
-  long_name text,
-  profile_url text
+CREATE TABLE master.fao_rfb(
+  fid smallint primary key,
+  acronym varchar(20) not null unique,
+  name text,
+  profile_url text,
+  raw_data_hash bigint not null,
+  figis_raw_data_hash bigint,
+  modified_timestamp timestamp not null default now()
 );
 
-CREATE TABLE master.country_rfb(
-  country_iso3 CHAR(3) not null,
-  rfb_id int,
-  CONSTRAINT country_rfb_pkey PRIMARY KEY(country_iso3, rfb_id)
+CREATE TABLE master.fao_country_rfb_membership(
+  id serial primary key,
+  country_iso3 char(3) not null,
+  rfb_fid smallint not null,
+  membership_type varchar(100) not null,
+  modified_timestamp timestamp not null default now(),
+  CONSTRAINT fao_country_rfb_membership_uk UNIQUE(country_iso3, rfb_fid, membership_type)
+);
+
+CREATE TABLE master.fao_country_rfmo_membership(
+  id serial primary key,
+  rfmo_id int not null,
+  country_iso3 char(3) not null,
+  country_name varchar(256) not null,
+  country_facp_url text,
+  modified_timestamp timestamp not null default now(),
+  CONSTRAINT fao_country_rfmo_membership_uk UNIQUE(rfmo_id, country_iso3)
 );
