@@ -13,6 +13,11 @@ CREATE TABLE distribution.taxon_distribution (
     relative_abundance double precision not null 
 );
 
+CREATE TABLE distribution.taxon_distribution_log (
+    taxon_key integer primary key,
+    modified_timestamp timestamp not null default now()
+);
+
 CREATE TABLE distribution.grid (
     id serial primary key,
     "row" integer,
