@@ -26,9 +26,9 @@ IF EXIST log\*.log del /Q .\log\*.log
 ::   If not, create the "sau_int" database and the requisite db users, then proceed to invoke the initialize.sql script.
 ::   If yes, proceed to invoke initialize.sql script only.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-FOR /F "tokens=1 delims=| " %%A IN ('"psql -h %DbHost% -p %DbPort% -U postgres -A -t -c "select datname from pg_database""') DO (
-  IF /i "%%A"=="%DATABASE_NAME%" GOTO CreateIntSchema
-)
+::FOR /F "tokens=1 delims=| " %%A IN ('"psql -h %DbHost% -p %DbPort% -U postgres -A -t -c "select datname from pg_database""') DO (
+::  IF /i "%%A"=="%DATABASE_NAME%" GOTO CreateIntSchema
+::)
 
 :: Only get to this point if we didn't find a database with the name 'sau_int' in the code immediately above
 SET SQLINPUTFILE=create_user_and_db
