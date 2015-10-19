@@ -147,6 +147,7 @@ CREATE TABLE master.fishing_entity(
   legacy_c_number int NULL,
   is_currently_used_for_web boolean DEFAULT true NOT NULL,
   is_currently_used_for_reconstruction boolean DEFAULT true NOT NULL,
+  is_allowed_to_fish_pre_eez_by_default boolean DEFAULT true NOT NULL,
   remarks varchar(50) NULL
 );
 
@@ -161,7 +162,8 @@ CREATE TABLE master.functional_groups(
   functional_group_id smallint PRIMARY KEY,
   target_grp int NULL,
   name varchar(20) NULL,
-  description varchar(50) NULL
+  description varchar(50) NULL,
+  include_in_depth_adjustment_function BOOLEAN NOT NULL
 );
 
 CREATE TABLE master.gear(
@@ -299,6 +301,14 @@ CREATE TABLE master.access_agreement(
   notes_on_the_references text,
   change_log text
 );
+
+CREATE TABLE master.price(
+	year int,
+	fishing_entity_id int,
+	taxon_key int,
+	price float null,
+    CONSTRAINT price_pkey PRIMARY KEY (year, fishing_entity_id, taxon_key)
+); 
 
 CREATE TABLE master.fao_rfb(
   fid smallint primary key,
