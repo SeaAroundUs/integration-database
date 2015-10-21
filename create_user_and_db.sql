@@ -15,6 +15,8 @@ DROP USER IF EXISTS distribution_int;
 CREATE USER distribution_int WITH PASSWORD 'distribution_int';
 DROP USER IF EXISTS qc_int;
 CREATE USER qc_int WITH PASSWORD 'qc_int';
+DROP USER IF EXISTS gis_int;
+CREATE USER gis_int WITH PASSWORD 'gis_int';
 
 ALTER DATABASE sau_int OWNER TO sau_int;
 GRANT postgres TO sau_int;
@@ -24,3 +26,4 @@ ALTER USER web_int SET search_path TO master, recon, distribution, log, admin, t
 ALTER USER recon_int SET search_path TO recon, log, master, admin, distribution, tiger, topology, tiger_data, public;
 ALTER USER distribution_int SET search_path TO distribution, master, admin, recon, log, tiger, topology, tiger_data, public;
 ALTER USER qc_int SET search_path TO master, recon, distribution, log, admin, public;
+ALTER USER gis_int SET search_path TO distribution, log, admin, public;
