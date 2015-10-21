@@ -11,6 +11,12 @@ IF [%2]==[] (
   SET DbHost=%2
 )
 
+IF [%3]==[] (
+  SET DbPort=5432
+) ELSE (
+  SET DbPort=%3
+)
+
 echo Password for user sau_int
-pg_restore -h %DbHost% -Fc -j 4 -a -d sau_int -U sau_int %DumpFile%
+pg_restore -h %DbHost% -p %DbPort% -Fc -j 4 -a -d sau_int -U sau_int %DumpFile%
 
