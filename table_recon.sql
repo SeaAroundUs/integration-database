@@ -68,7 +68,7 @@ CREATE TABLE recon.raw_catch (
     original_country_fishing character varying(200),
     original_country_fishing_id integer,
     eez character varying(200),
-    eez_id integer NOT NULL,
+    eez_id integer,
     eez_sub_area character varying(200),
     fao_area character varying(200) not null,
     fao_area_id integer not null,
