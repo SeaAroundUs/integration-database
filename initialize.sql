@@ -56,6 +56,9 @@ CREATE SCHEMA log;
 DROP SCHEMA IF EXISTS catalog CASCADE;
 CREATE SCHEMA catalog;
 
+DROP SCHEMA IF EXISTS allocation CASCADE;
+CREATE SCHEMA allocation;
+
 \i table_admin.sql
 --\i populate_admin.sql
 
@@ -87,5 +90,10 @@ CREATE SCHEMA catalog;
 \echo Creating DB Objects for the Catalog schema...
 \echo
 \i table_catalog.sql
+
+\echo
+\echo Creating DB Objects for the Allocation schema...
+\echo
+\i table_allocation.sql
 
 \i grant.sql
