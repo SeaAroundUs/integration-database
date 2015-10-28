@@ -1,9 +1,7 @@
 CREATE TABLE distribution.taxon_extent (
-    gid integer primary key,
-    taxon_key integer,
-    num_polygon integer,
-    id integer,
-    geom geometry(Multipolygon, 4326)
+    gid serial primary key,
+    taxon_key integer NOT NULL,
+    geom geometry(Multipolygon, 4326) NOT NULL
 );
 
 CREATE TABLE distribution.taxon_distribution (

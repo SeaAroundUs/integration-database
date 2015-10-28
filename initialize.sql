@@ -79,6 +79,7 @@ CREATE SCHEMA allocation;
 \echo Creating DB Objects for the Distribution schema...
 \echo
 \i table_distribution.sql
+\i trigger_distribution.sql
 \i function_distribution.sql
 
 \echo
