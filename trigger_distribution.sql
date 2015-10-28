@@ -2,7 +2,7 @@
 --- Triggers
 ---
 
-CREATE OR REPLACE FUNCTION taxon_extent_insert_trigger_handler() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION distribution.taxon_extent_insert_trigger_handler() RETURNS TRIGGER AS
 $body$
 BEGIN
   IF NEW.gid IS NULL THEN
