@@ -124,7 +124,7 @@ $body$
   
   -- For user gis_int
   GRANT USAGE ON SCHEMA distribution TO gis_int;
-  GRANT INSERT,UPDATE,SELECT,REFERENCES ON distribution.taxon_extent TO gis_int;
+  GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_extent TO gis_int;
   GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA distribution TO gis_int;
 $body$
 LANGUAGE sql
