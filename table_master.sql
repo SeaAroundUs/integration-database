@@ -82,6 +82,13 @@ CREATE TABLE master.taxon(
   is_baltic_only boolean NOT NULL
 );
 
+CREATE TABLE master.rare_taxon(
+  taxon_key int PRIMARY KEY,
+  scientific_name varchar(255) NOT NULL,
+  common_name varchar(255) NOT NULL,
+  created_timestamp TIMESTAMP NOT NULL DEFAULT now()
+);
+
 CREATE TABLE master.country(
   c_number int PRIMARY KEY,
   count_code varchar(4) NOT NULL,
