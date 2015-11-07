@@ -16,6 +16,11 @@ CREATE TABLE distribution.taxon_distribution_log (
     modified_timestamp timestamp not null default now()
 );
 
+CREATE TABLE distribution.taxon_distribution_substitute(
+  original_taxon_key int primary key,
+  use_this_taxon_key_instead int not null
+);
+
 CREATE TABLE distribution.grid (
     id serial primary key,
     "row" integer,
