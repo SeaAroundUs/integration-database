@@ -97,4 +97,6 @@ CREATE SCHEMA allocation;
 \echo
 \i table_allocation.sql
 
+\i view_recon.sql
+
 \i grant.sql
