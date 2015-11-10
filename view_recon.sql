@@ -51,6 +51,7 @@ SELECT rc.id FROM raw_catch rc, rare_taxon rt WHERE rc.taxon_key = rt.taxon_key;
 --
 
 -- Fishing entity and EEZ rule for Layer
+/*
 CREATE OR REPLACE VIEW recon.v_raw_catch_fishing_entity_and_eez_not_aligned AS
 WITH eez_fishing_entity AS (
   SELECT eez_id, is_home_eez_of_fishing_entity_id AS expected_fishing_entity FROM eez
@@ -61,7 +62,25 @@ SELECT rc.id
  WHERE coalesce(rc.eez_id, 0) !=0 
    AND fishing_entity_id != 0 
    AND ((expected_fishing_entity != fishing_entity_id AND layer = 1) OR (expected_fishing_entity = fishing_entity_id AND layer = 2));
-                                               
+*/
+
+CREATE OR REPLACE VIEW recon.v_raw_catch_fishing_entity_and_eez_not_aligned AS
+WITH eez_fishing_entity AS (
+  SELECT eez.eez_id, eez.is_home_eez_of_fishing_entity_id AS expected_fishing_entity FROM eez
+)
+SELECT rc.id
+  FROM raw_catch rc
+  LEFT JOIN eez_fishing_entity efe ON (rc.eez_id = efe.eez_id)
+  LEFT JOIN layer3_taxon l3 ON (l3.taxon_key = rc.taxon_key)
+ WHERE ((COALESCE(rc.eez_id, 0) <> 0 AND rc.fishing_entity_id <> 0) OR l3.taxon_key IS NOT NULL) 
+   AND rc.layer 
+       IS DISTINCT FROM
+       CASE WHEN l3.taxon_key IS NOT NULL THEN 3
+            WHEN rc.fishing_entity_id IS NOT DISTINCT FROM efe.expected_fishing_entity THEN 1
+            ELSE 2
+            END
+;
+
 -- Input type is reconstructed and Catch type is reported landings
 CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_catch_type_reported AS
 SELECT id FROM raw_catch WHERE coalesce(input_type_id, 0) = 1 AND catch_type_id = 1; 
