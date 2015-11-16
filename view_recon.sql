@@ -138,7 +138,7 @@ CREATE OR REPLACE VIEW recon.v_catch_original_country_fishing_not_null AS
 
 -- Original sector is not null
 CREATE OR REPLACE VIEW recon.v_catch_original_sector_not_null AS
-  SELECT id FROM catch WHERE original_sector_id IS NOT NULL;
+  SELECT id FROM catch WHERE original_sector IS NOT NULL;
 
 -- Catch amount greater than 15e6 for Peru
 CREATE OR REPLACE VIEW recon.v_catch_peru_catch_amount_greater_than_threshold AS
