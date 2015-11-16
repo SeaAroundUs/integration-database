@@ -41,7 +41,7 @@ CREATE TABLE recon.catch (
     amount numeric(20,12) NOT NULL,
     adjustment_factor numeric(20,12),
     gear_type_id integer,
-    input_type_id integer,
+    input_type_id integer NOT NULL,
     forward_carry_rule_id integer,
     disaggregation_rule_id integer,
     layer_rule_id integer,
