@@ -2,9 +2,9 @@
 -- raw_catch warnings (non-blocking)
 --
    
--- Year greater than 2010   
-CREATE OR REPLACE VIEW recon.v_raw_catch_year_greater_2010 AS
-SELECT id FROM raw_catch WHERE year > 2010;
+-- Year greater than the max year
+CREATE OR REPLACE VIEW recon.v_raw_catch_year_max AS
+SELECT id FROM raw_catch WHERE year > (SELECT max(year) FROM time);
 
 -- Original taxon name is not null
 CREATE OR REPLACE VIEW recon.v_raw_catch_original_taxon_not_null  AS
@@ -124,9 +124,9 @@ SELECT id
 -- catch warnings
 --
 
--- Year greater than 2010
-CREATE OR REPLACE VIEW recon.v_catch_year_greater_2010 AS
-  SELECT id FROM catch WHERE year > 2010;
+-- Year greater than the max year
+CREATE OR REPLACE VIEW recon.v_catch_year_max AS
+  SELECT id FROM catch WHERE year > (SELECT max(year) FROM time);
 
 -- Original taxon name is not null
 CREATE OR REPLACE VIEW recon.v_catch_original_taxon_not_null  AS
