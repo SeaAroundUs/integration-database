@@ -29,3 +29,8 @@ begin
 end;
 $body$
 language plpgsql;
+
+/*
+The command below should be maintained as the last command in this entire script.
+*/
+SELECT admin.grant_access();

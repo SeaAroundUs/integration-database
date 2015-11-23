@@ -204,3 +204,8 @@ CREATE OR REPLACE VIEW recon.v_catch_layer_not_in_range AS
 -- Catch amount is zero or negative
 CREATE OR REPLACE VIEW recon.v_catch_amount_zero_or_negative AS
   SELECT id FROM catch WHERE amount <= 0;
+
+/*
+The command below should be maintained as the last command in this entire script.
+*/
+SELECT admin.grant_access();

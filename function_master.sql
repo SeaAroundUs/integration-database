@@ -79,3 +79,8 @@ $body$
   select (select count(*)::int from del), (select count(*)::int from ins);
 $body$
 language sql;
+
+/*
+The command below should be maintained as the last command in this entire script.
+*/
+SELECT admin.grant_access();
