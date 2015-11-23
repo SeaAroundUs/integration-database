@@ -63,6 +63,7 @@ CREATE TABLE master.taxon(
   functional_group_id smallint NOT NULL,
   sl_max int NOT NULL,
   tl float NOT NULL,
+  se_tl float NULL,
   taxon_level_id int NULL,
   taxon_group_id int NULL,
   isscaap_id int NULL,
