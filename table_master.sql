@@ -145,7 +145,8 @@ CREATE TABLE master.eez(
   earliest_access_agreement_date int NULL,
   is_home_eez_of_fishing_entity_id smallint NOT NULL,
   allows_coastal_fishing_for_layer2_data boolean DEFAULT true NOT NULL,
-  ohi_link VARCHAR(400)
+  ohi_link VARCHAR(400),
+  is_retired BOOLEAN NOT NULL DEFAULT false
 );
 
 COMMENT ON COLUMN master.eez.alternate_name IS 'semicolon separated: alt_name1;alt_name2;alt_name3';
