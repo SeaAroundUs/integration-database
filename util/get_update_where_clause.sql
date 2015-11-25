@@ -11,18 +11,17 @@ BEGIN
     RETURN (SELECT '(' || RTRIM(strings(i_target_alias || '.' || a.attname || ' IS DISTINCT FROM '|| i_source_alias || '.' || a.attname || ' OR '), ' OR ') || ')'
               FROM pg_class c
               JOIN pg_namespace ns ON (ns.oid = c.relnamespace AND ns.nspname = schema)
-              JOIN pg_index i ON (i.indrelid = c.oid AND i.indisprimary)
-              JOIN pg_attribute a ON (a.attrelid = c.oid AND NOT a.attisdropped AND a.attnum > 0 AND a.attnum != ALL(i.indkey) AND a.attname != ALL(i_excludeColumns))
+              LEFT JOIN pg_index i ON (i.indrelid = c.oid AND i.indisprimary)
+              JOIN pg_attribute a ON (a.attrelid = c.oid AND NOT a.attisdropped AND a.attnum > 0 AND a.attnum != ALL(COALESCE(i.indkey, array[0])) AND a.attname != ALL(COALESCE(i_excludeColumns, ARRAY[''])))
              WHERE c.relname = i_tablename);
   ELSE
     RETURN (SELECT '(' || RTRIM(strings(i_target_alias || '.' || a.attname || ' IS DISTINCT FROM '|| i_source_alias || '.' || a.attname ||' OR '), ' OR ') || ')'
               FROM pg_class c
-              JOIN pg_index i ON (i.indrelid = c.oid AND i.indisprimary )
-              JOIN pg_attribute a ON (a.attrelid = c.oid AND NOT a.attisdropped AND a.attnum > 0 AND a.attnum != ALL(i.indkey) AND a.attname != ALL(i_excludeColumns))
+              LEFT JOIN pg_index i ON (i.indrelid = c.oid AND i.indisprimary )
+              JOIN pg_attribute a ON (a.attrelid = c.oid AND NOT a.attisdropped AND a.attnum > 0 AND a.attnum != ALL(COALESCE(i.indkey, array[0])) AND a.attname != ALL(COALESCE(i_excludeColumns, ARRAY[''])))
              WHERE c.relname = i_tablename
                AND pg_table_is_visible(c.oid));
   END IF;
 END;
 $function$
 LANGUAGE plpgsql;
-
