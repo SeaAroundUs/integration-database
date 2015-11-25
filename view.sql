@@ -1,6 +1,6 @@
 /* Content Views */
 /* Administrative and System-viewer Views */
-CREATE OR REPLACE FUNCTION schema_v(i_schema TEXT) 
+CREATE OR REPLACE FUNCTION public.schema_v(i_schema TEXT) 
 RETURNS TABLE(table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT) AS
 $body$
   SELECT tables.relname::TEXT, 
@@ -19,7 +19,7 @@ $body$
 $body$
 LANGUAGE sql;
 
-CREATE OR REPLACE FUNCTION schema_v(i_schema TEXT, i_relkind TEXT[]) 
+CREATE OR REPLACE FUNCTION public.schema_v(i_schema TEXT, i_relkind TEXT[]) 
 RETURNS TABLE(object_type TEXT, object_name TEXT) AS
 $body$
   SELECT (CASE relkind WHEN 'r' THEN 'TABLE' WHEN 'v' THEN 'VIEW' WHEN 'S' THEN 'SEQUENCE' WHEN 'i' THEN 'INDEX' WHEN 'c' THEN 'COMPOSITE TYPE' WHEN 't' THEN 'TOAST' END),
@@ -32,7 +32,7 @@ $body$
 $body$
 LANGUAGE sql;
 
-CREATE OR REPLACE FUNCTION index_v(i_schema TEXT) 
+CREATE OR REPLACE FUNCTION public.index_v(i_schema TEXT) 
 RETURNS TABLE(index_name TEXT, table_space TEXT, table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT) AS
 $body$
   SELECT tables.relname::TEXT,
@@ -53,7 +53,26 @@ $body$
 $body$
 LANGUAGE sql;
 
-CREATE OR REPLACE FUNCTION view_v(i_schema TEXT) 
+CREATE OR REPLACE FUNCTION public.view_v(i_schema TEXT) 
+RETURNS TABLE(table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT) AS
+$body$
+  SELECT tables.relname::TEXT, 
+         to_char(tables.measurements[1], '999,999,999,999'::text), 
+         pg_size_pretty(tables.measurements[2]), 
+         tables.measurements[2], 
+         to_char(tables.measurements[3], '999,999,999,999'::text) 
+    FROM (SELECT c.relname, ARRAY[(c.reltuples)::bigint, pg_relation_size(c.oid), (c.relpages)::bigint] AS measurements 
+            FROM pg_class c, pg_namespace n 
+           WHERE c.relnamespace = n.oid AND n.nspname = $1 AND c.relkind = 'v' 
+          UNION ALL 
+          SELECT 'TOTALS: ' AS relname, ARRAY[(sum(c.reltuples))::bigint, (sum(pg_relation_size(c.oid)))::bigint, sum(c.relpages)] AS measurements 
+            FROM pg_class c, pg_namespace n 
+           WHERE c.relnamespace = n.oid AND n.nspname = $1 AND c.relkind = 'v') tables 
+   ORDER BY CASE WHEN tables.relname = 'TOTALS: ' THEN (-1)::bigint ELSE tables.measurements[1] END DESC, tables.relname;
+$body$
+LANGUAGE sql;
+
+CREATE OR REPLACE FUNCTION public.matview_v(i_schema TEXT) 
 RETURNS TABLE(table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT) AS
 $body$
   SELECT tables.relname::TEXT, 
@@ -72,7 +91,7 @@ $body$
 $body$
 LANGUAGE sql;
 
-CREATE OR REPLACE FUNCTION schema_by_dependency_v(i_schema TEXT) 
+CREATE OR REPLACE FUNCTION public.schema_by_dependency_v(i_schema TEXT) 
 RETURNS TABLE(table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT, parent TEXT[], children TEXT[]) AS
 $body$
   SELECT tables.relname::TEXT, 
@@ -95,7 +114,7 @@ $body$
 $body$
 LANGUAGE sql;
 
-CREATE OR REPLACE FUNCTION function_v(i_schema TEXT, i_table_name TEXT) 
+CREATE OR REPLACE FUNCTION public.function_v(i_schema TEXT, i_table_name TEXT) 
 RETURNS TEXT AS
 $body$
   SELECT
@@ -109,7 +128,7 @@ $body$
 LANGUAGE sql;
 
 /* To see outstanding locks */
-CREATE OR REPLACE VIEW lock_v AS
+CREATE OR REPLACE VIEW public.lock_v AS
 select pg_class.relname, pg_locks.transactionid, pg_locks.mode,
        pg_locks.granted as "g", pg_stat_activity.query,
        pg_stat_activity.query_start,
@@ -121,9 +140,9 @@ where pg_locks.pid=pg_stat_activity.pid
 /*and pg_stat_activity.pid = 14873 */
 order by query_start;
 
-grant all on lock_v to sau,web,allocation;
+grant all on public.lock_v to sau,web,allocation;
 
-CREATE OR REPLACE VIEW stat_v AS
+CREATE OR REPLACE VIEW public.stat_v AS
 SELECT pa.pid, 
        now() - pa.query_start AS elapsed,
        pa.waiting,
@@ -131,5 +150,5 @@ SELECT pa.pid,
   FROM pg_stat_activity pa
  WHERE pa.state != 'idle';
 
-grant all on stat_v to sau,web,allocation;
+grant all on public.stat_v to sau,web,allocation;
 
