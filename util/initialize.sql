@@ -10,3 +10,4 @@
 \i exec.sql
 \i get_table_index.sql
 \i simple_acronym.sql
+\i update_sequence.sql

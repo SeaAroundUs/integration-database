@@ -1,6 +1,6 @@
 /* Stable master tables, no tracking log tables needed */
 CREATE TABLE master.time(
-  time_key int PRIMARY KEY,
+  time_key smallserial PRIMARY KEY,
   year int NOT NULL
 );
 
@@ -36,19 +36,19 @@ CREATE TABLE master.taxon_group(
 );
 
 CREATE TABLE master.fao_area(
-  fao_area_id int PRIMARY KEY,
+  fao_area_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   alternate_name varchar(50) NOT NULL
 );
 
 CREATE TABLE master.lme(
-  lme_id int PRIMARY KEY,
+  lme_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   profile_url varchar(255) DEFAULT 'http://www.lme.noaa.gov/' NOT NULL
 );
 
 CREATE TABLE master.rfmo(
-  rfmo_id int PRIMARY KEY,
+  rfmo_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   long_name varchar(255) NOT NULL,
   profile_url varchar(255) NULL
@@ -152,10 +152,8 @@ CREATE TABLE master.eez(
 COMMENT ON COLUMN master.eez.alternate_name IS 'semicolon separated: alt_name1;alt_name2;alt_name3';
 COMMENT ON COLUMN master.eez.coords IS 'coords of the map on this page: http://www.seaaroundus.org/eez/';
 
-CREATE SEQUENCE master.fishing_entity_fishing_entity_id_seq START 1 MAXVALUE 32767;
-
 CREATE TABLE master.fishing_entity(
-  fishing_entity_id smallint DEFAULT nextval('master.fishing_entity_fishing_entity_id_seq') PRIMARY KEY,
+  fishing_entity_id smallserial PRIMARY KEY,
   name varchar(100) NOT NULL,
   geo_entity_id int NULL,
   date_allowed_to_fish_other_eEZs int NOT NULL,
@@ -166,8 +164,6 @@ CREATE TABLE master.fishing_entity(
   is_allowed_to_fish_pre_eez_by_default boolean DEFAULT true NOT NULL,
   remarks varchar(50) NULL
 );
-
-ALTER SEQUENCE master.fishing_entity_fishing_entity_id_seq OWNED BY master.fishing_entity.fishing_entity_iD;
 
 CREATE TABLE master.commercial_groups(
   commercial_group_id smallint PRIMARY KEY,
@@ -189,13 +185,13 @@ CREATE TABLE master.gear(
 );
 
 CREATE TABLE master.jurisdiction(
-  jurisdiction_id int PRIMARY KEY,
+  jurisdiction_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   legacy_c_number int NOT NULL
 );
 
 CREATE TABLE master.geo_entity(
-  geo_entity_id int PRIMARY KEY,      
+  geo_entity_id smallserial PRIMARY KEY,      
   name varchar(50) NOT NULL,
   admin_geo_entity_id int NOT NULL,             
   jurisdiction_id int NULL,
@@ -205,21 +201,21 @@ CREATE TABLE master.geo_entity(
 );
 
 CREATE TABLE master.sub_geo_entity(
-  sub_geo_entity_id serial PRIMARY KEY,
+  sub_geo_entity_id smallserial PRIMARY KEY,
   c_number int NOT NULL,
   name varchar(255) NOT NULL,
   geo_entity_id int NOT NULL
 );
 
 CREATE TABLE master.mariculture_entity(
-  mariculture_entity_id serial PRIMARY KEY,
+  mariculture_entity_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   legacy_c_number int NOT NULL,
   fao_link varchar(255) NULL
 );
 
 CREATE TABLE master.mariculture_sub_entity(
-  mariculture_sub_entity_id serial PRIMARY KEY,
+  mariculture_sub_entity_id smallserial PRIMARY KEY,
   name varchar(100) NOT NULL,
   mariculture_entity_id int NOT NULL
 );
@@ -282,7 +278,7 @@ CREATE TABLE master.agreement_type(
 );
 
 CREATE TABLE master.access_agreement(
-  id integer primary key,  
+  id smallserial primary key,  
   fishing_entity_id int not null,
   fishing_entity varchar(255),
   eez_id int not null,
@@ -319,10 +315,10 @@ CREATE TABLE master.access_agreement(
 );
 
 CREATE TABLE master.price(
-	year int,
-	fishing_entity_id int,
-	taxon_key int,
-	price float null,
+	year int not null,
+	fishing_entity_id int not null,
+	taxon_key int not null,
+	price float not null,
     CONSTRAINT price_pkey PRIMARY KEY (year, fishing_entity_id, taxon_key)
 ); 
 

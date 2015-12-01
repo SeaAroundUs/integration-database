@@ -105,6 +105,7 @@ cat index_distribution.sql >> rmv.sql
 cat foreign_key_distribution.sql >> rmv.sql
 cat index_recon.sql >> rmv.sql
 cat foreign_key_recon.sql >> rmv.sql
+echo "select update_sequence(ns.nspname) from pg_namespace ns join pg_user u on (u.usesysid = ns.nspowner) where u.usename = 'sau_int';" >> rmv.sql
 
 if ! $PSQLSAU -d ${DATABASE_NAME} -f rmv.sql; then
   ExitWithError

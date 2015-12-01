@@ -86,6 +86,7 @@ type index_distribution.sql >> rmv.sql
 type foreign_key_distribution.sql >> rmv.sql
 type index_log.sql >> rmv.sql
 type foreign_key_log.sql >> rmv.sql
+ECHO select update_sequence(ns.nspname) from pg_namespace ns join pg_user u on (u.usesysid = ns.nspowner) where u.usename = 'sau_int'; >> rmv.sql
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql
 IF ERRORLEVEL 1 GOTO ErrorLabel
