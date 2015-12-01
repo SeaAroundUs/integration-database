@@ -59,6 +59,9 @@ CREATE SCHEMA catalog;
 DROP SCHEMA IF EXISTS allocation CASCADE;
 CREATE SCHEMA allocation;
 
+DROP SCHEMA IF EXISTS geo CASCADE;
+CREATE SCHEMA geo;
+
 \i table_admin.sql
 --\i populate_admin.sql
 
@@ -96,6 +99,11 @@ CREATE SCHEMA allocation;
 \echo Creating DB Objects for the Allocation schema...
 \echo
 \i table_allocation.sql
+
+\echo
+\echo Creating DB Objects for the Geo schema...
+\echo
+\i table_geo.sql
 
 \i view_recon.sql
 
