@@ -1,29 +1,43 @@
 \echo
-\echo Creating SAU_INT Database...
+\echo Creating SAU_INT Database and its users...
 \echo
 
-DROP DATABASE IF EXISTS sau_int;
-CREATE DATABASE sau_int;
+DO 
+$$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'sau_int' LIMIT 1) THEN
+    CREATE DATABASE sau_int WITH owner = sau_int;
+  END IF;
+END
+$$;
 
-DROP USER IF EXISTS sau_int;
-CREATE USER sau_int WITH PASSWORD 'sau_int';
-DROP USER IF EXISTS web_int;
-CREATE USER web_int WITH PASSWORD 'web_int';
-DROP USER IF EXISTS recon_int;
-CREATE USER recon_int WITH PASSWORD 'recon_int';
-DROP USER IF EXISTS distribution_int;
-CREATE USER distribution_int WITH PASSWORD 'distribution_int';
-DROP USER IF EXISTS qc_int;
-CREATE USER qc_int WITH PASSWORD 'qc_int';
-DROP USER IF EXISTS gis_int;
-CREATE USER gis_int WITH PASSWORD 'gis_int';
+DO 
+$$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'sau_int' LIMIT 1) THEN
+    CREATE USER sau_int WITH PASSWORD 'sau_int';
+    GRANT postgres TO sau_int;
+  END IF;
+  
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'web_int' LIMIT 1) THEN
+    CREATE USER web_int WITH PASSWORD 'web_int';
+  END IF;
 
-ALTER DATABASE sau_int OWNER TO sau_int;
-GRANT postgres TO sau_int;
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'recon_int' LIMIT 1) THEN
+    CREATE USER recon_int WITH PASSWORD 'recon_int';
+  END IF;
 
-ALTER USER sau_int SET search_path TO admin, master, recon, distribution, log, tiger, topology, tiger_data, public;
-ALTER USER web_int SET search_path TO master, recon, distribution, log, admin, tiger, topology, tiger_data, public;
-ALTER USER recon_int SET search_path TO recon, log, master, admin, distribution, tiger, topology, tiger_data, public;
-ALTER USER distribution_int SET search_path TO distribution, master, admin, recon, log, tiger, topology, tiger_data, public;
-ALTER USER qc_int SET search_path TO master, recon, distribution, log, admin, public;
-ALTER USER gis_int SET search_path TO distribution, log, admin, public;
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'distribution_int' LIMIT 1) THEN
+    CREATE USER distribution_int WITH PASSWORD 'distribution_int';
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'qc_int' LIMIT 1) THEN
+    CREATE USER qc_int WITH PASSWORD 'qc_int';
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_user WHERE usename = 'gis_int' LIMIT 1) THEN
+    CREATE USER gis_int WITH PASSWORD 'gis_int';
+  END IF;
+END
+$$;
+

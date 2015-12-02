@@ -27,11 +27,16 @@ IF EXIST log\*.log del /Q .\log\*.log
 ::   If yes, proceed to invoke initialize.sql script only.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::FOR /F "tokens=1 delims=| " %%A IN ('"psql -h %DbHost% -p %DbPort% -U postgres -A -t -c "select datname from pg_database""') DO (
-::  IF /i "%%A"=="%DATABASE_NAME%" GOTO CreateIntSchema
+::  IF /i "%%A"=="%DATABASE_NAME%" GOTO SetUsersSearchPath
 ::)
 
 :: Only get to this point if we didn't find a database with the name 'sau_int' in the code immediately above
 SET SQLINPUTFILE=create_user_and_db
+psql -h %DbHost% -p %DbPort% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
+IF ERRORLEVEL 1 GOTO ErrorLabel
+
+:SetUsersSearchPath
+SET SQLINPUTFILE=set_users_search_path
 psql -h %DbHost% -p %DbPort% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 

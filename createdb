@@ -51,13 +51,15 @@ RESTORE="pg_restore -h $DbHost -p $DbPort -Fc -a -j 4"
 ##           then proceed to invoke the initialize.sql script.
 ##   If yes, proceed to invoke initialize.sql script only.
 ###########################################################
-#ExistingDB=$($PSQL -A -t -c "select datname from pg_database where datname = '${DATABASE_NAME}'")
-#if [ -z "$ExistingDB" ]; then
-  SQLINPUTFILE=create_user_and_db
-  if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
-    ExitWithError
-  fi
-#fi
+SQLINPUTFILE=create_user_and_db
+if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+  ExitWithError
+fi
+
+SQLINPUTFILE=set_users_search_path
+if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+  ExitWithError
+fi
 
 SQLINPUTFILE=initialize
 if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
