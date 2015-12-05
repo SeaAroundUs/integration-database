@@ -72,13 +72,14 @@ SELECT rc.id
   FROM raw_catch rc
   LEFT JOIN eez_fishing_entity efe ON (rc.eez_id = efe.eez_id)
   LEFT JOIN layer3_taxon l3 ON (l3.taxon_key = rc.taxon_key)
- WHERE ((COALESCE(rc.eez_id, 0) <> 0 AND rc.fishing_entity_id <> 0) OR l3.taxon_key IS NOT NULL) 
+ WHERE ((rc.eez_id IS DISTINCT FROM 0 AND rc.fishing_entity_id <> 0) OR l3.taxon_key IS NOT NULL) 
    AND rc.layer 
        IS DISTINCT FROM
        CASE WHEN l3.taxon_key IS NOT NULL THEN 3
             WHEN rc.fishing_entity_id IS NOT DISTINCT FROM efe.expected_fishing_entity THEN 1
             ELSE 2
             END
+   AND NOT (rc.layer = 1 AND rc.sector_type_id IS DISTINCT FROM 1)
 ;
 
 -- Input type is reconstructed and Catch type is reported landings
@@ -177,7 +178,7 @@ CREATE OR REPLACE VIEW recon.v_catch_fishing_entity_and_eez_not_aligned AS
       SELECT eez.eez_id, eez.is_home_eez_of_fishing_entity_id AS expected_fishing_entity FROM eez
   )
   SELECT c.id
-  FROM catch c
+    FROM catch c
     LEFT JOIN eez_fishing_entity efe ON (c.eez_id = efe.eez_id)
     LEFT JOIN layer3_taxon l3 ON (l3.taxon_key = c.taxon_key)
   WHERE ((c.eez_id <> 0 AND c.fishing_entity_id <> 0) OR l3.taxon_key IS NOT NULL)
@@ -187,6 +188,7 @@ CREATE OR REPLACE VIEW recon.v_catch_fishing_entity_and_eez_not_aligned AS
             WHEN c.fishing_entity_id IS NOT DISTINCT FROM efe.expected_fishing_entity THEN 1
             ELSE 2
             END
+   AND NOT (c.layer = 1 AND c.sector_type_id IS DISTINCT FROM 1)
 ;
 
 -- Input type is reconstructed and Catch type is reported landings
