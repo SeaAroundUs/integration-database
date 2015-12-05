@@ -2,14 +2,7 @@
 \echo Creating SAU_INT Database and its users...
 \echo
 
-DO 
-$$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'sau_int' LIMIT 1) THEN
-    CREATE DATABASE sau_int WITH owner = sau_int;
-  END IF;
-END
-$$;
+CREATE DATABASE sau_int WITH owner = sau_int;
 
 DO 
 $$
