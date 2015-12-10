@@ -298,9 +298,11 @@ CREATE TABLE master.access_agreement(
   other_restrictions varchar(255),
   notes_on_agreement text,
   ref_id int,
-  source_link varchar(255),
+  source_link text,
   pdf varchar(255),
+  correct_pdf varchar(255),
   verified varchar(255),
+  farisis_cd_agreement varchar(255),
   reference_original varchar(255),
   location_reference_original varchar(255),
   reference varchar(255),
@@ -311,7 +313,21 @@ CREATE TABLE master.access_agreement(
   number_of_boats varchar(255),
   gear varchar(255),
   notes_on_the_references text,
-  change_log text
+  change_log text,
+  checked_by_vl varchar(255),
+  status_of_the_records varchar(255),
+  old_id int,
+  old_source_id int,
+  old_c_number int,
+  old_area_code varchar(255),
+  old_start_year int,
+  old_end_year int,
+  old_target_grp_sum bigint,
+  old_ref_id varchar(255),
+  old_source varchar(255),
+  old_assumed_end boolean,
+  old_use boolean,
+  old_reason_not_used varchar(255)
 );
 
 CREATE TABLE master.price(
