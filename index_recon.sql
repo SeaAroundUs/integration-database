@@ -16,6 +16,17 @@ CREATE INDEX auth_user_user_permissions_user_id_idx ON recon.auth_user_user_perm
 
 CREATE INDEX auth_user_username_username_idx ON recon.auth_user(username varchar_pattern_ops);
 
+CREATE INDEX django_admin_log_content_type_id_idx ON recon.django_admin_log(content_type_id);
+
+CREATE INDEX django_admin_log_user_id_idx ON recon.django_admin_log(user_id);
+
+CREATE INDEX django_session_expire_date_idx ON recon.django_session(expire_date);
+
+CREATE INDEX django_session_session_key_session_key_idx ON recon.django_session(session_key varchar_pattern_ops);
+
+CREATE INDEX file_upload_user_id_idx ON recon.file_upload(user_id);
+
+/* catch */
 CREATE INDEX catch_eez_id_idx ON recon.catch(eez_id);
 
 CREATE INDEX catch_nafo_division_id_idx ON recon.catch(nafo_division_id);
@@ -40,16 +51,19 @@ CREATE INDEX catch_original_taxon_name_id_idx ON recon.catch(original_taxon_name
 
 CREATE INDEX catch_ices_area_id_idx ON recon.catch(ices_area_id);
 
-CREATE INDEX django_admin_log_content_type_id_idx ON recon.django_admin_log(content_type_id);
-
-CREATE INDEX django_admin_log_user_id_idx ON recon.django_admin_log(user_id);
-
-CREATE INDEX django_session_expire_date_idx ON recon.django_session(expire_date);
-
-CREATE INDEX django_session_session_key_session_key_idx ON recon.django_session(session_key varchar_pattern_ops);
-
-CREATE INDEX file_upload_user_id_idx ON recon.file_upload(user_id);
-
+/* raw_catch */
 CREATE INDEX raw_catch_source_file_id_idx ON recon.raw_catch(source_file_id);
 
 CREATE INDEX raw_catch_user_id_idx ON recon.raw_catch(user_id);
+
+CREATE INDEX raw_catch_fishing_entity_id_idx ON recon.raw_catch(fishing_entity_id);
+
+CREATE INDEX raw_catch_eez_id_idx ON recon.raw_catch(eez_id);
+
+CREATE INDEX raw_catch_fao_area_id_idx ON recon.raw_catch(fao_area_id);
+
+CREATE INDEX raw_catch_year_idx ON recon.raw_catch(year);
+
+CREATE INDEX raw_catch_taxon_key_idx ON recon.raw_catch(taxon_key);
+
+CREATE INDEX raw_catch_reference_id_idx ON recon.raw_catch(reference_id);
