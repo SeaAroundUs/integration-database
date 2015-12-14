@@ -279,7 +279,7 @@ CREATE TABLE master.agreement_type(
 
 CREATE TABLE master.access_agreement(
   id smallserial primary key,  
-  fishing_entity_id int not null,
+  fishing_entity_id int not null CHECK(fishing_entity_id > 0 AND fishing_entity_id != 213),
   fishing_entity varchar(255),
   eez_id int not null,
   eez_name varchar(255),
