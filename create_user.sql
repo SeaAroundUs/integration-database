@@ -2,8 +2,6 @@
 \echo Creating SAU_INT Database and its users...
 \echo
 
-CREATE DATABASE sau_int WITH owner = sau_int;
-
 DO 
 $$
 BEGIN
