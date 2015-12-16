@@ -72,6 +72,7 @@ CREATE SCHEMA geo;
 \i function_master.sql
 --\i mat_view_master.sql
 --\i populate_master.sql
+\i view_master.sql
 
 \echo
 \echo Creating DB Objects for the Recon schema...
