@@ -41,6 +41,12 @@ CREATE TABLE master.fao_area(
   alternate_name varchar(50) NOT NULL
 );
 
+CREATE TABLE master.high_seas(
+  fao_area_id int PRIMARY KEY,
+  name varchar(50) NOT NULL,
+  alternate_name varchar(50)
+);
+
 CREATE TABLE master.lme(
   lme_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
@@ -51,7 +57,7 @@ CREATE TABLE master.rfmo(
   rfmo_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   long_name varchar(255) NOT NULL,
-  profile_url varchar(255) NULL
+  profile_url varchar(255)
 );
 
 CREATE TABLE master.rfmo_managed_taxon(
@@ -142,49 +148,49 @@ CREATE TABLE master.layer3_taxon(
 CREATE TABLE master.country(
   c_number int PRIMARY KEY,
   count_code varchar(4) NOT NULL,
-  un_name varchar(10) NULL,
-  admin varchar(4) NULL,
-  fish_base varchar(4) NULL,
-  a_code varchar(4) NULL,
-  cia varchar(2) NULL,
-  fao_fisheries varchar(4) NULL,
-  country varchar(50) NULL,
-  eez_area decimal(50,20) NULL,
-  sea_mount decimal(50,20) NULL,
-  per_sea_mount decimal(50,20) NULL,
-  area_reef decimal(50,20) NULL,
-  per_reef decimal(50,20) NULL,
-  shelf_area decimal(50,20) NULL,
-  avg_pprate decimal(50,20) NULL,
-  eez_ppr bigint NULL,
-  has_estuary smallint NULL,
-  has_mpa smallint NULL,
-  has_survey smallint NULL,
-  territory smallint NULL,
-  has_saup_profile smallint NULL,
-  fao_profile_url_direct_link varchar(100) NULL,
+  un_name varchar(10),
+  admin varchar(4),
+  fish_base varchar(4),
+  a_code varchar(4),
+  cia varchar(2),
+  fao_fisheries varchar(4),
+  country varchar(50),
+  eez_area decimal(50,20),
+  sea_mount decimal(50,20),
+  per_sea_mount decimal(50,20),
+  area_reef decimal(50,20),
+  per_reef decimal(50,20),
+  shelf_area decimal(50,20),
+  avg_pprate decimal(50,20),
+  eez_ppr bigint,
+  has_estuary smallint,
+  has_mpa smallint,
+  has_survey smallint,
+  territory smallint,
+  has_saup_profile smallint,
+  fao_profile_url_direct_link varchar(100),
   is_active boolean NOT NULL,
-  fao_profile_url_v1 varchar(255) NULL,
-  fao_profile_url varchar(255) NULL,
-  fao_code varchar(50) NULL,
-  admin_c_number int NULL
+  fao_profile_url_v1 varchar(255),
+  fao_profile_url varchar(255),
+  fao_code varchar(50),
+  admin_c_number int
 );
 
 CREATE TABLE master.eez(
   eez_id int PRIMARY KEY,
   name varchar(50) NOT NULL,
-  alternate_name varchar(500) NULL,
+  alternate_name varchar(500),
   geo_entity_id int NOT NULL,
   area_status_id int DEFAULT 2 NOT NULL,
   legacy_c_number int NOT NULL,
   legacy_count_code varchar(4) NOT NULL,
   fishbase_id varchar(4) NOT NULL,
-  coords varchar(400) NULL,
+  coords varchar(400),
   can_be_displayed_on_web boolean DEFAULT true NOT NULL,
   is_currently_used_for_web boolean DEFAULT false NOT NULL,
   is_currently_used_for_reconstruction boolean DEFAULT false NOT NULL,
   declaration_year int DEFAULT 1982 NOT NULL,
-  earliest_access_agreement_date int NULL,
+  earliest_access_agreement_date int,
   is_home_eez_of_fishing_entity_id smallint NOT NULL,
   allows_coastal_fishing_for_layer2_data boolean DEFAULT true NOT NULL,
   ohi_link VARCHAR(400),
@@ -197,14 +203,14 @@ COMMENT ON COLUMN master.eez.coords IS 'coords of the map on this page: http://w
 CREATE TABLE master.fishing_entity(
   fishing_entity_id smallserial PRIMARY KEY,
   name varchar(100) NOT NULL,
-  geo_entity_id int NULL,
+  geo_entity_id int,
   date_allowed_to_fish_other_eEZs int NOT NULL,
   date_allowed_to_fish_high_seas int NOT NULL,
-  legacy_c_number int NULL,
+  legacy_c_number int,
   is_currently_used_for_web boolean DEFAULT true NOT NULL,
   is_currently_used_for_reconstruction boolean DEFAULT true NOT NULL,
   is_allowed_to_fish_pre_eez_by_default boolean DEFAULT true NOT NULL,
-  remarks varchar(50) NULL
+  remarks varchar(50)
 );
 
 CREATE TABLE master.commercial_groups(
@@ -214,9 +220,9 @@ CREATE TABLE master.commercial_groups(
 
 CREATE TABLE master.functional_groups(
   functional_group_id smallint PRIMARY KEY,
-  target_grp int NULL,
-  name varchar(20) NULL,
-  description varchar(50) NULL,
+  target_grp int,
+  name varchar(20),
+  description varchar(50),
   include_in_depth_adjustment_function BOOLEAN NOT NULL
 );
 
@@ -236,8 +242,8 @@ CREATE TABLE master.geo_entity(
   geo_entity_id smallserial PRIMARY KEY,      
   name varchar(50) NOT NULL,
   admin_geo_entity_id int NOT NULL,             
-  jurisdiction_id int NULL,
-  started_eez_at varchar(50) NULL,
+  jurisdiction_id int,
+  started_eez_at varchar(50),
   legacy_c_number int NOT NULL,
   legacy_admin_c_number int NOT NULL
 );
@@ -253,7 +259,7 @@ CREATE TABLE master.mariculture_entity(
   mariculture_entity_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
   legacy_c_number int NOT NULL,
-  fao_link varchar(255) NULL
+  fao_link varchar(255)
 );
 
 CREATE TABLE master.mariculture_sub_entity(
