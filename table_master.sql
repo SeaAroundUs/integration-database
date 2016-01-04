@@ -54,6 +54,14 @@ CREATE TABLE master.rfmo(
   profile_url varchar(255) NULL
 );
 
+CREATE TABLE master.rfmo_managed_taxon(
+  rfmo_id int PRIMARY KEY,
+  primary_taxon_keys int[],
+  secondary_taxon_keys int[],
+  taxon_check_required boolean default true,
+  modified timestamp NOT NULL DEFAULT now()
+);
+
 /* Master tables that need to have corresponding log tables to track changes */
 CREATE TABLE master.taxon(
   taxon_key int PRIMARY KEY,
