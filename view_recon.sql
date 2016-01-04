@@ -209,6 +209,45 @@ CREATE OR REPLACE VIEW recon.v_catch_layer_not_in_range AS
 CREATE OR REPLACE VIEW recon.v_catch_amount_zero_or_negative AS
   SELECT id FROM catch WHERE amount <= 0;
 
+--
+-- custom views
+--
+CREATE OR REPLACE VIEW recon.v_custom_eez_with_fishing_entity AS
+  SELECT
+    eez."eez_id" AS "EEZ ID",
+    eez."name" AS "EEZ name",
+    fishing_entity."fishing_entity_id" AS "Fishing entity ID",
+    fishing_entity."name" AS "Fishing entity name"
+  FROM master.eez
+  LEFT JOIN master.fishing_entity
+    ON (eez."is_home_eez_of_fishing_entity_id" = fishing_entity."fishing_entity_id")
+  ORDER BY eez."eez_id" ASC;
+
+CREATE OR REPLACE VIEW recon.v_custom_fao_area AS
+  SELECT
+    fao_area_id AS "FAO ID",
+    "name" AS "Name",
+    alternate_name AS "Alternate name"
+  FROM master.fao_area
+  ORDER BY "name" ASC;
+
+CREATE OR REPLACE VIEW recon.v_custom_rfmo AS
+  SELECT
+    rfmo_id AS "RFMO ID",
+    "name" AS "Name",
+    long_name AS "Long name",
+    profile_url AS "Profile URL"
+  FROM master.rfmo
+  ORDER BY "name" ASC;
+
+CREATE OR REPLACE VIEW recon.v_custom_lme AS
+  SELECT
+    lme_id AS "LME ID",
+    "name" AS "Name",
+    profile_url AS "Profile URL"
+  FROM master.lme
+  ORDER BY "name" ASC;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
