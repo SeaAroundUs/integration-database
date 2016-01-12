@@ -117,6 +117,7 @@ CREATE TABLE recon.file_upload (
     id serial primary key,
     file character varying(100) NOT NULL,
     create_datetime timestamp with time zone NOT NULL,
+    comment character varying(200),
     user_id integer
 );
 
