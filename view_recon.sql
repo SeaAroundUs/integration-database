@@ -119,9 +119,13 @@ SELECT rc.id
 CREATE OR REPLACE VIEW recon.v_raw_catch_missing_required_field AS
 SELECT id                
   FROM raw_catch rc
+ WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type) IS NULL
+UNION
+SELECT id                
+  FROM raw_catch rc
   LEFT JOIN distribution.taxon_distribution_substitute ts ON (ts.original_taxon_key = rc.taxon_key)
- WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type ||
-        CASE WHEN ts.original_taxon_key IS NULL THEN rc.taxon_name ELSE '' END) IS NULL;
+ WHERE ts.original_taxon_key IS NULL AND rc.taxon_name IS NULL
+;
 
 --
 -- catch warnings
