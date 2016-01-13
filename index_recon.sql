@@ -68,5 +68,5 @@ CREATE INDEX raw_catch_taxon_key_idx ON recon.raw_catch(taxon_key);
 
 CREATE INDEX raw_catch_reference_id_idx ON recon.raw_catch(reference_id);
 
-CREATE INDEX raw_catch_required_field_idx ON recon.raw_catch(taxon_key) WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type) IS NULL;
+CREATE INDEX raw_catch_required_field_idx ON recon.raw_catch(id) WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type) IS NULL;
 CREATE INDEX raw_catch_taxon_name_is_null_idx ON recon.raw_catch(taxon_key) WHERE taxon_name IS NULL;
