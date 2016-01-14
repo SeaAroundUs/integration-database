@@ -51,6 +51,8 @@ CREATE INDEX catch_original_taxon_name_id_idx ON recon.catch(original_taxon_name
 
 CREATE INDEX catch_ices_area_id_idx ON recon.catch(ices_area_id);
 
+CREATE INDEX catch_raw_catch_id_idx ON recon.catch(raw_catch_id);
+
 /* raw_catch */
 CREATE INDEX raw_catch_source_file_id_idx ON recon.raw_catch(source_file_id);
 
