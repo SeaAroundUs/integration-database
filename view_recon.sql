@@ -262,6 +262,17 @@ CREATE OR REPLACE VIEW recon.v_custom_lme AS
   FROM master.lme
   ORDER BY "name" ASC;
 
+CREATE OR REPLACE VIEW recon.v_custom_catch_comments AS
+  select
+    distinct fu.file,
+    fu.comment,
+    c.reference_id,
+    fu.create_datetime
+  from catch c
+    join raw_catch rc on (c.raw_catch_id = rc.id)
+    join file_upload fu ON (rc.source_file_id = fu.id)
+  order by fu.create_datetime;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
