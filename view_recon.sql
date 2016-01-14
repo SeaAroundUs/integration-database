@@ -266,11 +266,12 @@ CREATE OR REPLACE VIEW recon.v_custom_catch_comments AS
   SELECT
     DISTINCT fu.file AS "Filename",
     fu.comment AS "Comment",
-    c.reference_id AS "Reference ID",
+    r.filename || ' (' || c.reference_id || ')' AS "Reference",
     fu.create_datetime AS "Create date/time"
   FROM catch c
     JOIN raw_catch rc ON (c.raw_catch_id = rc.id)
     JOIN file_upload fu ON (rc.source_file_id = fu.id)
+    JOIN reference r ON (c.reference_id = r.reference_id)
   ORDER BY fu.create_datetime;
 
 /*
