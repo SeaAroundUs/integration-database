@@ -107,8 +107,9 @@ $body$
   GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA log TO recon_int;
   
   GRANT USAGE ON SCHEMA distribution TO recon_int;
-  GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_habitat TO recon_int;
   GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA distribution TO recon_int;
+  GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_habitat TO recon_int;
+  GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_distribution_substitute TO recon_int;
   
   -- For user distribution_int
   GRANT USAGE ON SCHEMA admin TO distribution_int;
