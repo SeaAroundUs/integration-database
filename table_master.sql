@@ -68,6 +68,12 @@ CREATE TABLE master.rfmo_managed_taxon(
   modified timestamp NOT NULL DEFAULT now()
 );
 
+CREATE TABLE master.isscaap(
+  isscaap_id int PRIMARY KEY,
+  name varchar(255),
+  is_excluded_group BOOLEAN DEFAULT FALSE
+);
+
 /* Master tables that need to have corresponding log tables to track changes */
 CREATE TABLE master.taxon(
   taxon_key int PRIMARY KEY,
@@ -139,6 +145,13 @@ CREATE TABLE master.rare_taxon(
 );
 
 CREATE TABLE master.layer3_taxon(
+  taxon_key int PRIMARY KEY,
+  scientific_name varchar(255) NOT NULL,
+  common_name varchar(255) NOT NULL,
+  created_timestamp TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE master.excluded_taxon(
   taxon_key int PRIMARY KEY,
   scientific_name varchar(255) NOT NULL,
   common_name varchar(255) NOT NULL,
