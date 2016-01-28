@@ -427,3 +427,16 @@ CREATE TABLE master.fao_country_rfmo_membership(
   modified_timestamp timestamp not null default now(),
   CONSTRAINT fao_country_rfmo_membership_uk UNIQUE(rfmo_id, country_iso3)
 );
+
+CREATE TABLE master.rfmo_procedure_and_outcome (
+  rfmo_id integer PRIMARY KEY,
+  name character varying(50) NOT NULL,
+  contracting_parties text NOT NULL,
+  area text NOT NULL,
+  date_entered_into_force integer,
+  fao_association boolean NOT NULL,
+  fao_statistical_area character varying(50),
+  objectives text NOT NULL,
+  primary_species text NOT NULL,
+  content text NOT NULL
+);
