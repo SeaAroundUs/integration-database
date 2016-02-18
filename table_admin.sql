@@ -29,7 +29,7 @@ BEGIN
     LANGUAGE sql
     SECURITY DEFINER;
     
-    SELECT admin.grant_access();
+    PERFORM admin.grant_access();
   END IF;
 END
 $$;

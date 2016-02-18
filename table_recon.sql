@@ -109,7 +109,8 @@ CREATE TABLE recon.raw_catch (
     source_file_id integer NOT NULL,
     user_id integer NOT NULL,
     last_committed timestamp,
-    last_modified timestamp
+    last_modified timestamp,
+    taxon_notes text
 );
 
 
@@ -213,9 +214,17 @@ CREATE TABLE recon.django_session (
     expire_date timestamp with time zone NOT NULL
 );
 
-CREATE TABLE recon.reference (
-    reference_id serial primary key,
-    filename varchar(255)
+CREATE TABLE recon.reference(
+    reference_id numeric not null,
+    original_ref_id int,
+    marine_layer_id int not null,
+    main_area_id int not null,
+    main_area_name text,
+    end_note_id int,
+    type text,
+    filename text,
+    citation text,
+    constraint reference_pkey primary key (reference_id, marine_layer_id, main_area_id)
 );
 
 CREATE TABLE recon.ices_division (

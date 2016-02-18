@@ -68,6 +68,19 @@ CREATE TABLE master.rfmo_managed_taxon(
   modified timestamp NOT NULL DEFAULT now()
 );
 
+CREATE TABLE master.rfmo_procedure_and_outcome (
+    rfmo_id integer PRIMARY KEY,
+    name character varying(50) NOT NULL,
+    contracting_parties text NOT NULL,
+    area text NOT NULL,
+    date_entered_into_force integer,
+    fao_association boolean NOT NULL,
+    fao_statistical_area character varying(50),
+    objectives text NOT NULL,
+    primary_species text NOT NULL,
+    content text NOT NULL
+);
+
 CREATE TABLE master.isscaap(
   isscaap_id int PRIMARY KEY,
   name varchar(255),

@@ -11,9 +11,6 @@ FOREIGN KEY (taxon_key) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
 ALTER TABLE recon.catch ADD CONSTRAINT catch_original_taxon_name_id_fk 
 FOREIGN KEY (original_taxon_name_id) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_original_fao_name_id_fk 
-FOREIGN KEY (original_fao_name_id) REFERENCES master.fao_area(fao_area_id) ON DELETE CASCADE;
-
 ALTER TABLE recon.catch ADD CONSTRAINT eez_id_fk
 FOREIGN KEY (eez_id) REFERENCES master.eez(eez_id) ON DELETE CASCADE;
 
