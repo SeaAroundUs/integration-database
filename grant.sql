@@ -31,9 +31,9 @@ SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION admin.grant_access() RETURNS void AS
 $body$
   -- For user web_int
-  SELECT admin.grant_privilege('admin', 'web_int', i_is_read_write boolean = false, i_is_delete boolean = false);
-  SELECT admin.grant_privilege('log', 'web_int', i_is_read_write boolean = false, i_is_delete boolean = false);
-  SELECT admin.grant_privilege('recon', 'web_int', i_is_read_write boolean = true, i_is_delete boolean = false);
+  SELECT admin.grant_privilege('admin', 'web_int', false, false);
+  SELECT admin.grant_privilege('log', 'web_int', false, false);
+  SELECT admin.grant_privilege('recon', 'web_int', true, false);
   
   GRANT USAGE ON SCHEMA recon TO web_int;
   GRANT INSERT,UPDATE,SELECT,REFERENCES ON ALL TABLES IN SCHEMA recon TO web_int;
