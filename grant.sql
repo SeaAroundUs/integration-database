@@ -1,6 +1,36 @@
 --- Granting access to user is very important to enable insert/delete/update 
 --- operations on the tables
 
+CREATE OR REPLACE FUNCTION admin.grant_privilege(i_schema text, i_user text, i_is_read_write boolean = false, i_is_delete boolean = false) RETURNS void AS
+$body$
+BEGIN
+  -- For user web_int  
+  EXECUTE format('GRANT USAGE ON SCHEMA %s TO %s', i_schema, i_user);
+  
+  IF i_is_read_write THEN
+    IF i_is_delete THEN
+      EXECUTE format('GRANT USAGE ON SCHEMA master TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON ALL TABLES IN SCHEMA master TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT ALL ON ALL SEQUENCES IN SCHEMA master TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA master TO recon_int', i_schema, i_user);
+    ELSE
+      EXECUTE format('GRANT USAGE ON SCHEMA log TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT INSERT,UPDATE,SELECT,REFERENCES ON ALL TABLES IN SCHEMA log TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT ALL ON ALL SEQUENCES IN SCHEMA log TO recon_int', i_schema, i_user);
+      EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA log TO recon_int', i_schema, i_user);
+    END IF;
+  ELSE
+    EXECUTE format('GRANT SELECT,REFERENCES ON ALL TABLES IN SCHEMA %s TO %s', i_schema, i_user);
+    EXECUTE format('GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA %s TO %s', i_schema, i_user);
+    EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA %s TO %s', i_schema, i_user);
+  END IF;
+     
+  RETURN;
+END
+$body$
+LANGUAGE plpgsql
+SECURITY DEFINER;
+
 CREATE OR REPLACE FUNCTION admin.grant_access() RETURNS void AS
 $body$
   -- For user web_int
