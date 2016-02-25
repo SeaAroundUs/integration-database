@@ -224,7 +224,8 @@ CREATE TABLE recon.reference(
     type text,
     filename text,
     citation text,
-    constraint reference_pkey primary key (reference_id, marine_layer_id, main_area_id)
+    row_id serial primary key,
+    constraint reference_uk primary key (reference_id, marine_layer_id, main_area_id)
 );
 
 CREATE TABLE recon.ices_division (
