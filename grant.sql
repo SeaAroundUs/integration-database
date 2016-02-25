@@ -10,13 +10,12 @@ BEGIN
   IF i_is_read_write THEN
     IF i_is_delete THEN
       EXECUTE format('GRANT SELECT,INSERT,UPDATE,DELETE,REFERENCES ON ALL TABLES IN SCHEMA %s TO %s', i_schema, i_user);
-      EXECUTE format('GRANT ALL ON ALL SEQUENCES IN SCHEMA %s TO %s', i_schema, i_user);
-      EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA %s TO %s', i_schema, i_user);
     ELSE
       EXECUTE format('GRANT INSERT,UPDATE,SELECT,REFERENCES ON ALL TABLES IN SCHEMA %s TO %s', i_schema, i_user);
-      EXECUTE format('GRANT ALL ON ALL SEQUENCES IN SCHEMA %s TO %s', i_schema, i_user);
-      EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA %s TO %s', i_schema, i_user);
     END IF;
+    
+    EXECUTE format('GRANT ALL ON ALL SEQUENCES IN SCHEMA %s TO %s', i_schema, i_user);
+    EXECUTE format('GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA %s TO %s', i_schema, i_user);
   ELSE
     EXECUTE format('GRANT SELECT,REFERENCES ON ALL TABLES IN SCHEMA %s TO %s', i_schema, i_user);
     EXECUTE format('GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA %s TO %s', i_schema, i_user);
