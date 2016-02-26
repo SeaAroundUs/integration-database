@@ -57,7 +57,6 @@ $body$
   SELECT admin.grant_privilege('distribution', 'recon_int', false, false);
   SELECT admin.grant_privilege('catalog', 'recon_int', true, false);
   SELECT admin.grant_privilege('allocation', 'recon_int', false, false);
-  SELECT admin.grant_privilege('geo', 'qc_int', false, false);
 
   -- more granular access for the following tables:
   GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_habitat TO recon_int;
