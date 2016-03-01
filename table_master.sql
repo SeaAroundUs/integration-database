@@ -440,3 +440,9 @@ CREATE TABLE master.fao_country_rfmo_membership(
   modified_timestamp timestamp not null default now(),
   CONSTRAINT fao_country_rfmo_membership_uk UNIQUE(rfmo_id, country_iso3)
 );
+
+CREATE TABLE master.data_layer
+(
+    data_layer_id SMALLINT PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
