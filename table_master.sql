@@ -446,3 +446,26 @@ CREATE TABLE master.data_layer
     data_layer_id SMALLINT PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE master.uncertainty_time_period(
+  period_id smallint primary key,
+  begin_year smallint,
+  end_year smallint
+);
+
+CREATE TABLE master.uncertainty_score(
+  score smallint primary key,
+  score_name varchar(30),
+  tolerance smallint,
+  ipcc_criteria text
+);
+
+CREATE TABLE master.uncertainty_eez(
+    eez_id int not null,
+    eez_name text,
+    sector_type_id smallint,
+    sector text,
+    period_id smallint,
+    score smallint,
+    CONSTRAINT uncertainty_eez_pkey PRIMARY KEY(eez_id, sector_type_id, period_id)
+);
