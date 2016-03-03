@@ -21,24 +21,9 @@ mkdir log
 :LogDirExists
 IF EXIST log\*.log del /Q .\log\*.log
        
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Check if there's already a "sau_int" database present. 
-::   If not, create the "sau_int" database and the requisite db users, then proceed to invoke the initialize.sql script.
-::   If yes, proceed to invoke initialize.sql script only.
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-FOR /F "tokens=1 delims=| " %%A IN ('"psql -h %DbHost% -p %DbPort% -U postgres -A -t -c "select datname from pg_database""') DO (
-  IF /i "%%A"=="%DATABASE_NAME%" GOTO CreateSauUsers
-)
-
-::
-:: Note we are creating a database with the name identical to the owner of the database here as this is a convention we adopt for most projects at Vulcan
-::
-psql -h %DbHost% -p %DbPort% -U postgres -c "CREATE DATABASE %DATABASE_NAME% WITH owner = %DATABASE_NAME%"
-IF ERRORLEVEL 1 GOTO ErrorLabel
-
 :CreateSauUsers
 :: Only get to this point if we didn't find a database with the name 'sau_int' in the code immediately above
-SET SQLINPUTFILE=create_user
+SET SQLINPUTFILE=create_user_and_db
 psql -h %DbHost% -p %DbPort% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 

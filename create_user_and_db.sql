@@ -2,6 +2,9 @@
 \echo Creating SAU_INT Database and its users...
 \echo
 
+DROP DATABASE IF EXISTS sau_int;
+CREATE DATABASE sau_int;
+
 DO 
 $$
 BEGIN
@@ -31,4 +34,7 @@ BEGIN
   END IF;
 END
 $$;
+
+ALTER DATABASE sau_int OWNER TO sau_int;
+GRANT postgres TO sau_int;
 
