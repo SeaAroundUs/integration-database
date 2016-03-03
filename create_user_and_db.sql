@@ -36,5 +36,4 @@ END
 $$;
 
 ALTER DATABASE sau_int OWNER TO sau_int;
-GRANT postgres TO sau_int;
 
