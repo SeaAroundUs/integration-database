@@ -55,7 +55,7 @@ if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
   ExitWithError
 fi
 
-SQLINPUTFILE=initialize
+SQLINPUTFILE=create_extension.sql
 if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
   ExitWithError
 fi
@@ -67,6 +67,11 @@ if [ -n "$RdsAdmin" ]; then
   if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
     ExitWithError
   fi
+fi
+
+SQLINPUTFILE=initialize
+if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
+  ExitWithError
 fi
 
 echo Password for user sau_int
