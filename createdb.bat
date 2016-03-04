@@ -32,6 +32,11 @@ SET SQLINPUTFILE=set_users_search_path
 psql -h %DbHost% -p %DbPort% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
+:create_extension
+SET SQLINPUTFILE=create_extension
+psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
+IF ERRORLEVEL 1 GOTO ErrorLabel
+
 :CreateIntSchema
 SET SQLINPUTFILE=initialize
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
