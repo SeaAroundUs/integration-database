@@ -55,7 +55,7 @@ if ! $PSQL -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
   ExitWithError
 fi
 
-SQLINPUTFILE=create_extension.sql
+SQLINPUTFILE=create_extensions
 if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; then
   ExitWithError
 fi
