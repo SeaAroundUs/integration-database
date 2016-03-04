@@ -37,11 +37,6 @@ SET SQLINPUTFILE=create_extension
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
-:CreateIntSchema
-SET SQLINPUTFILE=initialize
-psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
-IF ERRORLEVEL 1 GOTO ErrorLabel
-
 :: Check if we are creating a database in an RDS environment, then reconfigure the postgis package appropriately for user access
 FOR /F "tokens=1 delims=| " %%A IN ('"psql -h %DbHost% -p %DbPort% -U postgres -A -t -c "select usename from pg_user""') DO (
   IF /i "%%A"=="rdsadmin" GOTO ConfigureForRDS
@@ -55,6 +50,10 @@ psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sq
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :InitializeIntSchema
+SET SQLINPUTFILE=initialize
+psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
+IF ERRORLEVEL 1 GOTO ErrorLabel
+
 ECHO Password for user sau_int
 pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/master.schema
 IF ERRORLEVEL 1 GOTO ErrorLabel
