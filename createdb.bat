@@ -33,7 +33,7 @@ psql -h %DbHost% -p %DbPort% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPU
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
 :create_extension
-SET SQLINPUTFILE=create_extension
+SET SQLINPUTFILE=create_extensions
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
