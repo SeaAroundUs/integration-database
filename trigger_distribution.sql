@@ -9,7 +9,7 @@ BEGIN
      NEW.gid := nextval('distribution.taxon_extent_gid_seq'); 
   END IF;
   
-  NEW.geom := ST_ForceRHR(NEW.geom);
+  NEW.geom := public.ST_ForceRHR(NEW.geom);
   
   RETURN NEW;
 END;
