@@ -148,7 +148,8 @@ SELECT pa.pid,
        pa.waiting,
        pa.query
   FROM pg_stat_activity pa
- WHERE pa.state != 'idle';
+ WHERE pa.state != 'idle'
+   AND pa.pid != pg_backend_pid();
 
 grant all on public.stat_v to sau,web,allocation;
 
