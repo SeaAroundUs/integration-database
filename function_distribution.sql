@@ -14,16 +14,20 @@ create or replace function distribution.load_taxon_extent(i_shape_table text) re
 $body$
 declare
   ins_sql text;
-  rtn_val smallint;                            
+  tk int := replace(i_shape_table, 'te_', '')::int;                            
 begin
+  if exists (select 1 from distribution.taxon_extent where taxon_key = tk limit 1) then
+    delete from distribution.taxon_extent where taxon_key = tk;
+  end if;
+  
   ins_sql := format(
     'with dat as (
       insert into distribution.taxon_extent(taxon_key,geom)
-      select %s, d.geom
+      select %s, public.ST_ForceRHR(d.geom)
         from taxon_dis.%s d
       returning 1
     )
-    select count(*)::smallint from dat', replace(i_shape_table, 'te_', '')::int, i_shape_table);
+    select count(*)::smallint from dat', tk, i_shape_table);
 
   return query execute ins_sql;
 end;
