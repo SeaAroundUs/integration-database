@@ -1,7 +1,9 @@
 CREATE TABLE distribution.taxon_extent (
     gid serial primary key,
-    taxon_key integer NOT NULL,
-    geom geometry(Multipolygon, 4326) NOT NULL
+    taxon_key integer not null,
+    is_extended boolean not null default false,
+    is_rolled_up boolean not null default false,
+    geom geometry(Multipolygon, 4326) not null
 );
 
 CREATE TABLE distribution.taxon_distribution (
@@ -18,7 +20,8 @@ CREATE TABLE distribution.taxon_distribution_log (
 
 CREATE TABLE distribution.taxon_distribution_substitute(
   original_taxon_key int primary key,
-  use_this_taxon_key_instead int not null
+  use_this_taxon_key_instead int not null,
+  is_manual_override boolean not null default false
 );
 
 CREATE TABLE distribution.grid (
@@ -37,26 +40,25 @@ CREATE TABLE distribution.taxon_habitat (
     fam_code integer,
     gen_code integer,
     spe_code integer,
-    habitat_diversity_index double precision,
     effective_distance double precision,
+    habitat_diversity_index double precision,
     estuaries double precision,
     coral double precision,
     sea_grass double precision,
     sea_mount double precision,
     others double precision,
-    shelf double precision,
     slope double precision,
+    shelf double precision,
     abyssal double precision,
     inshore double precision,
     offshore double precision,
-    offshore_back double precision,
     max_depth integer,
     min_depth integer,
     lat_north integer,
     lat_south integer,
     found_in_fao_area_id int[],
     fao_limits smallint,
-    sl_max integer,
+    sl_max double precision,
     intertidal boolean
 );
 
@@ -82,6 +84,12 @@ SELECT taxon_key,
        slope,
        abyssal,
        inshore,
-       offshore,
-       offshore_back
+       offshore
   FROM distribution.taxon_habitat;
+
+CREATE TABLE distribution.taxon_extent_rollup(
+    taxon_key int primary key,
+    children_distributions_found int,
+    children_taxon_keys int[],
+    last_modified timestamp not null default current_timestamp
+);
