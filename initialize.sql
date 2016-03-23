@@ -83,5 +83,5 @@ CREATE SCHEMA geo;
 \i table_geo.sql
 
 \i view_recon.sql
-
+\i view_distribution.sql
 \i grant.sql
