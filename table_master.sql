@@ -469,3 +469,10 @@ CREATE TABLE master.uncertainty_eez(
     score smallint,
     CONSTRAINT uncertainty_eez_pkey PRIMARY KEY(eez_id, sector_type_id, period_id)
 );
+
+CREATE TABLE master.area_invisible(
+  area_invisible_id serial PRIMARY KEY,
+  marine_layer_id int NOT NULL,
+  main_area_id int NOT NULL,
+  sub_area_id int NOT NULL DEFAULT 0
+);
