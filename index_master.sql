@@ -8,3 +8,5 @@ CREATE INDEX mariculture_entity_legacy_c_number_idx ON master.mariculture_entity
 CREATE INDEX mariculture_sub_entity_mariculture_entity_id_idx ON master.mariculture_sub_entity(mariculture_entity_id);
 
 CREATE INDEX p_water_idx ON master.cell(percent_water) WHERE percent_water > 0;
+
+CREATE INDEX taxon_lineage_gist_idx ON master.taxon USING GIST (lineage);

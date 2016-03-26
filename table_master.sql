@@ -147,7 +147,8 @@ CREATE TABLE master.taxon(
   x_min int,
   x_max int,
   y_min int,
-  y_max int
+  y_max int,
+  lineage ltree
 );
 
 CREATE TABLE master.rare_taxon(

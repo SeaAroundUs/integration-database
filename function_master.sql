@@ -80,6 +80,42 @@ $body$
 $body$
 language sql;
 
+create or replace function master.taxon_child_tree(parent ltree) returns json as 
+$body$
+    var rows = plv8.execute("SELECT taxon_key as key,common_name as name, level, lineage, parent::text, " +
+                            "       is_distribution_available as is_dist, is_extent_available as is_extent, " +
+                            "       to_char(total_catch, '999,999,999,999,999.999') as total_catch, " +
+                            "       to_char(total_value, '999,999,999,999,999.999') as total_value " +
+                            "  FROM master.v_taxon_lineage "+ 
+                            " WHERE parent <@ $1 " + 
+                            " ORDER BY nlevel(parent),common_name", 
+                            [parent]);
+    
+    var all = {},
+        out = [],
+        top,r,i;
+        
+    for(i=0; i<rows.length; i++){
+        r = rows[i];
+        r.children = [];
+        //all[r.id] = r;
+        all[r.lineage] = r;
+        if(r.parent == parent){
+            out.push(r);
+        }
+    }
+    
+    for(i=0; i<rows.length; i++){
+        r = rows[i];
+        if(all[ r.parent ]){
+            all[ r.parent ].children.push(r);
+        }
+    }
+    
+    return JSON.stringify(out,null,0);
+$body$ 
+language plv8;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */

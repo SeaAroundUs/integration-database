@@ -34,6 +34,25 @@ end;
 $body$
 language plpgsql;
 
+create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_id int) 
+returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
+$body$
+  select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
+    from master.v_taxon_lineage tp
+    join master.v_taxon_lineage tc on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_distribution_available)
+   where tp.level = i_for_taxon_level_id
+     and not tp.is_extent_available
+   group by tp.taxon_key
+   order by 2 desc;
+$body$
+language sql;
+
+/*
+insert into distribution.taxon_habitat(taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,found_in_fao_area_id,fao_limits,sl_max,intertidal)
+select taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,('{' || found_in_fao_area_id || '}')::int[],fao_limits,sl_max,intertidal
+  from log.taxon_habitat;
+*/
+
 /*
 The command below should be maintained as the last command in this entire script.
 */

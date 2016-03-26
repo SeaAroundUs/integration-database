@@ -33,5 +33,13 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
     from error3;
 
 
+create materialized view distribution.v_taxon_with_distribution as 
+select distinct taxon_key from distribution.taxon_distribution with no data;
 
+create materialized view distribution.v_taxon_with_extent as 
+select distinct taxon_key from distribution.taxon_extent with no data;
 
+/*
+The command below should be maintained as the last command in this entire script.
+*/
+select admin.grant_access();

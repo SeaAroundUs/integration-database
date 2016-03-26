@@ -44,10 +44,10 @@ CREATE SCHEMA geo;
 \echo Creating DB Objects for the Master schema...
 \echo
 \i table_master.sql
+\i trigger_master.sql
 \i function_master.sql
 --\i mat_view_master.sql
 --\i populate_master.sql
-\i view_master.sql
 
 \echo
 \echo Creating DB Objects for the Recon schema...
@@ -60,7 +60,6 @@ CREATE SCHEMA geo;
 \echo
 \i table_distribution.sql
 \i trigger_distribution.sql
-\i function_distribution.sql
 
 \echo
 \echo Creating DB Objects for the Log schema...
@@ -81,7 +80,12 @@ CREATE SCHEMA geo;
 \echo Creating DB Objects for the Geo schema...
 \echo
 \i table_geo.sql
+\i function_geo.sql
 
 \i view_recon.sql
 \i view_distribution.sql
+\i view_master.sql
+
+\i function_distribution.sql
+
 \i grant.sql

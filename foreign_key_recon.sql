@@ -32,8 +32,8 @@ FOREIGN KEY (nafo_division_id) REFERENCES recon.nafo(nafo_division_id) ON DELETE
 ALTER TABLE recon.catch ADD CONSTRAINT catch_raw_catch_id_fk 
 FOREIGN KEY (raw_catch_id) REFERENCES recon.raw_catch(id) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_reference_id_fk 
-FOREIGN KEY (reference_id) REFERENCES recon.reference(reference_id) ON DELETE CASCADE;
+--ALTER TABLE recon.catch ADD CONSTRAINT catch_reference_id_fk 
+--FOREIGN KEY (reference_id) REFERENCES recon.reference(reference_id) ON DELETE CASCADE;
 
 ALTER TABLE recon.catch ADD CONSTRAINT catch_sector_type_id_fk 
 FOREIGN KEY (sector_type_id) REFERENCES master.sector_type(sector_type_id) ON DELETE CASCADE;
