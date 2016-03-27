@@ -24,6 +24,9 @@ CREATE EXTENSION fuzzystrmatch;
 CREATE EXTENSION plv8; 
 CREATE EXTENSION ltree;
 
+-- Postgis extensions have to be last in the chain as they currently modify the
+-- search_path environment variable. Bad but out of our control, so keep them
+-- quarantined to be the last in the chain side-step this badness.
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
 CREATE EXTENSION postgis_tiger_geocoder;
