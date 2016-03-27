@@ -8,9 +8,11 @@ SET DATABASE_NAME=sau_int
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 SET DbHost=%1
 SET DbPort=%2
+SET RestoreThreadCount=%3
 
 IF /i "%DbHost%"=="" SET DbHost=localhost
 IF /i "%DbPort%"=="" SET DbPort=5432
+IF /i "%RestoreThreadCount%"=="" SET RestoreThreadCount=8
 
 :::::::::::::::::::::::::
 :: Deleting any previous log files
@@ -54,29 +56,22 @@ SET SQLINPUTFILE=initialize
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U postgres -f %SQLINPUTFILE%.sql -L .\log\%SQLINPUTFILE%.log
 IF ERRORLEVEL 1 GOTO ErrorLabel
 
-ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/master.schema
-IF ERRORLEVEL 1 GOTO ErrorLabel
+set schemas[0]="admin.schema"
+set schemas[1]="master.schema"
+set schemas[2]="recon.schema"
+set schemas[3]="distribution.schema"
+set schemas[4]="catalog.schema"
+set schemas[5]="log.schema"
 
-ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/recon.schema
-IF ERRORLEVEL 1 GOTO ErrorLabel
+FOR /F "tokens=2 delims==" %%s in ('set schemas[') DO (
+  ECHO Restoring %%s schema. Please enter password for user sau_int
+  IF EXIST data_dump/%%s pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j %RestoreThreadCount% -U sau_int data_dump/%%s
+  IF ERRORLEVEL 1 GOTO ErrorLabel
+)
 
-ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/distribution.schema
-IF ERRORLEVEL 1 GOTO ErrorLabel
-
-ECHO Password for user sau_int
-pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/catalog.schema
-IF ERRORLEVEL 1 GOTO ErrorLabel
-
-::ECHO Password for user sau_int
-::pg_restore -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -Fc -a -j 4 -U sau_int data_dump/log.schema
-::IF ERRORLEVEL 1 GOTO ErrorLabel
-
-:: Refreshing materialized views 
-psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -t -f refresh_mv.sql -o rmv.sql 
-IF ERRORLEVEL 1 GOTO ErrorLabel
+:: Clear previous content or create anew
+ECHO vacuum analyze; > rmv.sql
+ECHO select update_all_sequence('sau_int'::text); >> rmv.sql
 
 :: Adding foreign keys
 type index_master.sql >> rmv.sql
@@ -87,7 +82,10 @@ type index_distribution.sql >> rmv.sql
 type foreign_key_distribution.sql >> rmv.sql
 type index_log.sql >> rmv.sql
 type foreign_key_log.sql >> rmv.sql
-ECHO select update_sequence(ns.nspname) from pg_namespace ns join pg_user u on (u.usesysid = ns.nspowner) where u.usename = 'sau_int'; >> rmv.sql
+
+:: Adding commands to refresh materialized views 
+psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -t -f refresh_mv.sql >> rmv.sql 
+IF ERRORLEVEL 1 GOTO ErrorLabel
 
 psql -h %DbHost% -p %DbPort% -d %DATABASE_NAME% -U sau_int -f rmv.sql
 IF ERRORLEVEL 1 GOTO ErrorLabel
