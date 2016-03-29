@@ -371,7 +371,7 @@ CREATE TABLE geo.simple_area_cell_assignment_raw(
   marine_layer_id smallint NULL,
   area_id smallint NULL,
   fao_area_id smallint NULL,
-  cell_id float NULL,
+  cell_id int NULL,
   water_area float NULL,
   CONSTRAINT simple_area_cell_assignment_raw_uk UNIQUE (marine_layer_id, area_id, fao_area_Id, cell_id)
 );
