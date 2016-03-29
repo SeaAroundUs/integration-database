@@ -48,6 +48,7 @@ $body$
   SELECT admin.grant_privilege('catalog', 'qc_int', true, false);
   SELECT admin.grant_privilege('allocation', 'qc_int', false, false);
   SELECT admin.grant_privilege('geo', 'qc_int', false, false);
+  SELECT admin.grant_privilege('catalog', 'qc_int', false, false);
 
   -- For user recon_int
   SELECT admin.grant_privilege('master', 'recon_int', true, true);
