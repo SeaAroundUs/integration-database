@@ -39,6 +39,19 @@ select distinct taxon_key from distribution.taxon_distribution with no data;
 create materialized view distribution.v_taxon_with_extent as 
 select distinct taxon_key from distribution.taxon_extent with no data;
 
+create materialized view distribution.v_cell_fao as 
+with ca as (
+  select cell_id, fao_area_id, min(water_area) wa 
+    from geo.simple_area_cell_assignment_raw s
+   group by cell_id, fao_area_id
+)
+select c.cell_id, min(c.water_area) as cell_water_area, array_accum(array[array[ca.fao_area_id, ca.wa]]) fao
+  from ca
+  join master.cell c on (c.cell_id = ca.cell_id)
+ group by c.cell_id
+ order by c.cell_id
+with no data;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */

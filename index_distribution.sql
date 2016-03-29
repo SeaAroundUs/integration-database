@@ -10,4 +10,6 @@ CREATE INDEX found_in_fao_area_id_idx ON distribution.taxon_habitat(found_in_fao
 
 CREATE INDEX v_taxon_with_extent_taxon_key_ids ON distribution.v_taxon_with_extent(taxon_key);
 
-CREATE INDEX v_taxon_with_distribution_taxon_key_ids on distribution.v_taxon_with_distribution(taxon_key);
+CREATE INDEX v_taxon_with_distribution_taxon_key_ids ON distribution.v_taxon_with_distribution(taxon_key);
+
+CREATE UNIQUE INDEX v_cell_fao_cell_id_uk ON distribution.v_cell_fao(cell_id);
