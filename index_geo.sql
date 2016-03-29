@@ -19,3 +19,5 @@ CREATE INDEX mariculture_geom_idx ON geo.mariculture USING gist(geom);
 CREATE INDEX mariculture_points_c_number_idx on geo.mariculture_points(c_number);
 CREATE INDEX mariculture_points_entity_id_idx on geo.mariculture_points(entity_id);
 CREATE INDEX mariculture_points_sub_entity_id_idx on geo.mariculture_points(sub_entity_id);
+
+CREATE INDEX simple_area_cell_assignment_raw_cell_id_idx ON geo.simple_area_cell_assignment_raw(cell_id);
