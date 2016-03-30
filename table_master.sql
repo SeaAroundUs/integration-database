@@ -462,13 +462,14 @@ CREATE TABLE master.uncertainty_score(
 );
 
 CREATE TABLE master.uncertainty_eez(
+	row_id serial primary key,
     eez_id int not null,
     eez_name text,
     sector_type_id smallint,
     sector text,
     period_id smallint,
     score_id smallint,
-    CONSTRAINT uncertainty_eez_pkey PRIMARY KEY(eez_id, sector_type_id, period_id)
+    CONSTRAINT uncertainty_eez_uk UNIQUE KEY(eez_id, sector_type_id, period_id)
 );
 
 CREATE TABLE master.area_invisible(
