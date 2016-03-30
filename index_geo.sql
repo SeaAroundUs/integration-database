@@ -21,3 +21,4 @@ CREATE INDEX mariculture_points_entity_id_idx on geo.mariculture_points(entity_i
 CREATE INDEX mariculture_points_sub_entity_id_idx on geo.mariculture_points(sub_entity_id);
 
 CREATE INDEX simple_area_cell_assignment_raw_cell_id_idx ON geo.simple_area_cell_assignment_raw(cell_id);
+CREATE INDEX simple_area_cell_assignment_raw_marine_layer_id_idx ON geo.simple_area_cell_assignment_raw(marine_layer_id);
