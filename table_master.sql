@@ -469,7 +469,7 @@ CREATE TABLE master.uncertainty_eez(
     sector text,
     period_id smallint,
     score_id smallint,
-    CONSTRAINT uncertainty_eez_uk UNIQUE KEY(eez_id, sector_type_id, period_id)
+    CONSTRAINT uncertainty_eez_uk UNIQUE (eez_id, sector_type_id, period_id)
 );
 
 CREATE TABLE master.area_invisible(
