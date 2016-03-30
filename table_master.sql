@@ -455,7 +455,7 @@ CREATE TABLE master.uncertainty_time_period(
 );
 
 CREATE TABLE master.uncertainty_score(
-  score smallint primary key,
+  score_id smallint primary key,
   score_name varchar(30),
   tolerance smallint,
   ipcc_criteria text
@@ -467,7 +467,7 @@ CREATE TABLE master.uncertainty_eez(
     sector_type_id smallint,
     sector text,
     period_id smallint,
-    score smallint,
+    score_id smallint,
     CONSTRAINT uncertainty_eez_pkey PRIMARY KEY(eez_id, sector_type_id, period_id)
 );
 

@@ -51,5 +51,5 @@ FOREIGN KEY (sector_type_id) REFERENCES master.sector_type(sector_type_id) ON DE
 ALTER TABLE master.uncertainty_eez ADD CONSTRAINT uncertainty_eez_period_id_fk
 FOREIGN KEY (period_id) REFERENCES master.uncertainty_time_period(period_id) ON DELETE CASCADE;
 
-ALTER TABLE master.uncertainty_eez ADD CONSTRAINT uncertainty_eez_score_fk
-FOREIGN KEY (score) REFERENCES master.uncertainty_score(score) ON DELETE CASCADE;
+ALTER TABLE master.uncertainty_eez ADD CONSTRAINT uncertainty_eez_score_id_fk
+FOREIGN KEY (score_id) REFERENCES master.uncertainty_score(score_id) ON DELETE CASCADE;
