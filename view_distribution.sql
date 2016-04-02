@@ -22,7 +22,13 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
         select original_taxon_key, use_this_taxon_key_instead, 'Please review: for this manual override the ''original_taxon_key'' has a distribution'::text as err_mesg
         from taxon_distribution_substitute
         where is_manual_override = true and original_taxon_key in ((select taxon_key from taxa_with_distribution))
-    )
+    ), error4 AS (
+    SELECT ts.original_taxon_key,
+            ts.use_this_taxon_key_instead,
+            'Warning: the original_taxon_key and the substitute have different FunctionalGroupIDs, may interfere with Access Agreements'::text AS err_mesg
+            from taxon_distribution_substitute ts
+            where (select functional_group_id from master.taxon t where t.taxon_key = ts.original_taxon_key limit 1) <>
+                  (select functional_group_id from master.taxon t where t.taxon_key = ts.use_this_taxon_key_instead limit 1))
     select *
     from error1
     UNION all
@@ -31,6 +37,9 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
     UNION all
     select *
     from error3;
+    UNION ALL
+    SELECT *
+    FROM error4;
 
 
 create materialized view distribution.v_taxon_with_distribution as 
