@@ -29,7 +29,7 @@ END;
 $body$ 
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION export_data(i_dblink TEXT, i_table_name TEXT, i_where_clause TEXT, i_timing_on CHAR) 
+CREATE OR REPLACE FUNCTION export_data(i_dblink TEXT, i_table_name TEXT, i_join_clause TEXT, i_where_clause TEXT, i_timing_on CHAR) 
 RETURNS VOID 
 AS
 $body$
@@ -48,7 +48,8 @@ BEGIN
   sql_cmd := 'INSERT INTO ' || i_table_name || 
              ' SELECT * FROM dblink(' || (CASE WHEN i_dblink IS NULL THEN '' ELSE quote_literal(i_dblink) || ',' END) || 
              '''SELECT ' || get_table_column(i_table_name) || ' FROM ' || i_table_name || 
-             CASE WHEN i_where_clause IS NULL THEN '' ELSE ' WHERE ' || i_where_clause END || ''') AS tab (' ||
+             COALESCE(' ' || i_join_clause, '') ||
+             COALESCE(' WHERE ' || i_where_clause, '') || ''') AS tab (' ||
              get_table_column_and_type(i_table_name) || ')';
 
   EXECUTE sql_cmd;
@@ -63,7 +64,6 @@ BEGIN
 END;
 $body$ 
 LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION export_data(i_table_name TEXT) 
 RETURNS VOID 
