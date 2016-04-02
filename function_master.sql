@@ -116,6 +116,12 @@ $body$
 $body$ 
 language plv8;
 
+create or replace function master.lineage_pretty(i_value varchar) returns text as
+$body$
+  SELECT COALESCE(REPLACE(REPLACE(INITCAP(TRIM(i_value)), ' ', ''), '-', ''), 'NA')
+$body$
+language sql;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
