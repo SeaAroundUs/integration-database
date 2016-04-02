@@ -36,7 +36,7 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
     from  error2
     UNION all
     select *
-    from error3;
+    from error3
     UNION ALL
     SELECT *
     FROM error4;
