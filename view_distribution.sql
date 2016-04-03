@@ -23,12 +23,14 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
         from taxon_distribution_substitute
         where is_manual_override = true and original_taxon_key in ((select taxon_key from taxa_with_distribution))
     ), error4 AS (
-    SELECT ts.original_taxon_key,
-            ts.use_this_taxon_key_instead,
-            'Warning: the original_taxon_key and the substitute have different FunctionalGroupIDs, may interfere with Access Agreements'::text AS err_mesg
-            from taxon_distribution_substitute ts
-            where (select functional_group_id from master.taxon t where t.taxon_key = ts.original_taxon_key limit 1) <>
-                  (select functional_group_id from master.taxon t where t.taxon_key = ts.use_this_taxon_key_instead limit 1))
+        SELECT ts.original_taxon_key,
+               ts.use_this_taxon_key_instead,
+               'Warning: the original_taxon_key and the substitute have different FunctionalGroupIDs, may interfere with Access Agreements'::text AS err_mesg
+        from taxon_distribution_substitute ts
+        join master.taxon otk on (otk.taxon_key = ts.original_taxon_key)
+        join master.taxon utk on (utk.taxon_key = ts.use_this_taxon_key_instead)
+        where otk.functional_group_id is distinct from utk.functional_group_id
+    )
     select *
     from error1
     UNION all
