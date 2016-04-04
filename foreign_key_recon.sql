@@ -8,9 +8,6 @@ FOREIGN KEY (original_country_fishing_id) REFERENCES master.fishing_entity(fishi
 ALTER TABLE recon.catch ADD CONSTRAINT taxon_key_fk
 FOREIGN KEY (taxon_key) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
 
-ALTER TABLE recon.catch ADD CONSTRAINT catch_original_taxon_name_id_fk 
-FOREIGN KEY (original_taxon_name_id) REFERENCES master.taxon(taxon_key) ON DELETE CASCADE;
-
 ALTER TABLE recon.catch ADD CONSTRAINT eez_id_fk
 FOREIGN KEY (eez_id) REFERENCES master.eez(eez_id) ON DELETE CASCADE;
 
