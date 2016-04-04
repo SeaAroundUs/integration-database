@@ -102,7 +102,7 @@ fi
 
 ## Adding foreign keys
 cat vacuum analyze; >> rmv.sql
-echo select update_all_sequence('sau_int'::text); >> rmv.sql
+echo "select update_all_sequence('sau_int'::text);" >> rmv.sql
 cat index_master.sql >> rmv.sql
 cat foreign_key_master.sql >> rmv.sql
 cat index_distribution.sql >> rmv.sql
