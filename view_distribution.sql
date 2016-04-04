@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
     ), error4 AS (
         SELECT ts.original_taxon_key,
                ts.use_this_taxon_key_instead,
-               'Warning: the original_taxon_key and the substitute have different FunctionalGroupIDs, may interfere with Access Agreements'::text AS err_mesg
+               'Warning: the original_taxon_key and the substitute have different FunctionalGroupIDs (' || otk.functional_group_id || ',' || utk.functional_group_id  ||'), may interfere with Access Agreements'::text AS err_mesg
         from taxon_distribution_substitute ts
         join master.taxon otk on (otk.taxon_key = ts.original_taxon_key)
         join master.taxon utk on (utk.taxon_key = ts.use_this_taxon_key_instead)
