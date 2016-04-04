@@ -94,7 +94,7 @@ if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/catalog.schema; then
   ExitWithError
 fi
 
-:: Clear previous content or create anew
+## Clear previous content or create anew
 ## Refreshing materialized views
 if ! $PSQLSAU -d ${DATABASE_NAME} -f refresh_mv.sql -t -o rmv.sql; then
   ExitWithError
@@ -102,7 +102,7 @@ fi
 
 ## Adding foreign keys
 cat vacuum analyze; >> rmv.sql
-cat select update_all_sequence('sau_int'::text); >> rmv.sql
+echo select update_all_sequence('sau_int'::text); >> rmv.sql
 cat index_master.sql >> rmv.sql
 cat foreign_key_master.sql >> rmv.sql
 cat index_distribution.sql >> rmv.sql
