@@ -19,3 +19,20 @@ CREATE TABLE log.adhoc_query(
   created timestamp not null default now(),
   last_modified timestamp
 );
+
+-- Not to be confused with the taxon substitution table, which is used only by allocation for distribution purposes
+-- This table here is to keep track of taxon keys that has been superseeded by a new key
+CREATE TABLE log.taxon_replacement(
+  old_taxon_key int not null,	
+  new_taxonkey int,	
+  taxon_name text,
+  type text,
+  phylum_subphylum text,	
+  class_subclass text,
+  superorder_order_suborder	text,
+  genus text,
+  species text,
+  comments_names text,
+  replaced_timestamp timestamp
+);
+
