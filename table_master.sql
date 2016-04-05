@@ -251,7 +251,7 @@ CREATE TABLE master.functional_groups(
   name varchar(20),
   description varchar(50),
   include_in_depth_adjustment_function BOOLEAN NOT NULL,
-  size_range numrange()
+  size_range numrange
 );
 
 CREATE TABLE master.gear(
