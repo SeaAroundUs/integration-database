@@ -116,9 +116,163 @@ $body$
 $body$ 
 language plv8;
 
+create or replace function master.replace_taxon(i_old_taxon_key int) returns void as
+$body$
+declare
+  repl log.taxon_replacement%ROWTYPE;
+  prec RECORD;
+begin
+  for repl in select * from log.taxon_replacement where old_taxon_key = i_old_taxon_key and replaced_timestamp is null loop
+    raise info 'Replacing old taxon % with the new taxon %', i_old_taxon_key, repl.new_taxon_key;
+    
+    if exists (select 1 from master.taxon where taxon_key = repl.new_taxon_key limit 1) then
+      update master.taxon set is_retired = true, comments_names = repl.comments_names where taxon_key = i_old_taxon_key;
+    else
+      update master.taxon set is_retired = false, taxon_key = i_new_taxon_key, comments_names = repl.comments_names where taxon_key = i_old_taxon_key;
+    end if;
+    
+    if exists (select 1 from allocation.catch_by_taxon where taxon_key = repl.new_taxon_key limit 1) then
+      delete from allocation.catch_by_taxon where taxon_key = i_old_taxon_key;
+    else
+      update allocation.catch_by_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    end if;
+    
+    update allocation.taxon_distribution_old t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    
+    update distribution.taxon_extent t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    
+    if exists (select 1 from distribution.taxon_habitat where taxon_key = repl.new_taxon_key limit 1) then
+      delete from distribution.taxon_habitat where taxon_key = i_old_taxon_key;
+    else
+      update distribution.taxon_habitat t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    end if;
+    
+    update geo.mariculture t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update geo.mariculture_entity t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update geo.mariculture_points t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update master.excluded_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update master.layer3_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update master.rare_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update recon.raw_catch t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update recon.catch t set original_taxon_name_id = r.new_taxon_key from log.taxon_replacement r where t.original_taxon_name_id = r.old_taxon_key;
+    update recon.catch t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    
+    --update master.price t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    FOR prec IN SELECT p.year, p.fishing_entity_id, p.price
+                   FROM master.price p
+                  WHERE p.taxon_key = i_old_taxon_key
+    LOOP
+      IF EXISTS (SELECT 1 FROM master.price WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = repl.new_taxon_key LIMIT 1) THEN
+        DELETE FROM master.price WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = i_old_taxon_key;
+      ELSE
+        UPDATE master.price SET taxon_key = repl.new_taxon_key WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = i_old_taxon_key;
+      END IF;
+    END LOOP;
+   
+   update master.rfmo_managed_taxon t set primary_taxon_keys = 
+     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
+       from unnest(t.primary_taxon_keys) as u(taxon_key)
+       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
+     );
+     
+   update master.rfmo_managed_taxon t set secondary_taxon_keys = 
+     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
+       from unnest(t.secondary_taxon_keys) as u(taxon_key)
+       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
+     );
+   
+   update distribution.taxon_extent_rollup t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+   
+   update distribution.taxon_extent_rollup t set children_taxon_keys = 
+     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
+       from unnest(t.children_taxon_keys) as u(taxon_key)
+       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
+     );
+     
+    update log.taxon_replacement set replaced_timestamp = current_timestamp where old_taxon_key = i_old_taxon_key;
+  end loop;
+end
+$body$
+language plpgsql;
+
+create or replace function master.taxon_functional_group_rollup_candidates(i_target_taxon_level int) 
+returns table(spec_type text, taxon_key int, taxon_name text, existing_functional_group_id smallint, proposed_functional_group_id smallint) as
+$body$
+begin                                         
+  if i_target_taxon_level < 1 then
+    raise exception 'Input level should be greater than or equal to 1.';
+    return;
+  end if;     
+/*
+so, easy fix, if a pleuronectiformes, and sl_max<90, then FGID=23, if sl_max>=90 then FGID=24
+
+if belonging to the ray groups (or you can use the common name where “ray” is found), and if sl_max<90, the FGID=21, if sl_max>=90 then FGID=22
+
+ok I found one error in the lineage table, please correct for 600940, under superorder, please enter Batoidea
+that should correct all of the rays
+anything that is under SuperOrder Batoidea is a ray
+so anything that is under Class Elasmobranchii with an NA under SuperOrder is a shark    
+*/
+  return query
+  with rays as (
+    select tc.taxon_key, tc.taxon_level_id, tc.lineage 
+      from log.taxon_catalog tc
+     where tc."type" = 'superorder' and tc.superorder = 'Batoidea'
+  ),
+  sharks as (
+    select tc.taxon_key, tc.taxon_level_id, (tc.lineage::text || '.NA')::ltree as lineage 
+      from log.taxon_catalog tc 
+     where tc."type" = 'class' and tc.class = 'Elasmobranchii'
+  ),
+  flats as (
+    select tc.taxon_key, tc.taxon_level_id, tc.lineage
+      from log.taxon_catalog tc where tc.type = 'order' and tc."order" = 'Pleuronectiformes'
+  ),
+  other as (
+    (select lp.taxon_key, cat_c.functional_group_id, count(*) rec_count
+       from log.taxon_catalog lp
+       join catalog.taxon_catalog cat_p on (cat_p.taxon_key = lp.taxon_key)
+       join log.taxon_catalog lc on (lc.lineage <@ lp.lineage and lc.taxon_level_id = (i_target_taxon_level + 1) and not lc.is_retired)
+       join catalog.taxon_catalog cat_c on (cat_c.taxon_key = lc.taxon_key and cat_c.functional_group_id is not null)
+      where lp.taxon_level_id = i_target_taxon_level and not lp.is_retired
+        and not exists (select 1 from rays where lp.lineage <@ rays.lineage limit 1) 
+        and not exists (select 1 from sharks where lp.lineage <@ sharks.lineage limit 1) 
+      group by lp.taxon_key, cat_c.functional_group_id)
+  ),
+  candidate as (
+    (select 'catch_all' as spec_type, t.taxon_key, max(tc.taxon_name) as taxon_name, 
+            max(tc.functional_group_id) as existing_functional_group_id, 
+            (array_agg(t.functional_group_id order by t.rec_count desc))[1] as proposed_functional_group_id
+       from other t
+       join catalog.taxon_catalog tc on (tc.taxon_key = t.taxon_key)
+      group by t.taxon_key)
+    union all
+    (select 'rays', t.taxon_key, t.taxon_name, cat.functional_group_id, fg.functional_group_id
+       from rays r
+       join log.taxon_catalog t on (t.lineage <@ r.lineage and t.taxon_level_id = i_target_taxon_level)
+       join catalog.taxon_catalog cat on (cat.taxon_key = t.taxon_key)
+       join master.functional_groups fg on (fg.name ilike 'ray%' and fg.size_range @> cat.sl_max::numeric))
+    union all
+    (select 'sharks', t.taxon_key, t.taxon_name, cat.functional_group_id, fg.functional_group_id
+       from sharks r
+       join log.taxon_catalog t on (t.lineage <@ r.lineage and t.taxon_level_id = i_target_taxon_level)
+       join catalog.taxon_catalog cat on (cat.taxon_key = t.taxon_key)
+       join master.functional_groups fg on (fg.name ilike 'shark%' and fg.size_range @> cat.sl_max::numeric))
+    union all
+    (select 'flats', t.taxon_key, t.taxon_name, cat.functional_group_id, fg.functional_group_id
+       from flats r
+       join log.taxon_catalog t on (t.lineage <@ r.lineage and t.taxon_level_id = i_target_taxon_level)
+       join catalog.taxon_catalog cat on (cat.taxon_key = t.taxon_key)
+       join master.functional_groups fg on (fg.name ilike 'flatfish%' and fg.size_range @> cat.sl_max::numeric))
+  )
+  select * from candidate c where c.existing_functional_group_id is distinct from c.proposed_functional_group_id;
+end
+$body$
+language plpgsql;
+
 create or replace function master.lineage_pretty(i_value varchar) returns text as
 $body$
-  SELECT COALESCE(REPLACE(REPLACE(INITCAP(TRIM(i_value)), ' ', ''), '-', ''), 'NA')
+  SELECT CASE WHEN COALESCE(upper(i_value), '') = 'NA' THEN 'NA' ELSE COALESCE(REPLACE(REPLACE(INITCAP(TRIM(i_value)), ' ', ''), '-', ''), 'NA') END;
 $body$
 language sql;
 
