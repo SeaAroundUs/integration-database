@@ -250,7 +250,8 @@ CREATE TABLE master.functional_groups(
   target_grp int,
   name varchar(20),
   description varchar(50),
-  include_in_depth_adjustment_function BOOLEAN NOT NULL
+  include_in_depth_adjustment_function BOOLEAN NOT NULL,
+  size_range numrange()
 );
 
 CREATE TABLE master.gear(
