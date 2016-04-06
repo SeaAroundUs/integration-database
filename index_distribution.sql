@@ -1,8 +1,8 @@
-CREATE INDEX taxon_extent_taxon_key_idx ON distribution.taxon_extent(taxon_key);
+CREATE UNIQUE INDEX taxon_extent_taxon_key_idx ON distribution.taxon_extent(taxon_key);
 CREATE INDEX taxon_extent_geom_idx ON distribution.taxon_extent USING gist (geom);
 
 CREATE INDEX taxon_key_idx ON distribution.taxon_distribution(taxon_key);
-CREATE INDEX cell_id_idx ON distribution.taxon_distribution(cell_id);
+CREATE UNIQUE INDEX cell_id_taxon_key_uk ON distribution.taxon_distribution(cell_id, taxon_key);
 
 CREATE INDEX grid_geom_idx ON distribution.grid USING gist (geom);
 
