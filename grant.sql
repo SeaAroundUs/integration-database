@@ -70,6 +70,7 @@ $body$
   SELECT admin.grant_privilege('recon', 'distribution_int', false, false);
   SELECT admin.grant_privilege('distribution', 'distribution_int', true, true);
   SELECT admin.grant_privilege('geo', 'distribution_int', false, false);
+  SELECT admin.grant_privilege('allocation', 'distribution_int', false, false);
    
   -- For user gis_int
   SELECT admin.grant_privilege('master', 'gis_int', false, false);
