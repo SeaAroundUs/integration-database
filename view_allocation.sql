@@ -178,7 +178,27 @@ union all
 union all
   select *
   from CCAMLR_IFAs;
-  
+
+CREATE MATERIALIZED VIEW allocation.allocation_error_log AS
+  SELECT l.row_id as error_row_id,
+	     l.data_row_id as universal_data_id,
+	     c.id as catch_id,
+	     c.layer as data_layer_id,
+	     c.fishing_entity_id,
+	     c.eez_id,
+	     c.fao_area_id,
+	     c.year,
+	     c.taxon_key,
+	     c.amount as catch_amount,
+	     c.sector_type_id,
+	     st.name as sector,
+	     c.catch_type_id,
+	     c.input_type_id,
+         l.message as error_message
+    FROM allocation.log_import_raw l
+    JOIN recon.catch c ON (c.id = l.original_row_id)
+    JOIN master.sector_type st ON (st.sector_type_id = c.sector_type_id);
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
