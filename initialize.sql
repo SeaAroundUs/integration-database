@@ -38,7 +38,7 @@ DROP SCHEMA IF EXISTS geo CASCADE;
 CREATE SCHEMA geo;
 
 \i table_admin.sql
---\i populate_admin.sql
+\i populate_admin.sql
 
 \echo
 \echo Creating DB Objects for the Master schema...
@@ -80,6 +80,7 @@ CREATE SCHEMA geo;
 \echo Creating DB Objects for the Geo schema...
 \echo
 \i table_geo.sql
+\i view_geo.sql
 \i function_geo.sql
 
 \i view_recon.sql
