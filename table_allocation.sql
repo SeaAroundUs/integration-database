@@ -25,7 +25,14 @@ CREATE TABLE allocation.catch_by_taxon(
   total_catch numeric,
   total_value double precision
 );
-        
+
+CREATE TABLE allocation.taxon_distribution_old (
+  taxon_key integer NOT NULL,
+  cell_id integer NOT NULL,
+  relative_abundance integer NOT NULL,
+  taxon_distribution_id serial PRIMARY KEY
+);
+
 CREATE TABLE allocation.log_import_raw(
   row_id int NOT NULL primary key,
   table_name varchar(50) NOT NULL,
