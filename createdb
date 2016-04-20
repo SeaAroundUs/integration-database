@@ -74,44 +74,60 @@ if ! $PSQL -d ${DATABASE_NAME} -f $SQLINPUTFILE.sql -L log/$SQLINPUTFILE.log; th
   ExitWithError
 fi
 
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/admin.schema; then 
-  ExitWithError
+if [ -f data_dump/admin.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/admin.schema; then 
+    ExitWithError
+  fi
 fi
 
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/master.schema; then 
-  ExitWithError
+if [ -f data_dump/master.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/master.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/recon.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/recon.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/geo.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/geo.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/geo.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/distribution.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/distribution.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/catalog.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/catalog.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/catalog.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/allocation.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/allocation.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/allocation.schema; then 
+    ExitWithError
+  fi
 fi
-
-echo Password for user sau_int
-if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/log.schema; then 
-  ExitWithError
+  
+if [ -f data_dump/log.schema ]; then
+  echo Password for user sau_int
+  if ! $RESTORE -d ${DATABASE_NAME} -U sau_int data_dump/log.schema; then 
+    ExitWithError
+  fi
 fi
 
 ## Clear previous content or create anew
