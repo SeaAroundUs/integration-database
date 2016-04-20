@@ -24,7 +24,7 @@ CREATE TABLE log.adhoc_query(
 -- This table here is to keep track of taxon keys that has been superseeded by a new key
 CREATE TABLE log.taxon_replacement(
   old_taxon_key int not null,	
-  new_taxonkey int,	
+  new_taxon_key int,	
   taxon_name text,
   type text,
   phylum_subphylum text,	
