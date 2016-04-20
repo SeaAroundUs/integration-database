@@ -25,3 +25,12 @@ CREATE TABLE allocation.catch_by_taxon(
   total_catch numeric,
   total_value double precision
 );
+        
+CREATE TABLE allocation.log_import_raw(
+  row_id int NOT NULL primary key,
+  table_name varchar(50) NOT NULL,
+  data_row_id int NOT NULL,
+  original_row_id int NOT NULL,
+  log_time timestamp NOT NULL,
+  message text NOT NULL
+);
