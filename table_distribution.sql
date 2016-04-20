@@ -3,7 +3,8 @@ CREATE TABLE distribution.taxon_extent (
     taxon_key integer not null,
     is_extended boolean not null default false,
     is_rolled_up boolean not null default false,
-    geom geometry(Multipolygon, 4326) not null
+    geom geometry(Multipolygon, 4326) not null,
+    is_reversed_engineered boolean not null default false
 );
 
 CREATE TABLE distribution.taxon_distribution (
