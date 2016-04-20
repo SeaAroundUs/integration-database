@@ -10,3 +10,5 @@ CREATE INDEX mariculture_sub_entity_mariculture_entity_id_idx ON master.maricult
 CREATE INDEX p_water_idx ON master.cell(percent_water) WHERE percent_water > 0;
 
 CREATE INDEX taxon_lineage_gist_idx ON master.taxon USING GIST (lineage);
+
+CREATE INDEX access_agreement_fishing_entity_id_idx ON master.access_agreement(fishing_entity_id);
