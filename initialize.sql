@@ -41,9 +41,19 @@ CREATE SCHEMA geo;
 \i populate_admin.sql
 
 \echo
-\echo Creating DB Objects for the Master schema...
+\echo Creating All tables first to avoid dependency problems later on
 \echo
 \i table_master.sql
+\i table_allocation.sql
+\i table_recon.sql
+\i table_distribution.sql
+\i table_geo.sql
+\i table_log.sql
+\i table_catalog.sql
+
+\echo
+\echo Creating DB Objects for the Master schema...
+\echo
 \i trigger_master.sql
 \i function_master.sql
 --\i mat_view_master.sql
@@ -52,35 +62,29 @@ CREATE SCHEMA geo;
 \echo
 \echo Creating DB Objects for the Recon schema...
 \echo
-\i table_recon.sql
 \i trigger_recon.sql
 
 \echo
 \echo Creating DB Objects for the Distribution schema...
 \echo
-\i table_distribution.sql
 \i trigger_distribution.sql
 
 \echo
 \echo Creating DB Objects for the Log schema...
 \echo
-\i table_log.sql
 
 \echo
 \echo Creating DB Objects for the Catalog schema...
 \echo
-\i table_catalog.sql
 
 \echo
 \echo Creating DB Objects for the Allocation schema...
 \echo
-\i table_allocation.sql
 \i view_allocation.sql
 
 \echo
 \echo Creating DB Objects for the Geo schema...
 \echo
-\i table_geo.sql
 \i view_geo.sql
 \i function_geo.sql
 
