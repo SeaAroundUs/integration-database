@@ -34,6 +34,7 @@ end;
 $body$
 language plpgsql;
 
+/*
 create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_id int) 
 returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
 $body$
@@ -46,12 +47,55 @@ $body$
    order by 2 desc;
 $body$
 language sql;
+*/
+create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_id int) 
+returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
+$body$
+  select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
+    from log.taxon_catalog tp
+    join master.v_taxon_lineage tvp on (tvp.taxon_key = tp.taxon_key and not tvp.is_extent_available)
+    join log.taxon_catalog tc on (tc.lineage <@ tp.lineage and tc.taxon_level_id = (i_for_taxon_level_id + 1))
+    join master.v_taxon_lineage tvc on (tvc.taxon_key = tc.taxon_key and tvc.is_extent_available)
+   where tp.taxon_level_id = i_for_taxon_level_id
+   group by tp.taxon_key
+   order by 2 desc;
+$body$
+language sql;
+
+create or replace function distribution.get_taxon_child_extents(i_parent_taxon_key int) 
+returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
+$body$
+  /* 
+     Note this function returns child extents even when the input parent taxon already has an extent. 
+     This is a departure from the get_rollup_taxon_list function above, which does not return a parent taxon if it already has an extent available 
+  */
+  select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
+    from log.taxon_catalog tp
+    join master.v_taxon_lineage tvp on (tvp.taxon_key = tp.taxon_key)
+    join log.taxon_catalog tc on (tc.lineage <@ tp.lineage and tc.taxon_level_id = (tvp.level + 1))
+    join master.v_taxon_lineage tvc on (tvc.taxon_key = tc.taxon_key and tvc.is_extent_available)
+   where tp.taxon_key = i_parent_taxon_key
+   group by tp.taxon_key;
+$body$
+language sql;
 
 /*
 insert into distribution.taxon_habitat(taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,found_in_fao_area_id,fao_limits,sl_max,intertidal)
 select taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,('{' || found_in_fao_area_id || '}')::int[],fao_limits,sl_max,intertidal
   from log.taxon_habitat;
 */
+
+create or replace function distribution.extent_and_habitat_fao_overlap(i_taxon_key int) 
+returns table(taxon_key int, fao_area_id int, contained boolean, overlaped boolean) as
+$body$
+  select h.taxon_key, f.fao_area_id, st_contains(f.geom, e.geom), st_overlaps(f.geom, e.geom)
+    from distribution.taxon_extent e
+    join distribution.taxon_habitat h on (h.taxon_key = e.taxon_key)
+    join geo.fao f on (f.fao_area_id = any(h.found_in_fao_area_id))
+   where e.taxon_key = i_taxon_key
+   order by h.taxon_key, f.fao_area_id;
+$body$
+language sql;
 
 /*
 The command below should be maintained as the last command in this entire script.
