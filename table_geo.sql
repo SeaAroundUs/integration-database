@@ -415,3 +415,11 @@ CREATE TABLE geo.world(
   sst_avg float,
   pp_annual varchar(255)
 );
+
+CREATE TABLE geo.worldsq(
+  gid serial primary key,
+  seq integer unique, 
+  lat numeric not null,
+  lon numeric not null, 
+  geom geometry(MultiPolygon,4326) not null
+);
