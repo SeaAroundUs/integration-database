@@ -26,7 +26,7 @@ as
 with no data;
 
 CREATE OR REPLACE VIEW geo.v_test_cell_assigned_water_area_exceeds_entire_cell_area AS 
-SELECT rw.marine_layer_id,
+SELECT rw.marine_layer_id,                      
        rw.area_id,
        rw.fao_area_id,
        rw.cell_id,
@@ -180,7 +180,7 @@ CREATE OR REPLACE view geo.v_internal_generate_Allocation_Simple_Area_Table AS
           17                   AS Marine_Layer_ID,
           eez_ccamlar_combo_id AS Area_ID,
           FAO_Area_ID          AS FAO_Area_ID,
-          1                    AS Is_Active,
+          1                    AS Is_Active,     
           EEZ_ID               AS InheritedAtt_Belongs_To_Reconstruction_EEZ_ID,
           Is_IFA :: INT        AS InheritedAtt_Is_IFA,
           0                    AS allows_coastal_fishing_for_layer2_data
