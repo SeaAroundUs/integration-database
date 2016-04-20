@@ -72,5 +72,5 @@ CREATE TABLE log.taxon_catalog(
   Family varchar(255),
   Genus varchar(255),
   Species varchar(255),
-  lineage text
+  lineage ltree
 );
