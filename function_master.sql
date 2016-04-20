@@ -203,16 +203,7 @@ begin
     raise exception 'Input level should be greater than or equal to 1.';
     return;
   end if;     
-/*
-so, easy fix, if a pleuronectiformes, and sl_max<90, then FGID=23, if sl_max>=90 then FGID=24
 
-if belonging to the ray groups (or you can use the common name where “ray” is found), and if sl_max<90, the FGID=21, if sl_max>=90 then FGID=22
-
-ok I found one error in the lineage table, please correct for 600940, under superorder, please enter Batoidea
-that should correct all of the rays
-anything that is under SuperOrder Batoidea is a ray
-so anything that is under Class Elasmobranchii with an NA under SuperOrder is a shark    
-*/
   return query
   with rays as (
     select tc.taxon_key, tc.taxon_level_id, tc.lineage 
