@@ -75,6 +75,7 @@ CREATE SCHEMA geo;
 \echo Creating DB Objects for the Allocation schema...
 \echo
 \i table_allocation.sql
+\i view_allocation.sql
 
 \echo
 \echo Creating DB Objects for the Geo schema...
