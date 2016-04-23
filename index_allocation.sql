@@ -1,0 +1,1 @@
+CREATE INDEX taxon_distribution_old_taxon_key_idx ON allocation.taxon_distribution_old(taxon_key);

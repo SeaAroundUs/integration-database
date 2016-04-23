@@ -143,6 +143,7 @@ cat index_master.sql >> rmv.sql
 cat foreign_key_master.sql >> rmv.sql
 cat index_distribution.sql >> rmv.sql
 cat foreign_key_distribution.sql >> rmv.sql
+cat index_allocation.sql >> rmv.sql
 cat index_recon.sql >> rmv.sql
 cat foreign_key_recon.sql >> rmv.sql
 
