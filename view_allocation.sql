@@ -30,7 +30,7 @@ CREATE OR REPLACE view allocation.v_internal_generate_Allocation_Simple_Area_Tab
           EEZ_ID                     AS Inherited_Att_Belongs_To_Reconstruction_EEZ_ID,
           1                          AS Inherited_Att_Is_IFA,
           0                          AS allows_coastal_fishing_for_layer2_data
-        FROM geo.IFA
+        FROM geo.IFA_fao
         WHERE EEZ_ID IN (SELECT EEZ_ID
                          FROM active_eezs)
     ),
