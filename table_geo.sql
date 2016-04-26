@@ -423,3 +423,8 @@ CREATE TABLE geo.worldsq(
   lon numeric not null, 
   geom geometry(MultiPolygon,4326) not null
 );
+
+CREATE TABLE allocation.ifa(
+  eez_id int,
+  ifa_is_located_in_this_fao int
+);
