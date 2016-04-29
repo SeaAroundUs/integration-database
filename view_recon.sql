@@ -108,7 +108,8 @@ SELECT rc.id
  WHERE 0 = ANY(ARRAY[taxon_key, 
                      coalesce(original_taxon_name_id, -1), 
                      coalesce(original_fao_name_id, -1), 
-                     catch_type_id, 
+                     catch_type_id,
+                     reporting_status_id,
                      fishing_entity_id, 
                      coalesce(original_country_fishing_id, -1), 
                      fao_area_id, 
@@ -129,7 +130,7 @@ SELECT rc.id
 CREATE OR REPLACE VIEW recon.v_raw_catch_missing_required_field AS
 SELECT id                
   FROM recon.raw_catch rc
- WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type) IS NULL
+ WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || reporting_status || "year" || amount || input_type) IS NULL
 UNION
 SELECT id                
   FROM recon.raw_catch rc

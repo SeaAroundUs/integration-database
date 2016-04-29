@@ -1,7 +1,9 @@
 /* Stable master tables, no tracking log tables needed */
 CREATE TABLE master.time(
   time_key smallserial PRIMARY KEY,
-  year int NOT NULL
+  year int NOT NULL,
+  is_used_for_allocation BOOLEAN NOT NULL DEFAULT TRUE,
+  is_used_for_web BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE master.marine_layer(
@@ -15,7 +17,14 @@ CREATE TABLE master.marine_layer(
 
 CREATE TABLE master.catch_type(
   catch_type_id smallint primary key,
-  name varchar(50) not null                        
+  name varchar(50) not null,
+  abbreviation char(1) not null
+);
+
+CREATE TABLE master.reporting_status(
+  reporting_status_id smallint primary key,
+  name varchar(50) not null,                        
+  abbreviation char(1) not null
 );
 
 CREATE TABLE master.sector_type(

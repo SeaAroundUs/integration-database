@@ -17,6 +17,9 @@ FOREIGN KEY (fao_area_id) REFERENCES master.fao_area(fao_area_id) ON DELETE CASC
 ALTER TABLE recon.catch ADD CONSTRAINT catch_type_id_fk
 FOREIGN KEY (catch_type_id) REFERENCES master.catch_type(catch_type_id) ON DELETE CASCADE;
 
+ALTER TABLE recon.catch ADD CONSTRAINT reporting_status_id_fk
+FOREIGN KEY (reporting_status_id) REFERENCES master.reporting_status(reporting_status_id) ON DELETE CASCADE;
+
 ALTER TABLE recon.catch ADD CONSTRAINT year_fk
 FOREIGN KEY (year) REFERENCES master.time(year) ON DELETE CASCADE;
 
