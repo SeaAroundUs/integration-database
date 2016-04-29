@@ -31,6 +31,7 @@ SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION admin.grant_access() RETURNS void AS
 $body$
   -- For user web_int
+  SELECT admin.grant_privilege('master', 'web_int', false, false);
   SELECT admin.grant_privilege('admin', 'web_int', false, false);
   SELECT admin.grant_privilege('log', 'web_int', false, false);
   SELECT admin.grant_privilege('recon', 'web_int', false, false);
