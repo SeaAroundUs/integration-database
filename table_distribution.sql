@@ -61,7 +61,8 @@ CREATE TABLE distribution.taxon_habitat (
     found_in_fao_area_id int[],
     fao_limits smallint,
     sl_max double precision,
-    intertidal boolean
+    intertidal boolean,
+    temperature double precision
 );
 
 /* And here we create the dependent habitat_index view in the 'master' schema */
@@ -86,7 +87,8 @@ SELECT taxon_key,
        slope,
        abyssal,
        inshore,
-       offshore
+       offshore,
+       temperature
   FROM distribution.taxon_habitat;
 
 CREATE TABLE distribution.taxon_extent_rollup(
