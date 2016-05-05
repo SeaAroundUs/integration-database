@@ -81,14 +81,34 @@ SELECT rc.id
             END
    AND NOT (rc.layer = 1 AND rc.sector_type_id IS DISTINCT FROM 1)
 ;
+/*
+input type         | catch type | reporting status
+reconstructed      | discards   | unreported
+reconstructed      | landings   | unreported
+FAO, national, etc | landings   | reported
+FAO, national, etc | discards   | reported
 
+input type         | reporting status | catch type 
+reconstructed      | unreported       | landings   
+reconstructed      | unreported       | discards   
+FAO, national, etc | reported         | landings   
+FAO, national, etc | reported         | discards   
+*/
 -- Input type is reconstructed and Catch type is reported landings
 CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_catch_type_reported AS
-SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) = 1 AND catch_type_id = 1; 
+SELECT id FROM recon.raw_catch LIMIT 0; 
 
 -- Input type is not reconstructed and Catch type not reported landings
 CREATE OR REPLACE VIEW recon.v_raw_catch_input_not_reconstructed_catch_type_not_reported AS
-SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) != 1 AND catch_type_id != 1; 
+SELECT id FROM recon.raw_catch LIMIT 0; 
+
+-- Input type is reconstructed and Reporting status is reported
+CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_reporting_status_reported AS
+SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) = 1 AND reporting_status_id = 1; 
+
+-- Input type is not reconstructed and Reporting status unreported
+CREATE OR REPLACE VIEW recon.v_raw_catch_input_not_reconstructed_reporting_staus_unreported AS
+SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) != 1 AND reporting_status_id = 2; 
 
 -- Layer is not 1, 2, or 3
 CREATE OR REPLACE VIEW recon.v_raw_catch_layer_not_in_range AS
@@ -106,12 +126,9 @@ CREATE OR REPLACE VIEW recon.v_raw_catch_lookup_mismatch AS
 SELECT rc.id 
   FROM recon.raw_catch rc
  WHERE 0 = ANY(ARRAY[taxon_key, 
-                     coalesce(original_taxon_name_id, -1), 
-                     coalesce(original_fao_name_id, -1), 
                      catch_type_id,
                      reporting_status_id,
                      fishing_entity_id, 
-                     coalesce(original_country_fishing_id, -1), 
                      fao_area_id, 
                      sector_type_id, 
                      coalesce(input_type_id, -1), 
@@ -210,11 +227,19 @@ CREATE OR REPLACE VIEW recon.v_catch_fishing_entity_and_eez_not_aligned AS
 
 -- Input type is reconstructed and Catch type is reported landings
 CREATE OR REPLACE VIEW recon.v_catch_input_reconstructed_catch_type_reported AS
-  SELECT id FROM recon.catch WHERE input_type_id = 1 AND catch_type_id = 1;
+  SELECT id FROM recon.catch LIMIT 0;
 
 -- Input type is not reconstructed and Catch type not reported landings
 CREATE OR REPLACE VIEW recon.v_catch_input_not_reconstructed_catch_type_not_reported AS
-  SELECT id FROM recon.catch WHERE input_type_id != 1 AND catch_type_id != 1;
+  SELECT id FROM recon.catch LIMIT 0;
+
+-- Input type is reconstructed and Reporting status is reported
+CREATE OR REPLACE VIEW recon.v_catch_input_reconstructed_reporting_status_reported AS
+  SELECT id FROM recon.catch WHERE input_type_id = 1 AND reporting_status_id = 1;
+
+-- Input type is not reconstructed and Reporting status is unreported
+CREATE OR REPLACE VIEW recon.v_catch_input_not_reconstructed_reporting_status_unreported AS
+  SELECT id FROM recon.catch WHERE input_type_id != 1 AND reporting_status_id = 2;
 
 -- Layer is not 1, 2, or 3
 CREATE OR REPLACE VIEW recon.v_catch_layer_not_in_range AS
