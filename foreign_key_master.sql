@@ -41,6 +41,12 @@ FOREIGN KEY (access_type_id) REFERENCES master.access_type(id) ON DELETE CASCADE
 ALTER TABLE master.access_agreement ADD CONSTRAINT agreement_type_id_fk
 FOREIGN KEY (agreement_type_id) REFERENCES master.agreement_type(id) ON DELETE CASCADE;
 
+ALTER TABLE master.access_agreement ADD CONSTRAINT fishing_entity_id_fk
+FOREIGN KEY (fishing_entity_id) REFERENCES master.fishing_entity(fishing_entity_id) ON DELETE CASCADE;
+
+ALTER TABLE master.access_agreement ADD CONSTRAINT eez_id_fk
+FOREIGN KEY (eez_id) REFERENCES master.eez(eez_id) ON DELETE CASCADE;
+
 -- master.uncertainty_eez
 ALTER TABLE master.uncertainty_eez ADD CONSTRAINT uncertainty_eez_eez_id_fk
 FOREIGN KEY (eez_id) REFERENCES master.eez(eez_id) ON DELETE CASCADE;
