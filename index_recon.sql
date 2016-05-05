@@ -70,17 +70,14 @@ CREATE INDEX raw_catch_taxon_key_idx ON recon.raw_catch(taxon_key);
 
 CREATE INDEX raw_catch_reference_id_idx ON recon.raw_catch(reference_id);
 
-CREATE INDEX raw_catch_required_field_idx ON recon.raw_catch(id) WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || "year" || amount || input_type) IS NULL;
+CREATE INDEX raw_catch_required_field_idx ON recon.raw_catch(id) WHERE (fishing_entity || eez || fao_area || layer || sector || catch_type || reporting_status || "year" || amount || input_type) IS NULL;
 
 CREATE INDEX raw_catch_taxon_name_is_null_idx ON recon.raw_catch(taxon_key) WHERE taxon_name IS NULL;
 
 CREATE INDEX raw_catch_lookup_mismatch_idx ON recon.raw_catch(id) 
 WHERE 0 = ANY(ARRAY[taxon_key, 
-                     coalesce(original_taxon_name_id, -1), 
-                     coalesce(original_fao_name_id, -1), 
                      catch_type_id, 
                      fishing_entity_id, 
-                     coalesce(original_country_fishing_id, -1), 
                      fao_area_id, 
                      sector_type_id, 
                      coalesce(input_type_id, -1), 
