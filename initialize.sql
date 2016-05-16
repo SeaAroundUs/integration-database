@@ -62,6 +62,7 @@ CREATE SCHEMA geo;
 \echo
 \echo Creating DB Objects for the Recon schema...
 \echo
+\i function_recon.sql
 \i trigger_recon.sql
 
 \echo

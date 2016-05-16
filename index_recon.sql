@@ -76,10 +76,17 @@ CREATE INDEX raw_catch_taxon_name_is_null_idx ON recon.raw_catch(taxon_key) WHER
 
 CREATE INDEX raw_catch_lookup_mismatch_idx ON recon.raw_catch(id) 
 WHERE 0 = ANY(ARRAY[taxon_key, 
-                     catch_type_id, 
+                     catch_type_id,
+                     reporting_status_id,
                      fishing_entity_id, 
                      fao_area_id, 
                      sector_type_id, 
                      coalesce(input_type_id, -1), 
                      coalesce(reference_id, -1)]) 	
     OR eez_id IS NULL;
+
+CREATE INDEX raw_catch_input_type_1_reporting_status_1_idx ON recon.raw_catch(id)
+WHERE coalesce(input_type_id, 0) = 1 AND reporting_status_id = 1;
+
+CREATE INDEX raw_catch_input_type_ne_1_reporting_status_2_idx ON recon.raw_catch(id)
+WHERE coalesce(input_type_id, 0) != 1 AND reporting_status_id = 2;

@@ -72,7 +72,7 @@ SELECT rc.id
   FROM recon.raw_catch rc
   LEFT JOIN eez_fishing_entity efe ON (rc.eez_id = efe.eez_id)
   LEFT JOIN layer3_taxon l3 ON (l3.taxon_key = rc.taxon_key)
- WHERE ((rc.eez_id IS DISTINCT FROM 0 AND rc.fishing_entity_id <> 0) OR l3.taxon_key IS NOT NULL) 
+ WHERE ((rc.eez_id IS DISTINCT FROM 0 AND rc.fishing_entity_id IS DISTINCT FROM 0) OR l3.taxon_key IS NOT NULL) 
    AND rc.layer 
        IS DISTINCT FROM
        CASE WHEN l3.taxon_key IS NOT NULL THEN 3
@@ -94,13 +94,6 @@ reconstructed      | unreported       | discards
 FAO, national, etc | reported         | landings   
 FAO, national, etc | reported         | discards   
 */
--- Input type is reconstructed and Catch type is reported landings
-CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_catch_type_reported AS
-SELECT id FROM recon.raw_catch LIMIT 0; 
-
--- Input type is not reconstructed and Catch type not reported landings
-CREATE OR REPLACE VIEW recon.v_raw_catch_input_not_reconstructed_catch_type_not_reported AS
-SELECT id FROM recon.raw_catch LIMIT 0; 
 
 -- Input type is reconstructed and Reporting status is reported
 CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_reporting_status_reported AS
@@ -224,14 +217,6 @@ CREATE OR REPLACE VIEW recon.v_catch_fishing_entity_and_eez_not_aligned AS
             END
    AND NOT (c.layer = 1 AND c.sector_type_id IS DISTINCT FROM 1)
 ;
-
--- Input type is reconstructed and Catch type is reported landings
-CREATE OR REPLACE VIEW recon.v_catch_input_reconstructed_catch_type_reported AS
-  SELECT id FROM recon.catch LIMIT 0;
-
--- Input type is not reconstructed and Catch type not reported landings
-CREATE OR REPLACE VIEW recon.v_catch_input_not_reconstructed_catch_type_not_reported AS
-  SELECT id FROM recon.catch LIMIT 0;
 
 -- Input type is reconstructed and Reporting status is reported
 CREATE OR REPLACE VIEW recon.v_catch_input_reconstructed_reporting_status_reported AS

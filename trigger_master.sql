@@ -5,28 +5,22 @@
 CREATE OR REPLACE FUNCTION master.taxon_insert_update_trigger_handler() RETURNS TRIGGER AS
 $body$
 BEGIN
-  NEW.lineage := 
-    (COALESCE(NEW.phylum, 'Others') || 
-     case when NEW.taxon_level_id > 1           
-     then coalesce('.' || NEW.cla_code::varchar, '') || 
-          case when NEW.taxon_level_id > 2
-          then coalesce('.' || NEW.ord_code::varchar, '') ||
-               case when NEW.taxon_level_id > 3
-               then coalesce('.' || NEW.fam_code::varchar, '') ||
-                    case when NEW.taxon_level_id > 4
-                    then coalesce('.' || NEW.gen_code::varchar, '') ||
-                         case when NEW.taxon_level_id > 5
-                         then coalesce('.' || NEW.spe_code::varchar, '')
-                         else ''
-                         end
-                    else ''
-                    end
-               else ''
-               end
-          else ''
-          end
-     else ''
-     end)::public.ltree;
+  NEW.lineage := rtrim(
+         format('%s.%s.%s.%s.%s.%s.%s.%s.%s.%s', 
+                 master.lineage_pretty(NEW.phylum), master.lineage_pretty(NEW.sub_phylum),
+                 master.lineage_pretty(NEW.super_class), master.lineage_pretty(NEW.class),
+                 master.lineage_pretty(NEW.super_order), master.lineage_pretty(NEW."order"), master.lineage_pretty(NEW.suborder_infraorder),
+                 master.lineage_pretty(NEW.family), 
+                 master.lineage_pretty(NEW.genus),
+                 master.lineage_pretty(NEW.species)
+                )
+         ,
+         '.NA'
+       )::public.ltree;
+  
+  IF NEW.lineage = '' THEN 
+    NEW.lineage := NULL::LTREE;
+  END IF;
   
   RETURN NEW;
 END;
