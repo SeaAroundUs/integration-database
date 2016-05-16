@@ -4,8 +4,10 @@
 
 CREATE OR REPLACE FUNCTION master.taxon_insert_update_trigger_handler() RETURNS TRIGGER AS
 $body$
+DECLARE
+  la TEXT;
 BEGIN
-  NEW.lineage := rtrim(
+  la := rtrim(
          format('%s.%s.%s.%s.%s.%s.%s.%s.%s.%s', 
                  master.lineage_pretty(NEW.phylum), master.lineage_pretty(NEW.sub_phylum),
                  master.lineage_pretty(NEW.super_class), master.lineage_pretty(NEW.class),
@@ -16,10 +18,12 @@ BEGIN
                 )
          ,
          '.NA'
-       )::public.ltree;
-  
-  IF NEW.lineage = '' THEN 
-    NEW.lineage := NULL::LTREE;
+        );
+       
+  IF coalesce(la, '') = '' THEN 
+    NEW.lineage := NULL::public.LTREE;
+  ELSE
+    NEW.lineage := la::public.LTREE;
   END IF;
   
   RETURN NEW;
