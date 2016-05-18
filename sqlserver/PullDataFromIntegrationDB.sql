@@ -54,10 +54,6 @@ BEGIN
       ,[Loo]
       ,[Woo]
       ,[K]
-      ,[XMin]
-      ,[XMax]
-      ,[YMin]
-      ,[YMax]
       ,[HasHabitatIndex]
       ,[HasMap]
       ,[IsBalticOnly])   
@@ -66,7 +62,7 @@ BEGIN
            SAU_INTEGRATION_DB, 
 	       'SELECT taxon_key,scientific_name,common_name,commercial_group_id,functional_group_id,
                    sl_max,tl,taxon_level_id,taxon_group_id,isscaap_id,lat_north,lat_south,min_depth,max_depth,
-                   loo,woo,k,x_min,x_max,y_min,y_max,has_habitat_index::int as has_habitat_index,has_map::int as has_map,is_baltic_only::int as is_baltic_only
+                   loo,woo,k,has_habitat_index::int as has_habitat_index,has_map::int as has_map,is_baltic_only::int as is_baltic_only
               FROM master.taxon
              WHERE NOT is_retired');
   ALTER INDEX ALL ON [dbo].[Cube_DimTaxon] REORGANIZE;
