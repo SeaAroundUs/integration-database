@@ -12,4 +12,4 @@ CREATE INDEX v_taxon_with_extent_taxon_key_ids ON distribution.v_taxon_with_exte
 
 CREATE INDEX v_taxon_with_distribution_taxon_key_ids ON distribution.v_taxon_with_distribution(taxon_key);
 
-CREATE UNIQUE INDEX v_cell_fao_cell_id_uk ON distribution.v_cell_fao(cell_id);
+--CREATE UNIQUE INDEX v_cell_fao_cell_id_uk ON distribution.v_cell_fao(cell_id);

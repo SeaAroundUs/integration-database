@@ -11,6 +11,7 @@ CREATE INDEX p_water_idx ON master.cell(percent_water) WHERE percent_water > 0;
 
 CREATE INDEX taxon_lineage_gist_idx ON master.taxon USING GIST (lineage);
 CREATE INDEX taxon_lower_trim_scientific_name_idx ON master.taxon(lower(trim(scientific_name)));
+CREATE INDEX taxon_lower_trim_common_name_idx ON master.taxon(lower(trim(common_name)));
 
 CREATE INDEX access_agreement_fishing_entity_id_idx ON master.access_agreement(fishing_entity_id);
 

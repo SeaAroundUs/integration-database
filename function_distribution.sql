@@ -52,11 +52,10 @@ create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_
 returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
 $body$
   select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
-    from log.taxon_catalog tp
-    join master.v_taxon_lineage tvp on (tvp.taxon_key = tp.taxon_key and not tvp.is_extent_available)
-    join log.taxon_catalog tc on (tc.lineage <@ tp.lineage and tc.taxon_level_id = (i_for_taxon_level_id + 1))
-    join master.v_taxon_lineage tvc on (tvc.taxon_key = tc.taxon_key and tvc.is_extent_available)
-   where tp.taxon_level_id = i_for_taxon_level_id
+    from master.v_taxon_lineage tp
+    join master.v_taxon_lineage tc on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_extent_available)
+   where tp.level = i_for_taxon_level_id
+     and not tp.is_extent_available
    group by tp.taxon_key
    order by 2 desc;
 $body$
@@ -70,10 +69,8 @@ $body$
      This is a departure from the get_rollup_taxon_list function above, which does not return a parent taxon if it already has an extent available 
   */
   select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
-    from log.taxon_catalog tp
-    join master.v_taxon_lineage tvp on (tvp.taxon_key = tp.taxon_key)
-    join log.taxon_catalog tc on (tc.lineage <@ tp.lineage and tc.taxon_level_id = (tvp.level + 1))
-    join master.v_taxon_lineage tvc on (tvc.taxon_key = tc.taxon_key and tvc.is_extent_available)
+    from master.v_taxon_lineage tp
+    join master.v_taxon_lineage tc on (tc.lineage <@ tp.lineage and tc.level = (tp.level + 1) and tc.is_extent_available)
    where tp.taxon_key = i_parent_taxon_key
    group by tp.taxon_key;
 $body$

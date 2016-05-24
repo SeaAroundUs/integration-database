@@ -26,6 +26,8 @@ BEGIN
     NEW.lineage := la::public.LTREE;
   END IF;
   
+  NEW.date_updated := current_date;
+  
   RETURN NEW;
 END;
 $body$
