@@ -53,6 +53,9 @@ CREATE INDEX catch_ices_area_id_idx ON recon.catch(ices_area_id);
 
 CREATE UNIQUE INDEX catch_raw_catch_id_idx ON recon.catch(raw_catch_id);
 
+CREATE INDEX catch_amount_negative_idx ON recon.catch(id)
+WHERE amount <= 0;
+
 /* raw_catch */
 CREATE INDEX raw_catch_source_file_id_idx ON recon.raw_catch(source_file_id);
 
@@ -90,3 +93,10 @@ WHERE coalesce(input_type_id, 0) = 1 AND reporting_status_id = 1;
 
 CREATE INDEX raw_catch_input_type_ne_1_reporting_status_2_idx ON recon.raw_catch(id)
 WHERE coalesce(input_type_id, 0) != 1 AND reporting_status_id = 2;
+
+CREATE INDEX raw_catch_amount_negative_idx ON recon.raw_catch(id)
+WHERE amount <= 0;
+
+CREATE INDEX raw_catch_peru_amount_greater_than_threshold_idx ON recon.raw_catch(id) WHERE amount > 15e6 AND eez_id IS NOT DISTINCT FROM 604;
+
+CREATE INDEX raw_catch_amount_greater_than_threshold_idx ON recon.raw_catch(id) WHERE amount > 5e6 AND eez_id IS DISTINCT FROM 604;

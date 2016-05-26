@@ -20,11 +20,11 @@ SELECT id FROM recon.raw_catch WHERE original_sector IS NOT NULL;
 
 -- Catch amount greater than 15e6 for Peru
 CREATE OR REPLACE VIEW recon.v_raw_catch_peru_catch_amount_greater_than_threshold AS
-SELECT id FROM recon.raw_catch WHERE amount > 15e6 AND coalesce(eez_id, 0) = 604; 
+SELECT id FROM recon.raw_catch WHERE amount > 15e6 AND eez_id IS NOT DISTINCT FROM 604; 
 
 -- Catch amount greater than 5e6 for others
 CREATE OR REPLACE VIEW recon.v_raw_catch_amount_greater_than_threshold AS
-SELECT id FROM recon.raw_catch WHERE amount > 5e6 AND coalesce(eez_id, 0) != 604;
+SELECT id FROM recon.raw_catch WHERE amount > 5e6 AND eez_id IS DISTINCT FROM 604;
 
 -- FAO is 27 and ICES is null
 CREATE OR REPLACE VIEW recon.v_raw_catch_fao_27_ices_null AS

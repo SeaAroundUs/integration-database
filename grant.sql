@@ -39,6 +39,7 @@ $body$
   SELECT admin.grant_privilege('catalog', 'web_int', false, false);
   SELECT admin.grant_privilege('allocation', 'web_int', false, false);
   SELECT admin.grant_privilege('geo', 'web_int', false, false);
+  SELECT admin.grant_privilege('validation_partition', 'web_int', false, false);
   
   -- For user qc_int (user for UBC staff)
   SELECT admin.grant_privilege('master', 'qc_int', false, false);
@@ -50,6 +51,7 @@ $body$
   SELECT admin.grant_privilege('allocation', 'qc_int', false, false);
   SELECT admin.grant_privilege('geo', 'qc_int', false, false);
   SELECT admin.grant_privilege('catalog', 'qc_int', false, false);
+  SELECT admin.grant_privilege('validation_partition', 'qc_int', false, false);
 
   -- For user recon_int
   SELECT admin.grant_privilege('master', 'recon_int', true, true);
@@ -59,6 +61,7 @@ $body$
   SELECT admin.grant_privilege('distribution', 'recon_int', false, false);
   SELECT admin.grant_privilege('catalog', 'recon_int', true, false);
   SELECT admin.grant_privilege('allocation', 'recon_int', false, false);
+  SELECT admin.grant_privilege('validation_partition', 'recon_int', false, false);
 
   -- more granular access for the following tables:
   GRANT INSERT,UPDATE,SELECT,DELETE,REFERENCES ON distribution.taxon_habitat TO recon_int;

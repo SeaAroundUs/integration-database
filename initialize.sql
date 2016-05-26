@@ -37,6 +37,9 @@ CREATE SCHEMA allocation;
 DROP SCHEMA IF EXISTS geo CASCADE;
 CREATE SCHEMA geo;
 
+DROP SCHEMA IF EXISTS validation_partition CASCADE;
+CREATE SCHEMA validation_partition;
+
 \i table_admin.sql
 \i populate_admin.sql
 

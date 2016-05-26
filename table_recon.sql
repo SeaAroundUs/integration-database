@@ -263,3 +263,17 @@ CREATE TABLE recon.eez_nafo (
     eez_id int,
     nafo_division_id int
 );
+
+CREATE TABLE recon.validation_rule (
+    rule_id int primary key,
+    rule_type char(1) not null check(rule_type in ('W', 'E')),
+    name text not null,
+    description text,
+    last_executed timestamp
+);
+
+CREATE TABLE recon.validation_result (
+    rule_id int,
+    id int
+);
+
