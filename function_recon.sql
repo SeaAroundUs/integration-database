@@ -127,7 +127,8 @@ BEGIN
   RETURN executed_ts;
 END;
 $body$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql
+SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION recon.refresh_validation_result_partition(i_rule_name text) 
 RETURNS TIMESTAMP AS
