@@ -61,6 +61,7 @@ set schemas[1]="master.schema"
 set schemas[2]="recon.schema"
 set schemas[3]="distribution.schema"
 set schemas[4]="catalog.schema"
+set schemas[5]="geo.schema"
 set schemas[5]="log.schema"
 
 FOR /F "tokens=2 delims==" %%s in ('set schemas[') DO (
