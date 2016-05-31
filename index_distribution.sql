@@ -13,3 +13,6 @@ CREATE INDEX v_taxon_with_extent_taxon_key_ids ON distribution.v_taxon_with_exte
 CREATE INDEX v_taxon_with_distribution_taxon_key_ids ON distribution.v_taxon_with_distribution(taxon_key);
 
 --CREATE UNIQUE INDEX v_cell_fao_cell_id_uk ON distribution.v_cell_fao(cell_id);
+
+CREATE INDEX taxon_extent_rollup_polygon_taxon_key_idx ON distribution.taxon_extent_rollup_polygon(taxon_key);
+CREATE INDEX taxon_extent_rollup_polygon_geom_idx ON distribution.taxon_extent_rollup_polygon USING gist(geom);

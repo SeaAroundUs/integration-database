@@ -31,29 +31,16 @@ begin
 
   return query execute ins_sql;
 end;
-$body$
+$body$                    
 language plpgsql;
 
-/*
 create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_id int) 
 returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
 $body$
   select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
     from master.v_taxon_lineage tp
-    join master.v_taxon_lineage tc on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_distribution_available)
-   where tp.level = i_for_taxon_level_id
-     and not tp.is_extent_available
-   group by tp.taxon_key
-   order by 2 desc;
-$body$
-language sql;
-*/
-create or replace function distribution.get_rollup_taxon_list(i_for_taxon_level_id int) 
-returns table(taxon_key int, children_distributions_found int, children_taxon_keys int[]) as
-$body$
-  select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
-    from master.v_taxon_lineage tp
-    join master.v_taxon_lineage tc on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_extent_available)
+    join master.v_taxon_lineage tc 
+      on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_extent_available)
    where tp.level = i_for_taxon_level_id
      and not tp.is_extent_available
    group by tp.taxon_key
@@ -66,7 +53,8 @@ returns table(taxon_key int, children_distributions_found int, children_taxon_ke
 $body$
   /* 
      Note this function returns child extents even when the input parent taxon already has an extent. 
-     This is a departure from the get_rollup_taxon_list function above, which does not return a parent taxon if it already has an extent available 
+     This is a departure from the get_rollup_taxon_list function above, which does not return 
+     a parent taxon if it already has an extent available 
   */
   select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
     from master.v_taxon_lineage tp
@@ -75,12 +63,6 @@ $body$
    group by tp.taxon_key;
 $body$
 language sql;
-
-/*
-insert into distribution.taxon_habitat(taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,found_in_fao_area_id,fao_limits,sl_max,intertidal)
-select taxon_key,taxon_name,common_name,cla_code,ord_code,fam_code,gen_code,spe_code,effective_distance,habitat_diversity_index,estuaries,coral,sea_grass,sea_mount,others,slope,shelf,abyssal,inshore,offshore,max_depth,min_depth,lat_north,lat_south,('{' || found_in_fao_area_id || '}')::int[],fao_limits,sl_max,intertidal
-  from log.taxon_habitat;
-*/
 
 create or replace function distribution.extent_and_habitat_fao_overlap(i_taxon_key int) 
 returns table(taxon_key int, fao_area_id int, contained boolean, overlaped boolean) as
@@ -91,6 +73,36 @@ $body$
     join geo.fao f on (f.fao_area_id = any(h.found_in_fao_area_id))
    where e.taxon_key = i_taxon_key
    order by h.taxon_key, f.fao_area_id;
+$body$     
+language sql;
+
+create or replace function distribution.extent_rollup_dumpout_polygons(i_parent_taxon_key int, i_descendant_taxon_key int[]) 
+returns int as
+$body$
+  delete from distribution.taxon_extent_rollup_polygon where taxon_key = i_parent_taxon_key;
+  
+  with geo as (
+    select (st_dump(geom)).geom from distribution.taxon_extent where taxon_key = any(i_descendant_taxon_key)
+  )
+  insert into distribution.taxon_extent_rollup_polygon(taxon_key, seq, geom)
+  select i_parent_taxon_key, row_number() over(order by st_area(geom::geography, false)), geom from geo;
+  
+  select max(seq) from distribution.taxon_extent_rollup_polygon where taxon_key = i_parent_taxon_key;
+$body$
+language sql;
+
+create or replace function distribution.extent_rollup_purge_contained_polygons(i_parent_taxon_key int, i_anchor_seq int) 
+returns int as
+$body$
+  delete from distribution.taxon_extent_rollup_polygon rp
+   using distribution.taxon_extent_rollup_polygon ap
+   where ap.taxon_key = i_parent_taxon_key 
+     and ap.seq = i_anchor_seq
+     and rp.taxon_key = i_parent_taxon_key
+     and rp.seq < i_anchor_seq
+     and st_contains(ap.geom, rp.geom);
+  
+  select max(seq) from distribution.taxon_extent_rollup_polygon where taxon_key = i_parent_taxon_key and seq < i_anchor_seq;
 $body$
 language sql;
 

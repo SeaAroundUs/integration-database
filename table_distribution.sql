@@ -97,3 +97,9 @@ CREATE TABLE distribution.taxon_extent_rollup(
     children_taxon_keys int[],
     last_modified timestamp not null default current_timestamp
 );
+
+CREATE UNLOGGED TABLE distribution.taxon_extent_rollup_polygon(
+    taxon_key int,
+    seq int,
+    geom geometry(Polygon, 4326)
+);
