@@ -128,7 +128,9 @@ begin
     if exists (select 1 from master.taxon where taxon_key = repl.new_taxon_key limit 1) then
       update master.taxon set is_retired = true, comments_names = repl.comments_names where taxon_key = i_old_taxon_key;
     else
-      update master.taxon set is_retired = false, taxon_key = i_new_taxon_key, comments_names = repl.comments_names where taxon_key = i_old_taxon_key;
+      update master.taxon 
+         set is_retired = false, taxon_key = repl.new_taxon_key, taxon_level_id = substr(repl.new_taxon_key::text,1,1)::int, comments_names = repl.comments_names 
+       where taxon_key = i_old_taxon_key;
     end if;
     
     if exists (select 1 from allocation.catch_by_taxon where taxon_key = repl.new_taxon_key limit 1) then
