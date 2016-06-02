@@ -40,7 +40,7 @@ $body$
   select tp.taxon_key, count(*)::int, array_agg(tc.taxon_key) 
     from master.v_taxon_lineage tp
     join master.v_taxon_lineage tc 
-      on (tc.lineage <@ tp.lineage and tc.level = (i_for_taxon_level_id + 1) and tc.is_extent_available)
+      on (tc.parent = tp.lineage and tc.is_extent_available)
    where tp.level = i_for_taxon_level_id
      and not tp.is_extent_available
    group by tp.taxon_key
@@ -103,6 +103,36 @@ $body$
      and st_contains(ap.geom, rp.geom);
   
   select max(seq) from distribution.taxon_extent_rollup_polygon where taxon_key = i_parent_taxon_key and seq < i_anchor_seq;
+$body$
+language sql;
+
+create or replace function distribution.taxon_extent_backfill() 
+returns table(td_inserted int, log_inserted int) as       
+$body$
+  with old_dist(taxon_key) as (
+    select distinct d.taxon_key
+      from allocation.taxon_distribution_old d
+      join master.taxon t on (t.taxon_key = d.taxon_key)
+    except
+    select distinct d.taxon_key
+      from distribution.taxon_distribution d
+  ),
+  ins_td as (
+  insert into distribution.taxon_distribution(taxon_key, cell_id, relative_abundance, is_backfilled)
+  select d.taxon_key, d.cell_id, d.relative_abundance, true
+    from allocation.taxon_distribution_old d
+    join old_dist od on (od.taxon_key = d.taxon_key)
+  returning 1
+  ),               
+  ins_log as (
+  insert into distribution.taxon_distribution_log(taxon_key)
+  select od.taxon_key  
+    from old_dist od
+    left join distribution.taxon_distribution_log l on (l.taxon_key = od.taxon_key)
+   where l.taxon_key is null
+  returning 1
+  )
+  select (select count(*)::int from ins_td), (select count(*)::int from ins_log);
 $body$
 language sql;
 
