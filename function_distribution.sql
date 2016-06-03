@@ -136,6 +136,18 @@ $body$
 $body$
 language sql;
 
+create or replace function distribution.taxon_lineage_tree(i_taxon_key int) 
+returns table(taxon_key int, scientific_name varchar(256), common_name varchar(256), d boolean, e boolean, h boolean, lineage ltree, parent ltree) as       
+$body$
+  select c.taxon_key, c.scientific_name, c.common_name, c.is_distribution_available d, c.is_extent_available e,
+         (e.taxon_key is not null) h, c.lineage, c.parent 
+    from master.taxon p
+    join master.v_taxon_lineage c on (c.lineage <@ p.lineage)
+    left join distribution.taxon_extent e on (e.taxon_key = c.taxon_key)
+   where p.taxon_key = i_taxon_key;
+$body$
+language sql;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
