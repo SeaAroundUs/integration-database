@@ -120,83 +120,85 @@ create or replace function master.replace_taxon(i_old_taxon_key int) returns voi
 $body$
 declare
   repl log.taxon_replacement%ROWTYPE;
-  prec RECORD;
+  prec record;
 begin
   for repl in select * from log.taxon_replacement where old_taxon_key = i_old_taxon_key and replaced_timestamp is null loop
     raise info 'Replacing old taxon % with the new taxon %', i_old_taxon_key, repl.new_taxon_key;
     
     if exists (select 1 from master.taxon where taxon_key = repl.new_taxon_key limit 1) then
-      update master.taxon set is_retired = true, comments_names = repl.comments_names where taxon_key = i_old_taxon_key;
+      update master.taxon set is_retired = true, comments_names = repl.comments_names, date_updated = now() where taxon_key = i_old_taxon_key;
     else
       update master.taxon 
-         set is_retired = false, taxon_key = repl.new_taxon_key, taxon_level_id = substr(repl.new_taxon_key::text,1,1)::int, comments_names = repl.comments_names 
+         set is_retired = false, taxon_key = repl.new_taxon_key, taxon_level_id = substr(repl.new_taxon_key::text,1,1)::int, 
+             comments_names = repl.comments_names, date_updated = now() 
        where taxon_key = i_old_taxon_key;
     end if;
     
     if exists (select 1 from allocation.catch_by_taxon where taxon_key = repl.new_taxon_key limit 1) then
       delete from allocation.catch_by_taxon where taxon_key = i_old_taxon_key;
     else
-      update allocation.catch_by_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+      update allocation.catch_by_taxon t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
     end if;
     
-    update allocation.taxon_distribution_old t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    if not exists (select 1 from allocation.taxon_distribution_old where taxon_key = repl.new_taxon_key limit 1) then
+      update allocation.taxon_distribution_old t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    end if;
     
-    update distribution.taxon_extent t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+    update distribution.taxon_extent t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
     
     if exists (select 1 from distribution.taxon_habitat where taxon_key = repl.new_taxon_key limit 1) then
       delete from distribution.taxon_habitat where taxon_key = i_old_taxon_key;
     else
-      update distribution.taxon_habitat t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+      update distribution.taxon_habitat t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
     end if;
+                                                                
+    update geo.mariculture t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update geo.mariculture_entity t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update geo.mariculture_points t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update master.excluded_taxon t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update master.layer3_taxon t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update master.rare_taxon t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update recon.raw_catch t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
+    update recon.catch t set original_taxon_name_id = repl.new_taxon_key where t.original_taxon_name_id = i_old_taxon_key;
+    update recon.catch t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
     
-    update geo.mariculture t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update geo.mariculture_entity t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update geo.mariculture_points t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update master.excluded_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update master.layer3_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update master.rare_taxon t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update recon.raw_catch t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    update recon.catch t set original_taxon_name_id = r.new_taxon_key from log.taxon_replacement r where t.original_taxon_name_id = r.old_taxon_key;
-    update recon.catch t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    
-    --update master.price t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
-    FOR prec IN SELECT p.year, p.fishing_entity_id, p.price
-                   FROM master.price p
-                  WHERE p.taxon_key = i_old_taxon_key
-    LOOP
-      IF EXISTS (SELECT 1 FROM master.price WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = repl.new_taxon_key LIMIT 1) THEN
-        DELETE FROM master.price WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = i_old_taxon_key;
-      ELSE
-        UPDATE master.price SET taxon_key = repl.new_taxon_key WHERE year = prec.year AND fishing_entity_id = prec.fishing_entity_id AND taxon_key = i_old_taxon_key;
-      END IF;
-    END LOOP;
+    for prec in select p.year, p.fishing_entity_id, p.price
+                  from master.price p
+                 where p.taxon_key = i_old_taxon_key             
+    loop
+      if exists (select 1 from master.price where year = prec.year and fishing_entity_id = prec.fishing_entity_id and taxon_key = repl.new_taxon_key limit 1) then
+        delete from master.price where year = prec.year and fishing_entity_id = prec.fishing_entity_id and taxon_key = i_old_taxon_key;
+      else
+        update master.price set taxon_key = repl.new_taxon_key where year = prec.year and fishing_entity_id = prec.fishing_entity_id and taxon_key = i_old_taxon_key;
+      end if;
+    end loop;
    
-   update master.rfmo_managed_taxon t set primary_taxon_keys = 
-     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
-       from unnest(t.primary_taxon_keys) as u(taxon_key)
-       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
-     );
+   update master.rfmo_managed_taxon t 
+      set primary_taxon_keys = 
+            (select array_agg(case when u.taxon_key is distinct from i_old_taxon_key then u.taxon_key else repl.new_taxon_key end) 
+               from unnest(t.primary_taxon_keys) as u(taxon_key)
+            );
      
-   update master.rfmo_managed_taxon t set secondary_taxon_keys = 
-     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
-       from unnest(t.secondary_taxon_keys) as u(taxon_key)
-       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
-     );
+   update master.rfmo_managed_taxon t 
+      set secondary_taxon_keys = 
+            (select array_agg(case when u.taxon_key is distinct from i_old_taxon_key then u.taxon_key else repl.new_taxon_key end) 
+               from unnest(t.secondary_taxon_keys) as u(taxon_key)
+            );
    
-   update distribution.taxon_extent_rollup t set taxon_key = r.new_taxon_key from log.taxon_replacement r where t.taxon_key = r.old_taxon_key;
+   update distribution.taxon_extent_rollup t set taxon_key = repl.new_taxon_key where t.taxon_key = i_old_taxon_key;
    
-   update distribution.taxon_extent_rollup t set children_taxon_keys = 
-     (select array_agg(case when r.old_taxon_key is null then u.taxon_key else r.new_taxon_key end) 
-       from unnest(t.children_taxon_keys) as u(taxon_key)
-       left join log.taxon_replacement r on (r.old_taxon_key = u.taxon_key)
-     );
+   update distribution.taxon_extent_rollup t 
+      set children_taxon_keys = 
+            (select array_agg(case when u.taxon_key is distinct from i_old_taxon_key then u.taxon_key else repl.new_taxon_key end) 
+              from unnest(t.children_taxon_keys) as u(taxon_key)
+            );
      
     update log.taxon_replacement set replaced_timestamp = current_timestamp where old_taxon_key = i_old_taxon_key;
   end loop;
 end
 $body$
 language plpgsql;
-
+                                                                                
 create or replace function master.taxon_functional_group_rollup_candidates(i_target_taxon_level int) 
 returns table(spec_type text, taxon_key int, taxon_name text, existing_functional_group_id smallint, proposed_functional_group_id smallint) as
 $body$
