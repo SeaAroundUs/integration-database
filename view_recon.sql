@@ -100,7 +100,7 @@ CREATE OR REPLACE VIEW recon.v_raw_catch_input_reconstructed_reporting_status_re
 SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) = 1 AND reporting_status_id = 1; 
 
 -- Input type is not reconstructed and Reporting status unreported
-CREATE OR REPLACE VIEW recon.v_raw_catch_input_not_reconstructed_reporting_staus_unreported AS
+CREATE OR REPLACE VIEW recon.v_raw_catch_input_not_reconstructed_reporting_status_unreported AS
 SELECT id FROM recon.raw_catch WHERE coalesce(input_type_id, 0) != 1 AND reporting_status_id = 2; 
 
 -- Layer is not 1, 2, or 3
