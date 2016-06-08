@@ -43,7 +43,7 @@ CREATE OR REPLACE VIEW distribution.v_test_taxon_distribution_substitute as
     SELECT *
     FROM error4;
 
-
+-- Materialized views
 create materialized view distribution.v_taxon_with_distribution as 
 select distinct taxon_key from distribution.taxon_distribution with no data;
 
