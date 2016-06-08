@@ -6,7 +6,8 @@ as
            min(f.sub_ocean),
            st_ymax(st_extent(f.geom)),      
            st_ymin(st_extent(f.geom)),
-           st_asgeojson(st_simplify(min(f.geom), 0.02::double precision), 3)::json
+           st_asgeojson(st_simplify(min(f.geom), 0.02::double precision), 3)::json,
+           st_buffer(st_simplifypreservetopology(min(f.geom), 0.01), 0.25) geom
       from geo.fao f
      group by f.fao_area_id
   )
@@ -20,7 +21,8 @@ as
          0::numeric AS shape_area,
          ymax as lat_north,
          ymin as lat_south,
-         gf.geom_geojson
+         gf.geom_geojson,
+         gf.geom
     from gf                                     
     join master.fao_area w on (w.fao_area_id = gf.fao_area_id)
 with no data;

@@ -23,6 +23,7 @@ CREATE INDEX mariculture_points_sub_entity_id_idx on geo.mariculture_points(sub_
 CREATE INDEX simple_area_cell_assignment_raw_cell_id_idx ON geo.simple_area_cell_assignment_raw(cell_id);
 CREATE INDEX simple_area_cell_assignment_raw_marine_layer_id_idx ON geo.simple_area_cell_assignment_raw(marine_layer_id);
 
-CREATE INDEX v_fao_fao_area_id_idx ON geo.v_fao(fao_area_id);
+CREATE UNIQUE INDEX v_fao_fao_area_id_idx ON geo.v_fao(fao_area_id);
+CREATE INDEX v_fao_geom_idx ON geo.v_fao USING gist(geom);
 
 CREATE INDEX worldsq_geom_idx ON geo.worldsq USING gist(geom);

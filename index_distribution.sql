@@ -1,4 +1,5 @@
 CREATE UNIQUE INDEX taxon_extent_taxon_key_idx ON distribution.taxon_extent(taxon_key);
+CREATE INDEX taxon_extent_fao_area_id_intersects_idx ON distribution.taxon_extent(fao_area_id_intersects);
 CREATE INDEX taxon_extent_geom_idx ON distribution.taxon_extent USING gist (geom);
 
 CREATE INDEX taxon_key_idx ON distribution.taxon_distribution(taxon_key);

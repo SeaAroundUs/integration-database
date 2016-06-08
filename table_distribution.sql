@@ -4,7 +4,8 @@ CREATE TABLE distribution.taxon_extent (
     is_extended boolean not null default false,
     is_rolled_up boolean not null default false,
     geom geometry(Multipolygon, 4326) not null,
-    is_reversed_engineered boolean not null default false
+    is_reversed_engineered boolean not null default false,
+    fao_area_id_intersects int[]
 );
 
 CREATE TABLE distribution.taxon_distribution (

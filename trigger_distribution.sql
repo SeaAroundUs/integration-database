@@ -2,7 +2,7 @@
 --- Triggers
 ---
 
-CREATE OR REPLACE FUNCTION distribution.taxon_extent_insert_trigger_handler() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION distribution.taxon_extent_insert_update_trigger_handler() RETURNS TRIGGER AS
 $body$
 BEGIN
   IF NEW.gid IS NULL THEN
@@ -11,14 +11,19 @@ BEGIN
   
   NEW.geom := public.ST_ForceRHR(public.ST_MAKEVALID(NEW.geom));
   
+  NEW.fao_area_id_intersects := 
+    (SELECT array_agg(f.fao_area_id) 
+       FROM geo.v_fao f
+      WHERE st_intersects(f.geom, NEW.geom) and not st_touches(f.geom, NEW.geom));
+  
   RETURN NEW;
 END;
 $body$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER taxon_extent_before_insert_trigger BEFORE INSERT
+CREATE TRIGGER taxon_extent_before_insert_update_trigger BEFORE UPDATE OF geom OR INSERT
             ON distribution.taxon_extent
-  FOR EACH ROW EXECUTE PROCEDURE distribution.taxon_extent_insert_trigger_handler();
+  FOR EACH ROW EXECUTE PROCEDURE distribution.taxon_extent_insert_update_trigger_handler();
 
 CREATE OR REPLACE FUNCTION distribution.taxon_distribution_insert_trigger_handler() RETURNS TRIGGER AS
 $body$
