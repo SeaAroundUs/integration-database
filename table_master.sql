@@ -286,7 +286,8 @@ CREATE TABLE master.geo_entity(
   jurisdiction_id int,
   started_eez_at varchar(50),
   legacy_c_number int NOT NULL,
-  legacy_admin_c_number int NOT NULL
+  legacy_admin_c_number int NOT NULL,
+  continent_code CHAR(2)
 );
 
 CREATE TABLE master.sub_geo_entity(
@@ -309,7 +310,7 @@ CREATE TABLE master.mariculture_sub_entity(
   mariculture_entity_id int NOT NULL
 );
 
-CREATE TABLE master.cell (
+CREATE TABLE master.cell (                   
   cell_id integer PRIMARY KEY,
   lon double precision,
   lat double precision,
@@ -492,3 +493,10 @@ CREATE TABLE master.area_invisible(
   main_area_id int NOT NULL,
   sub_area_id int NOT NULL DEFAULT 0
 );
+
+CREATE TABLE master.continent(
+  code char(2) primary key,
+  name varchar(128) not null,
+  geo_name_id int not null        
+);
+

@@ -81,8 +81,30 @@ CREATE TABLE catalog.taxon_catalog(
   x_min int,
   x_max int,
   y_min int,
-  y_max int,
+  y_max int,    
   data_source_x text,
   data_source_y text,
   data_source_z text
+);
+
+CREATE TABLE catalog.geonames_country(
+  iso char(2) primary key,
+  iso3 char(3) not null,	
+  iso_numeric int not null,
+  fips char(2),	
+  country varchar(256) not null,
+  capital varchar(256),  
+  area_sqkm	float,
+  population float,
+  continent_code char(2),
+  tld varchar(20), 
+  currency_code	varchar(10),
+  currency_name	varchar(256),
+  phone	varchar(20),
+  postal_code_format varchar(256),	
+  postal_code_regex varchar(256),	
+  languages	varchar(256),
+  geo_name_id int,	
+  neighbours varchar(256),
+  equivalent_fips_code varchar(20)
 );
