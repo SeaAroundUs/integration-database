@@ -285,6 +285,36 @@ CREATE OR REPLACE VIEW recon.v_custom_catch_comments AS
     JOIN reference r ON (c.reference_id = r.reference_id)
   ORDER BY fu.create_datetime;
 
+
+--
+-- distribution errors
+--
+
+create or replace view recon.v_distribution_taxon_lat_north_null as
+  select taxon_key as id from master.taxon where not is_retired and lat_north is null;
+  
+create or replace view recon.v_distribution_taxon_lat_south_null as
+  select taxon_key as id from master.taxon where not is_retired and lat_south is null;
+  
+create or replace view recon.v_distribution_taxon_min_depth_null as
+  select taxon_key as id from master.taxon where not is_retired and min_depth is null;
+  
+create or replace view recon.v_distribution_taxon_max_depth_null as
+  select taxon_key as id from master.taxon where not is_retired and max_depth is null;
+  
+create or replace view recon.v_distribution_taxon_habitat_fao_not_overlap_extent as
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h 
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+    join distribution.taxon_extent e on (e.taxon_key = h.taxon_key and not e.fao_area_id_intersects && h.found_in_fao_area_id);
+
+create or replace view recon.v_distribution_taxon_extent_available_but_no_habitat as
+  select e.taxon_key as id 
+    from distribution.taxon_extent e
+    join master.taxon t on (t.taxon_key = e.taxon_key and not t.is_retired)
+    left join distribution.taxon_habitat h on (h.taxon_key = e.taxon_key)
+   where h.taxon_key is null;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */

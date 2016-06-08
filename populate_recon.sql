@@ -6,7 +6,7 @@ values
 (1, 'E', 'v_raw_catch_amount_zero_or_negative', 'Catch amount is zero or negative'),
 (2, 'E', 'v_raw_catch_fishing_entity_and_eez_not_aligned', 'Layer is incorrect (determined by EEZ, Fishing Entity, and Taxon)'),
 (3, 'E', 'v_raw_catch_input_reconstructed_reporting_status_reported', 'Input type is reconstructed and Reporting status is reported'),
-(4, 'E', 'v_raw_catch_input_not_reconstructed_reporting_staus_unreported', 'Input type is not reconstructed and Reporting status is unreported'),
+(4, 'E', 'v_raw_catch_input_not_reconstructed_reporting_status_unreported', 'Input type is not reconstructed and Reporting status is unreported'),
 (5, 'E', 'v_raw_catch_layer_not_in_range', 'Unknown layer'),
 (6, 'E', 'v_raw_catch_lookup_mismatch', 'Lookup table mismatch'),
 (7, 'E', 'v_raw_catch_missing_required_field', 'Missing required field'),
@@ -30,7 +30,7 @@ values
 (202, 'E', 'v_catch_input_reconstructed_reporting_status_reported', 'Input type is reconstructed and Reporting status is reported'),
 (203, 'E', 'v_catch_input_not_reconstructed_reporting_status_unreported', 'Input type is not reconstructed and Reporting status is unreported'),
 (204, 'E', 'v_catch_layer_not_in_range', 'Unknown layer'),
-(205, 'E', 'v_catch_taxa_is_rare', 'Rare taxa should be excluded'),
+(205, 'E', 'v_catch_taxa_is_rare', 'Rare taxa should be excluded'),     
 
 -- Catch warning rules
 (300, 'W', 'v_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
@@ -43,4 +43,12 @@ values
 (307, 'W', 'v_catch_peru_catch_amount_greater_than_threshold', 'Amount > 15e6 (Peru)'),
 (308, 'W', 'v_catch_subsistence_and_layer_not_1', 'Sector is subsistence and Layer is not 1'),
 (309, 'W', 'v_catch_year_max', 'Year greater than the max year')
+
+-- Distribution error rules
+(400, 'E', 'v_distribution_taxon_lat_north_null', 'Master.taxon record with lat_north is null'),
+(401, 'E', 'v_distribution_taxon_lat_south_null', 'Master.taxon record with lat_south is null'),
+(402, 'E', 'v_distribution_taxon_min_depth_null', 'Master.taxon record with min_depth is null'),
+(403, 'E', 'v_distribution_taxon_max_depth_null', 'Master.taxon record with max_depth is null'),
+(410, 'E', 'v_distribution_taxon_habitat_fao_not_overlap_extent', 'Distribution.taxon_habitat record found_in_fao_area_id not overlapping with taxon extent'),
+(411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found')
 ;
