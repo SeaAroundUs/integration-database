@@ -106,7 +106,7 @@ $body$
 $body$
 language sql;
 
-create or replace function distribution.taxon_extent_backfill() 
+create or replace function distribution.taxon_distribution_backfill() 
 returns table(td_inserted int, log_inserted int) as       
 $body$
   with old_dist(taxon_key) as (
