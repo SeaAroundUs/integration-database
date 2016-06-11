@@ -31,6 +31,7 @@ values
 (203, 'E', 'v_catch_input_not_reconstructed_reporting_status_unreported', 'Input type is not reconstructed and Reporting status is unreported'),
 (204, 'E', 'v_catch_layer_not_in_range', 'Unknown layer'),
 (205, 'E', 'v_catch_taxa_is_rare', 'Rare taxa should be excluded'),     
+(206, 'E', 'v_catch_no_corresponding_aa_found', 'No matching access_agreement records found'),     
 
 -- Catch warning rules
 (300, 'W', 'v_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
@@ -42,7 +43,7 @@ values
 (306, 'W', 'v_catch_original_taxon_not_null', 'Original taxon name is not null'),
 (307, 'W', 'v_catch_peru_catch_amount_greater_than_threshold', 'Amount > 15e6 (Peru)'),
 (308, 'W', 'v_catch_subsistence_and_layer_not_1', 'Sector is subsistence and Layer is not 1'),
-(309, 'W', 'v_catch_year_max', 'Year greater than the max year')
+(309, 'W', 'v_catch_year_max', 'Year greater than the max year'),
 
 -- Distribution error rules
 (400, 'E', 'v_distribution_taxon_lat_north_null', 'Master.taxon record with lat_north is null'),
