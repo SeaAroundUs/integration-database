@@ -73,6 +73,7 @@ FOR /F "tokens=2 delims==" %%s in ('set schemas[') DO (
 :: Clear previous content or create anew
 ECHO vacuum analyze; > rmv.sql
 ECHO select update_all_sequence('sau_int'::text); >> rmv.sql
+ECHO select * from recon.maintain_validation_result_partition(); >> rmv.sql
 
 :: Adding foreign keys
 type index_master.sql >> rmv.sql
