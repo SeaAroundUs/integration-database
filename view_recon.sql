@@ -234,6 +234,31 @@ CREATE OR REPLACE VIEW recon.v_catch_layer_not_in_range AS
 CREATE OR REPLACE VIEW recon.v_catch_amount_zero_or_negative AS
   SELECT id FROM recon.catch WHERE amount <= 0;
 
+-- No access_agreement record found 
+CREATE OR REPLACE VIEW recon.v_catch_no_corresponding_aa_found AS
+  WITH fao AS (                                   
+    SELEct fao_area_id, array_agg(distinct reconstruction_eez_id) eez_id
+      FROM geo.eez_fao_combo 
+     GROUP BY fao_area_id   
+  ),                
+  aa AS (
+    SELECT a.eez_id, a.Fishing_Entity_ID, a.Start_Year, a.End_Year, string_to_array(a.Functional_Group_ID, ';')::int[] AS fgi 
+      FROM master.Access_Agreement a
+  )
+  SELECT distinct c.id 
+    FROM recon.catch c
+    JOIN master.eez e ON (e.eez_id = c.eez_id and e.is_currently_used_for_reconstruction and e.eez_id not in (0, 999))
+    JOIN master.fishing_entity fe ON (fe.fishing_entity_id = c.fishing_entity_id and not (fe.is_allowed_to_fish_pre_eez_by_default and c.year < e.declaration_year))
+    JOIN master.taxon t ON (t.taxon_key = c.taxon_key)
+    JOIN fao ON (fao.fao_area_id = c.fao_area_id)
+    LEFT join aa ON (aa.fishing_entity_id = c.fishing_entity_id
+                     and c.year between aa.Start_Year and aa.End_Year
+                     and aa.eez_id = any(fao.eez_id)
+                     and aa.eez_id = c.eez_id
+                     and (aa.fgi is null or c.taxon_key = any(array[100039, 100139, 100239, 100339]) or t.functional_group_id = any(aa.fgi)))
+   WHERE c.layer = 2
+     AND aa.fishing_entity_id is null;  
+
 --
 -- custom views
 --
@@ -284,7 +309,6 @@ CREATE OR REPLACE VIEW recon.v_custom_catch_comments AS
     JOIN file_upload fu ON (rc.source_file_id = fu.id)
     JOIN reference r ON (c.reference_id = r.reference_id)
   ORDER BY fu.create_datetime;
-
 
 --
 -- distribution errors
