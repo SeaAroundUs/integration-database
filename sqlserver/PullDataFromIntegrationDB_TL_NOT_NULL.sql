@@ -357,7 +357,7 @@ BEGIN
   SELECT *
     FROM openquery(
            SAU_INTEGRATION_DB, 
-           'SELECT c.id,c.layer,c.fishing_entity_id,c.eez_id,c.fao_area_id,c.year,c.taxon_key,c.amount,st.name as sector,c.catch_type_id,c.reporting_status_id,it.name as input,ia.ices_area,c.ccamlr_area,na.nafo_division
+           'SELECT c.raw_catch_id,c.layer,c.fishing_entity_id,c.eez_id,c.fao_area_id,c.year,c.taxon_key,c.amount,st.name as sector,c.catch_type_id,c.reporting_status_id,it.name as input,ia.ices_area,c.ccamlr_area,na.nafo_division
               FROM recon.catch c
               JOIN master.time y ON (y.year = c.year AND y.is_used_for_allocation)
               JOIN master.sector_type st ON (st.sector_type_id = c.sector_type_id)
