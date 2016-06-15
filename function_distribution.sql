@@ -136,17 +136,48 @@ $body$
 $body$
 language sql;
 
-create or replace function distribution.taxon_lineage_tree(i_taxon_key int) 
+create or replace function distribution.taxon_lineage_tree(i_taxon_key int, i_hierarchy_direction char(1) = 'c') 
 returns table(taxon_key int, scientific_name varchar(256), common_name varchar(256), d boolean, e boolean, h boolean, lineage ltree, parent ltree) as       
 $body$
-  select c.taxon_key, c.scientific_name, c.common_name, c.is_distribution_available d, c.is_extent_available e,
-         (e.taxon_key is not null) h, c.lineage, c.parent 
-    from master.taxon p
-    join master.v_taxon_lineage c on (c.lineage <@ p.lineage)
-    left join distribution.taxon_extent e on (e.taxon_key = c.taxon_key)
-   where p.taxon_key = i_taxon_key;
+declare
+  top_level_ancestor int;
+begin
+  case lower(i_hierarchy_direction)
+  when 'c' then
+    return query
+    select c.taxon_key, c.scientific_name, c.common_name, c.is_distribution_available d, c.is_extent_available e,
+           (e.taxon_key is not null) h, c.lineage, c.parent 
+      from master.taxon p
+      join master.v_taxon_lineage c on (c.lineage <@ p.lineage)
+      left join distribution.taxon_extent e on (e.taxon_key = c.taxon_key)
+     where p.taxon_key = i_taxon_key;
+  when 'p' then
+    return query
+    select p.taxon_key, p.scientific_name, p.common_name, p.is_distribution_available d, p.is_extent_available e,
+           (e.taxon_key is not null) h, p.lineage, p.parent 
+      from master.taxon c
+      join master.v_taxon_lineage p on (p.lineage @> c.lineage)
+      left join distribution.taxon_extent e on (e.taxon_key = p.taxon_key)
+     where c.taxon_key = i_taxon_key;
+  when 't' then
+    select p.taxon_key
+      into top_level_ancestor
+      from master.taxon c
+      join master.taxon p on (p.lineage @> c.lineage and not p.is_retired)
+     where c.taxon_key = i_taxon_key
+       and not c.is_retired
+     order by nlevel(p.lineage), p.taxon_level_id limit 1;
+     
+    if found then
+      return query
+      select * from distribution.taxon_lineage_tree(top_level_ancestor, 'c');
+    else
+      return;
+    end if;
+  end case;
+end
 $body$
-language sql;
+language plpgsql;
 
 /*
 The command below should be maintained as the last command in this entire script.
