@@ -428,3 +428,19 @@ CREATE TABLE geo.ifa_fao(
   eez_id int,
   ifa_is_located_in_this_fao int
 );
+
+CREATE TABLE geo.area (
+    gid serial primary key,
+    area_key int,
+    area_km2 numeric,
+    geom geometry(MultiPolygon, 4326),
+    ifa_area_km2 numeric,
+    ifa_geom geometry(MultiPolygon, 4326)
+);
+
+CREATE TABLE geo.high_seas (
+    gid serial primary key,
+    fao_area_id int,
+    eez_ogc_fid_intersects int[], 
+    geom public.geometry(MultiPolygon, 4326)
+);
