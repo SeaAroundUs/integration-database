@@ -82,13 +82,13 @@ language sql;
 
 create or replace function master.taxon_child_tree(parent ltree) returns json as 
 $body$
-    var rows = plv8.execute("SELECT taxon_key as key,common_name as name, level, lineage, parent::text, " +
+    var rows = plv8.execute("SELECT taxon_key as key,common_name as name, level, lineage, parent, " +
                             "       is_distribution_available as is_dist, is_extent_available as is_extent, " +
                             "       to_char(total_catch, '999,999,999,999,999.99') as total_catch, " +
                             "       to_char(total_value, '999,999,999,999,999.99') as total_value " +
                             "  FROM master.v_taxon_lineage "+ 
                             " WHERE parent <@ $1 " + 
-                            " ORDER BY nlevel(parent),common_name", 
+                            " ORDER BY nlevel(parent), level, common_name", 
                             [parent]);
     
     var all = {},
@@ -98,11 +98,17 @@ $body$
     for(i=0; i<rows.length; i++){
         r = rows[i];
         r.children = [];
-        //all[r.id] = r;
+        //all[r.key] = r;
         all[r.lineage] = r;
         if(r.parent == parent){
             out.push(r);
         }
+
+        //plv8.elog(NOTICE, "r: " + r);
+        //plv8.elog(NOTICE, "parent: " + parent);
+        //plv8.elog(NOTICE, "r.parent: " + r.parent);
+        //plv8.elog(NOTICE, "all: " + all);
+        //plv8.elog(NOTICE, "out: " + out);
     }
     
     for(i=0; i<rows.length; i++){

@@ -7,7 +7,10 @@ SELECT * FROM master.taxon WHERE is_retired;
 CREATE OR REPLACE VIEW master.v_taxon_lineage AS
 SELECT t.taxon_key, t.common_name::varchar(30), t.scientific_name::varchar(30), t.genus::varchar(30), t.species::varchar(30),
        t.taxon_level_id as level, t.phylum::varchar(30), t.cla_code, t.ord_code, t.fam_code, t.gen_code, t.spe_code, t.lineage,
-       (select p.lineage from master.taxon p where p.lineage @> t.lineage order by nlevel(p.lineage) desc, p.taxon_level_id desc offset 1 limit 1) as parent, 
+       (SELECT p.lineage 
+          FROM master.taxon p 
+         WHERE NOT p.is_retired AND p.taxon_key IS DISTINCT FROM t.taxon_key AND p.lineage @> t.lineage 
+         ORDER BY nlevel(p.lineage) DESC, p.taxon_level_id DESC LIMIT 1) AS parent, 
        (td.taxon_key is not null) as is_distribution_available, 
        (te.taxon_key is not null) as is_extent_available,
        cbt.total_catch, cbt.total_value
