@@ -13,7 +13,7 @@ BEGIN
   
   NEW.fao_area_id_intersects := 
     (SELECT array_agg(f.fao_area_id) 
-       FROM geo.v_fao f
+       FROM geo.fao_simplified f
       WHERE st_intersects(f.geom, NEW.geom) and not st_touches(f.geom, NEW.geom));
   
   RETURN NEW;
