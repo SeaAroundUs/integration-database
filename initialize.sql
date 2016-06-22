@@ -41,7 +41,7 @@ DROP SCHEMA IF EXISTS validation_partition CASCADE;
 CREATE SCHEMA validation_partition;
 
 \i table_admin.sql
-\i populate_admin.sql
+--\i populate_admin.sql
 
 \echo
 \echo Creating All tables first to avoid dependency problems later on
