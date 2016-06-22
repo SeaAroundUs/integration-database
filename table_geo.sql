@@ -9,6 +9,11 @@ CREATE TABLE geo.fao (
   geom public.geometry(MultiPolygon, 4326)
 );
 
+CREATE TABLE geo.fao_simplified (
+  gid serial primary key,
+  fao_area_id int not null,
+  geom public.geometry(MultiPolygon, 4326)
+);
 
 CREATE TABLE geo.eez (
   ogc_fid serial primary key,

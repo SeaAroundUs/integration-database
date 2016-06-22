@@ -10,6 +10,9 @@ CREATE INDEX ifa_geom_idx ON geo.ifa USING gist(geom);
 CREATE INDEX fao_geom_geom_idx ON geo.fao USING gist(geom);
 CREATE INDEX fao_fao_area_id_idx ON geo.fao(fao_area_id);
 
+CREATE INDEX fao_simplified_geom_geom_idx ON geo.fao_simplified USING gist(geom);
+CREATE INDEX fao_simplified_fao_area_id_idx ON geo.fao_simplified(fao_area_id);
+
 CREATE INDEX mariculture_entity_eez_id_idx ON geo.mariculture_entity(eez_id);
 
 CREATE INDEX mariculture_c_number_idx ON geo.mariculture(c_number);
