@@ -32,6 +32,8 @@ CREATE INDEX v_fao_geom_idx ON geo.v_fao USING gist(geom);
 CREATE INDEX worldsq_geom_idx ON geo.worldsq USING gist(geom);
 
 CREATE UNIQUE INDEX area_area_key_idx ON geo.area(area_key);
+CREATE INDEX area_geom_idx ON geo.area USING gist(geom);
+CREATE INDEX area_ifa_geom_idx ON geo.area USING gist(ifa_geom);
 
 CREATE INDEX high_seas_geom_geom_idx ON geo.high_seas USING gist(geom);
 CREATE INDEX high_seas_fao_area_id_idx ON geo.high_seas(fao_area_id);
