@@ -116,6 +116,9 @@ SELECT id FROM recon.raw_catch WHERE amount <= 0;
 --       so if you make any change to this view the index_recon.sql script should be reviewed as well to make sure the corresponding performance-related indexes are properly setup for this view.
 --
 CREATE OR REPLACE VIEW recon.v_raw_catch_lookup_mismatch AS
+WITH tm AS (
+  SELECT t.year FROM master.time AS t ORDER BY t.year
+)
 SELECT rc.id 
   FROM recon.raw_catch rc
  WHERE 0 = ANY(ARRAY[taxon_key, 
@@ -130,7 +133,8 @@ SELECT rc.id
 UNION
 SELECT rc.id 
   FROM recon.raw_catch rc
- WHERE rc.year NOT IN (SELECT t.year FROM master.time AS t);
+  LEFT JOIN tm ON (tm.year = rc.year)
+ WHERE tm.year IS NULL;
     
 
 -- Missing required field
