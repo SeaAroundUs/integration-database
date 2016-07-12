@@ -63,7 +63,10 @@ CREATE TABLE distribution.taxon_habitat (
     fao_limits smallint,
     sl_max double precision,
     intertidal boolean,
-    temperature double precision
+    temperature double precision,
+    water_column_position character varying(255),
+    depth_comments text,
+    general_comments text
 );
 
 /* And here we create the dependent habitat_index view in the 'master' schema */
