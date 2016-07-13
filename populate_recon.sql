@@ -51,5 +51,6 @@ values
 (402, 'E', 'v_distribution_taxon_min_depth_null', 'Master.taxon record with min_depth is null'),
 (403, 'E', 'v_distribution_taxon_max_depth_null', 'Master.taxon record with max_depth is null'),
 (410, 'E', 'v_distribution_taxon_habitat_fao_not_overlap_extent', 'Distribution.taxon_habitat record found_in_fao_area_id not overlapping with taxon extent'),
-(411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found')
+(411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found'),
+(412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet')
 ;
