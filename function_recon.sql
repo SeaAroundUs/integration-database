@@ -10,7 +10,7 @@ $body$
          catch_type_id = coalesce(ct.catch_type_id, 0),
          reporting_status_id = coalesce(rs.reporting_status_id, 0),
          nafo_division_id = case 
-                            when r.nafo_division is null then null::int 
+                            when coalesce(r.nafo_division, '') = '' then null::int 
                             else coalesce(nf.nafo_division_id, 0)
                              end,
          taxon_key = case 
@@ -20,7 +20,7 @@ $body$
          original_taxon_name_id = otn.taxon_key,
          original_fao_name_id = ofn.taxon_key,
          ices_area_id = case
-                        when r.ices_area is null then null::int
+                        when coalesce(r.ices_area, '') = '' then null::int
                         else coalesce(ia.ices_area_id, 0)
                         end,
          last_modified = now()
