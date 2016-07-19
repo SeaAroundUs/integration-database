@@ -2,6 +2,8 @@
 values
 (412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet');
 
+VACUUM FULL ANALYZE recon.validation_rule;
+
 create or replace view recon.v_distribution_taxon_extent_available_but_no_distribution as
   select e.taxon_key as id 
     from distribution.taxon_extent e

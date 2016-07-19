@@ -9,4 +9,6 @@ alter input_type set not null,
 alter input_type_id set not null,
 alter input_type_id set DEFAULT 0;
 
+VACUUM FULL ANALYZE recon.raw_catch;
+
 SELECT admin.grant_access();
