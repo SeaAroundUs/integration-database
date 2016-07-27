@@ -10,4 +10,10 @@ INSERT INTO admin.datatransfer_tables(source_database_name, source_table_name, s
 VALUES
  ('sau_geo', 'geo.simple_area_cell_assignment_raw', '*', NULL, 'geo', 'simple_area_cell_assignment_raw', '{}'::TEXT[]) 
 ,('sau_geo', 'geo.cell', '*', NULL, 'geo', 'cell', '{}'::TEXT[])
+,('sau_geo', 'geo.EEZ', '*', NULL, 'geo', 'EEZ', '{}'::TEXT[])
+,('sau_geo', 'geo.eez_big_cell_combo', '*', NULL, 'geo', 'eez_big_cell_combo', '{}'::TEXT[])
+,('sau_geo', 'geo.eez_fao_combo', '*', NULL, 'geo', 'eez_fao_combo', '{}'::TEXT[])
+,('sau_geo', 'geo.depth_adjustment_row_cell', '*', NULL, 'geo', 'depth_adjustment_row_cell', '{}'::TEXT[])
+,('sau_geo', 'geo.ifa', '*', NULL, 'geo', 'ifa', '{}'::TEXT[])
+,('sau_geo', 'geo.mariculture_entity', '*', NULL, 'geo', 'mariculture_entity', '{}'::TEXT[])
 ;
