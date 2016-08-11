@@ -27,9 +27,9 @@ begin
   EDist[2] := (select avg(d) from (values(least(TL[2], HDI[1])), (least(TL[1], HDI[2])), (least(TL[2], HDI[2]))) as t(d));
   
   --defuzzification to estimate absolute effective distance
-  return (EDist[0] * 0.01 + EDist[1] * 0.5 + EDist[2] * 1.0) / (EDist[0] + EDist[1] + EDist[2] + 0.000000001);
+  return (EDist[0] * 0.01 + EDist[1] * 0.5 + EDist[2] * 1.0) / (EDist[0] + EDist[1] + EDist[2] + 0.000000001)*100.0;
 end;
-$body$                    
+$body$                                    
 language plpgsql;                              
 
 -- Triangle distribution
@@ -120,7 +120,7 @@ begin
         rtn_val := 0.0;
       end if;
   end if;
-  
+                                       
   return rtn_val;
 end;
 $body$                    
