@@ -71,6 +71,7 @@ CREATE SCHEMA validation_partition;
 \echo
 \echo Creating DB Objects for the Distribution schema...
 \echo
+\i function_habitat.sql
 \i trigger_distribution.sql
 
 \echo
