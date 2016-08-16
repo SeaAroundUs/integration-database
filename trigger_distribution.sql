@@ -50,11 +50,11 @@ BEGIN
   IF TG_OP = 'INSERT' OR (TG_OP = 'UPDATE' AND TG_NAME = 'taxon_habitat_before_update_trigger_for_hdi') THEN
     NEW.habitat_diversity_index := 
       (SELECT COUNT(*)/5.0 
-         FROM unnest(ARRAY[COALESCE(NEW.estuaries, 0) > 1,
-                           COALESCE(NEW.coral, 0) > 1,
-                           COALESCE(NEW.sea_grass, 0) > 1,
-                           COALESCE(NEW.sea_mount, 0) > 1,
-                           COALESCE(NEW.others, 0) > 1]) AS t(f)  
+         FROM unnest(ARRAY[COALESCE(NEW.estuaries, 0) > 0,
+                           COALESCE(NEW.coral, 0) > 0,
+                           COALESCE(NEW.sea_grass, 0) > 0,
+                           COALESCE(NEW.sea_mount, 0) > 0,
+                           COALESCE(NEW.others, 0) > 0]) AS t(f)  
        WHERE t.f
       );
   END IF;
