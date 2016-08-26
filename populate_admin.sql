@@ -16,4 +16,5 @@ VALUES
 ,('sau_geo', 'geo.depth_adjustment_row_cell', '*', NULL, 'geo', 'depth_adjustment_row_cell', '{}'::TEXT[])
 ,('sau_geo', 'geo.ifa', '*', NULL, 'geo', 'ifa', '{}'::TEXT[])
 ,('sau_geo', 'geo.mariculture_entity', '*', NULL, 'geo', 'mariculture_entity', '{}'::TEXT[])
+,('sau_geo', 'geo.area', '*', NULL, 'geo', 'area', '{}'::TEXT[])
 ;
