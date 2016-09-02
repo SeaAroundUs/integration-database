@@ -212,6 +212,7 @@ CREATE OR REPLACE VIEW allocation.v_recon_catch_for_export AS SELECT c.raw_catch
     c.reporting_status_id,
     it.name AS input,
     ia.ices_area,
+    NULL AS bigcellid,
     c.ccamlr_area,
     na.nafo_division
    FROM (((((recon.catch c
