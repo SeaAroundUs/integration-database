@@ -319,16 +319,28 @@ CREATE OR REPLACE VIEW recon.v_custom_catch_comments AS
 --
 
 create or replace view recon.v_distribution_taxon_lat_north_null as
-  select taxon_key as id from master.taxon where not is_retired and lat_north is null;
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+   where h.lat_north is null;
   
 create or replace view recon.v_distribution_taxon_lat_south_null as
-  select taxon_key as id from master.taxon where not is_retired and lat_south is null;
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+   where h.lat_south is null;
   
 create or replace view recon.v_distribution_taxon_min_depth_null as
-  select taxon_key as id from master.taxon where not is_retired and min_depth is null;
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+   where h.min_depth is null;
   
 create or replace view recon.v_distribution_taxon_max_depth_null as
-  select taxon_key as id from master.taxon where not is_retired and max_depth is null;
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+   where h.max_depth is null;
   
 create or replace view recon.v_distribution_taxon_habitat_fao_not_overlap_extent as
   select h.taxon_key as id 
