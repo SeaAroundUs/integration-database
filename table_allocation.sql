@@ -36,15 +36,3 @@ CREATE TABLE allocation.log_import_raw(
   log_time timestamp NOT NULL,
   message text NOT NULL
 );
-              
-CREATE TABLE allocation.data_raw_layer3(
-  row_id int NOT NULL,
-  rfmo_id int NOT NULL,
-  year int NOT NULL,
-  fishing_entity_id int NOT NULL,
-  layer3_gear_id int NOT NULL,
-  taxon_key int NOT NULL,
-  big_cell_id int NOT NULL,
-  catch float NOT NULL,
-  catch_type_id smallint NOT NULL
-);

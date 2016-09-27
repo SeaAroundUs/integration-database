@@ -117,6 +117,17 @@ CREATE TABLE recon.raw_catch (
     taxon_notes text
 );
 
+CREATE TABLE recon.data_raw_layer3(
+  row_id int NOT NULL,
+  rfmo_id int NOT NULL,
+  year int NOT NULL,
+  fishing_entity_id int NOT NULL,
+  layer3_gear_id int NOT NULL,
+  taxon_key int NOT NULL,
+  big_cell_id int NOT NULL,
+  catch float NOT NULL,
+  catch_type_id smallint NOT NULL
+);
 
 CREATE TABLE recon.file_upload (
     id serial primary key,
