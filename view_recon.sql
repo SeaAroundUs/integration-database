@@ -46,6 +46,27 @@ SELECT id FROM recon.raw_catch WHERE layer IN (2,3) AND sector_type_id != 1;
 CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_rare AS
 SELECT rc.id FROM recon.raw_catch rc, rare_taxon rt WHERE rc.taxon_key = rt.taxon_key;
 
+-- Retired taxa should be excluded
+CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_retired AS
+SELECT rc.id FROM recon.raw_catch rc, master.taxon t WHERE rc.taxon_name = t.scientific_name AND t.is_retired;
+
+-- CCAMLR null for FAO 48, 58 or 88
+CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
+
+-- CCAMLR not null for catch outside of the Antarctic
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_antarctic_ccamlr_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
+
+-- CCAMLR combo does not exist
+CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
+SELECT rc.id FROM recon.raw_catch rc WHERE rc.fao_area_id in (48, 58, 88) and rc.ccamlr_area is not null 
+and rc.ccamlr_area || rc.eez_id not in (SELECT cc.ccamlr_area_id || cc.eez_id FROM geo.eez_ccamlr_combo cc);
+
+-- High Seas ID mismatch
+CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
+SELECT id FROM recon.raw_catch WHERE eez_id = 0 and eez <> 'High Seas';
+
 --
 -- raw_catch errors (blocking)
 --
@@ -199,6 +220,24 @@ CREATE OR REPLACE VIEW recon.v_catch_layer_2_or_3_and_sector_not_industrial AS
 -- Rare taxa should be excluded
 CREATE OR REPLACE VIEW recon.v_catch_taxa_is_rare AS
   SELECT c.id FROM recon.catch c, rare_taxon rt WHERE c.taxon_key = rt.taxon_key;
+  
+-- Retired taxa should be excluded
+CREATE OR REPLACE VIEW recon.v_catch_taxa_is_retired AS
+SELECT c.id FROM recon.catch c, master.taxon t WHERE c.taxon_key = t.taxon_key AND t.is_retired;
+
+-- CCAMLR null for FAO 48, 58 or 88
+CREATE OR REPLACE VIEW recon.v_catch_antarctic_ccamlr_null AS
+SELECT id FROM recon.catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
+
+-- CCAMLR not null for catch outside of the Antarctic
+CREATE OR REPLACE VIEW recon.v_catch_outside_antarctic_ccamlr_not_null AS
+SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
+
+-- CCAMLR combo does not exist
+CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
+SELECT c.id FROM recon.catch c WHERE c.fao_area_id in (48, 58, 88) and c.ccamlr_area is not null 
+and c.ccamlr_area || c.eez_id not in (SELECT cc.ccamlr_area_id || cc.eez_id FROM geo.eez_ccamlr_combo cc);
+
 
 --
 -- catch errors
@@ -365,6 +404,15 @@ create or replace view recon.v_distribution_taxon_extent_available_but_no_distri
                       where d.taxon_key = e.taxon_key and not d.is_backfilled 
                       limit 1);
 
+-- No distribution for taxa
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_catch AS
+SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
+GROUP BY rc.taxon_key HAVING sum(amount) <= 1000;
+
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_catch AS
+SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
+GROUP BY rc.taxon_key HAVING sum(amount) > 1000;
+                      
 /*
 The command below should be maintained as the last command in this entire script.
 */

@@ -11,6 +11,11 @@ values
 (6, 'E', 'v_raw_catch_lookup_mismatch', 'Lookup table mismatch'),
 (7, 'E', 'v_raw_catch_missing_required_field', 'Missing required field'),
 (8, 'E', 'v_raw_catch_taxa_is_rare', 'Rare taxa should be excluded'),
+(9, 'E', 'v_raw_catch_taxa_is_retired', 'Retired taxa should be excluded'),
+(10, 'E', 'v_raw_catch_antarctic_ccamlr_null', 'CCAMLR null for FAO 48, 58 or 88'),
+(11, 'E', 'v_raw_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
+(12, 'E', 'v_raw_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
+(13, 'E', 'v_raw_catch_high_seas_mismatch', 'High Seas ID mismatch'),
 
 -- Raw_catch warning rules
 (100, 'W', 'v_raw_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
@@ -31,7 +36,11 @@ values
 (203, 'E', 'v_catch_input_not_reconstructed_reporting_status_unreported', 'Input type is not reconstructed and Reporting status is unreported'),
 (204, 'E', 'v_catch_layer_not_in_range', 'Unknown layer'),
 (205, 'E', 'v_catch_taxa_is_rare', 'Rare taxa should be excluded'),     
-(206, 'E', 'v_catch_no_corresponding_aa_found', 'No matching access_agreement records found'),     
+(206, 'E', 'v_catch_no_corresponding_aa_found', 'No matching access_agreement records found'),
+(207, 'E', 'v_catch_taxa_is_retired', 'Retired taxa should be excluded'),
+(208, 'E', 'v_catch_antarctic_ccamlr_null', 'CCAMLR null for FAO 48, 58 or 88'),
+(209, 'E', 'v_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
+(210, 'E', 'v_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
 
 -- Catch warning rules
 (300, 'W', 'v_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
@@ -52,5 +61,7 @@ values
 (403, 'E', 'v_distribution_taxon_max_depth_null', 'Master.taxon record with max_depth is null'),
 (410, 'E', 'v_distribution_taxon_habitat_fao_not_overlap_extent', 'Distribution.taxon_habitat record found_in_fao_area_id not overlapping with taxon extent'),
 (411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found'),
-(412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet')
+(412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet'),
+(413, 'E', 'v_distribution_taxa_has_no_distribution_low_catch', 'No distribution for taxa and catch <= 1000'),
+(414, 'E', 'v_distribution_taxa_has_no_distribution_high_catch', 'No distribution for taxa and catch > 1000')
 ;
