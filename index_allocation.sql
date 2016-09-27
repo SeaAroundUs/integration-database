@@ -1,2 +1,1 @@
 CREATE INDEX taxon_distribution_old_taxon_key_idx ON allocation.taxon_distribution_old(taxon_key);
-CREATE INDEX data_raw_layer3_taxon_key_idx ON allocation.data_raw_layer3(taxon_key);
