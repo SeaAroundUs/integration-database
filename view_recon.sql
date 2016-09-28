@@ -60,8 +60,13 @@ SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_
 
 -- CCAMLR combo does not exist
 CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
-SELECT rc.id FROM recon.raw_catch rc WHERE rc.fao_area_id in (48, 58, 88) and rc.ccamlr_area is not null 
-and rc.ccamlr_area || rc.eez_id not in (SELECT cc.ccamlr_area_id || cc.eez_id FROM geo.eez_ccamlr_combo cc);
+SELECT rc.id 
+  FROM recon.raw_catch rc
+  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
+ WHERE rc.fao_area_id in (48, 58, 88) 
+   and rc.ccamlr_area is not null 
+   and cc.ccamlr_area_id is null
+   and cc.eez_id is null;
 
 -- High Seas ID mismatch
 CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
@@ -235,8 +240,13 @@ SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area
 
 -- CCAMLR combo does not exist
 CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
-SELECT c.id FROM recon.catch c WHERE c.fao_area_id in (48, 58, 88) and c.ccamlr_area is not null 
-and c.ccamlr_area || c.eez_id not in (SELECT cc.ccamlr_area_id || cc.eez_id FROM geo.eez_ccamlr_combo cc);
+SELECT c.id 
+  FROM recon.catch c
+  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = c.ccamlr_area and cc.eez_id = c.eez_id)
+ WHERE c.fao_area_id in (48, 58, 88) 
+   and c.ccamlr_area is not null 
+   and cc.ccamlr_area_id is null
+   and cc.eez_id is null;
 
 
 --
