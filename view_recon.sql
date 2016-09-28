@@ -46,10 +46,6 @@ SELECT id FROM recon.raw_catch WHERE layer IN (2,3) AND sector_type_id != 1;
 CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_rare AS
 SELECT rc.id FROM recon.raw_catch rc, rare_taxon rt WHERE rc.taxon_key = rt.taxon_key;
 
--- Retired taxa should be excluded
-CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_retired AS
-SELECT rc.id FROM recon.raw_catch rc, master.taxon t WHERE rc.taxon_name = t.scientific_name AND t.is_retired;
-
 -- CCAMLR null for FAO 48, 58 or 88
 CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
@@ -59,11 +55,13 @@ CREATE OR REPLACE VIEW recon.v_raw_catch_outside_antarctic_ccamlr_not_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
 
 -- CCAMLR combo does not exist
+-- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
 CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
 SELECT rc.id 
   FROM recon.raw_catch rc
   LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
- WHERE rc.fao_area_id in (48, 58, 88) 
+ WHERE rc.fao_area_id in (48, 58, 88)
+   and rc.eez_id <> 999 
    and rc.ccamlr_area is not null 
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
@@ -225,10 +223,6 @@ CREATE OR REPLACE VIEW recon.v_catch_layer_2_or_3_and_sector_not_industrial AS
 -- Rare taxa should be excluded
 CREATE OR REPLACE VIEW recon.v_catch_taxa_is_rare AS
   SELECT c.id FROM recon.catch c, rare_taxon rt WHERE c.taxon_key = rt.taxon_key;
-  
--- Retired taxa should be excluded
-CREATE OR REPLACE VIEW recon.v_catch_taxa_is_retired AS
-SELECT c.id FROM recon.catch c, master.taxon t WHERE c.taxon_key = t.taxon_key AND t.is_retired;
 
 -- CCAMLR null for FAO 48, 58 or 88
 CREATE OR REPLACE VIEW recon.v_catch_antarctic_ccamlr_null AS
@@ -239,11 +233,13 @@ CREATE OR REPLACE VIEW recon.v_catch_outside_antarctic_ccamlr_not_null AS
 SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
 
 -- CCAMLR combo does not exist
+-- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
 CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
 SELECT c.id 
   FROM recon.catch c
   LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = c.ccamlr_area and cc.eez_id = c.eez_id)
- WHERE c.fao_area_id in (48, 58, 88) 
+ WHERE c.fao_area_id in (48, 58, 88)
+   and c.eez_id <> 999
    and c.ccamlr_area is not null 
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
