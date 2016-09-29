@@ -7,8 +7,8 @@ values
 (208, 'E', 'v_catch_antarctic_ccamlr_null', 'CCAMLR null for FAO 48, 58 or 88'),
 (209, 'E', 'v_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
 (210, 'E', 'v_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
-(413, 'E', 'v_distribution_taxa_has_no_distribution_low_catch', 'No distribution for taxa and catch <= 1000'),
-(414, 'E', 'v_distribution_taxa_has_no_distribution_high_catch', 'No distribution for taxa and catch > 1000');
+(413, 'E', 'v_distribution_taxa_has_no_distribution_low_raw_catch', 'No distribution for taxa and raw catch <= 1000'),
+(414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'No distribution for taxa and raw catch > 1000');
 
 VACUUM FULL ANALYZE recon.validation_rule;
 
@@ -47,13 +47,27 @@ SELECT c.id
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
 
-CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_catch AS
-SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
-GROUP BY rc.taxon_key HAVING sum(amount) <= 1000;
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_raw_catch AS
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+ WHERE d.taxon_key is null 
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) <= 1000;
 
-CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_catch AS
-SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
-GROUP BY rc.taxon_key HAVING sum(amount) > 1000;
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_raw_catch AS
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+ WHERE d.taxon_key is null 
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) > 1000;
 
 select * from recon.maintain_validation_result_partition();
 

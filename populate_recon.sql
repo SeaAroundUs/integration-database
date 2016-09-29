@@ -60,6 +60,6 @@ values
 (410, 'E', 'v_distribution_taxon_habitat_fao_not_overlap_extent', 'Distribution.taxon_habitat record found_in_fao_area_id not overlapping with taxon extent'),
 (411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found'),
 (412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet'),
-(413, 'E', 'v_distribution_taxa_has_no_distribution_low_catch', 'No distribution for taxa and catch <= 1000'),
-(414, 'E', 'v_distribution_taxa_has_no_distribution_high_catch', 'No distribution for taxa and catch > 1000')
+(413, 'E', 'v_distribution_taxa_has_no_distribution_low_raw_catch', 'No distribution for taxa and raw catch <= 1000'),
+(414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'No distribution for taxa and raw catch > 1000')
 ;

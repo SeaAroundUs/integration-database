@@ -411,11 +411,21 @@ create or replace view recon.v_distribution_taxon_extent_available_but_no_distri
                       limit 1);
 
 -- No distribution for taxa
-CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_catch AS
-SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
-GROUP BY rc.taxon_key HAVING sum(amount) <= 1000;
+-- NOTE: this view heavily relies on the index raw_catch_taxon_key_amount_idx for its performance, 
+--       so if you make any change to this view the index_recon.sql script should be reviewed as well to make sure the corresponding performance-related indexes are properly setup for this view.
+--
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_raw_catch AS
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+ WHERE d.taxon_key is null 
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) <= 1000;
 
-CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_catch AS
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_raw_catch AS
 WITH distributions(taxon_key) as (
   select distinct taxon_key from distribution.taxon_distribution
 )
