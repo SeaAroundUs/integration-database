@@ -416,9 +416,16 @@ SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_ke
 GROUP BY rc.taxon_key HAVING sum(amount) <= 1000;
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_catch AS
-SELECT rc.taxon_key as id, sum(amount) FROM recon.raw_catch rc WHERE rc.taxon_key not in (select t.taxon_key from distribution.taxon_distribution t)
-GROUP BY rc.taxon_key HAVING sum(amount) > 1000;
-                      
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+ WHERE d.taxon_key is null 
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) > 1000;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */

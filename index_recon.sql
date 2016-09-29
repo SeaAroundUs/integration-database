@@ -101,5 +101,7 @@ CREATE INDEX raw_catch_peru_amount_greater_than_threshold_idx ON recon.raw_catch
 
 CREATE INDEX raw_catch_amount_greater_than_threshold_idx ON recon.raw_catch(id) WHERE amount > 5e6 AND eez_id IS DISTINCT FROM 604;
 
+CREATE INDEX raw_catch_taxon_key_amount_idx ON recon.raw_catch(taxon_key, amount);
+
 /* raw layer3 catch data */
 CREATE INDEX data_raw_layer3_taxon_key_idx ON recon.data_raw_layer3(taxon_key);
