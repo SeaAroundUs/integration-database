@@ -18,6 +18,8 @@ UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat recor
 
 VACUUM FULL ANALYZE recon.validation_rule;
 
+select * from recon.maintain_validation_result_partition();
+
 CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
 
@@ -102,7 +104,5 @@ SELECT rc.taxon_key as id, sum(amount)
    and s.taxon_key is not null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) > 1000;
-
-select * from recon.maintain_validation_result_partition();
 
 select admin.grant_access();
