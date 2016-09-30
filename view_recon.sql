@@ -417,22 +417,50 @@ create or replace view recon.v_distribution_taxon_extent_available_but_no_distri
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_raw_catch AS
 WITH distributions(taxon_key) as (
   select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
 )
 SELECT rc.taxon_key as id, sum(amount) 
   FROM recon.raw_catch rc
   LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
- WHERE d.taxon_key is null 
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) <= 1000;
+
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_raw_catch AS
 WITH distributions(taxon_key) as (
   select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
 )
 SELECT rc.taxon_key as id, sum(amount) 
   FROM recon.raw_catch rc
   LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
- WHERE d.taxon_key is null 
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is null
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) > 1000;
+
+
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_substitute_high_raw_catch AS
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is not null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) > 1000;
 
