@@ -18,8 +18,12 @@ select * from recon.maintain_validation_result_partition();
 CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
 
+select recon.refresh_validation_result_partition('v_raw_catch_antarctic_ccamlr_null');
+
 CREATE OR REPLACE VIEW recon.v_raw_catch_outside_antarctic_ccamlr_not_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
+
+select recon.refresh_validation_result_partition('v_raw_catch_outside_antarctic_ccamlr_not_null');
 
 CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
 SELECT rc.id 
@@ -30,15 +34,23 @@ SELECT rc.id
    and rc.ccamlr_area is not null 
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
+   
+select recon.refresh_validation_result_partition('v_raw_catch_ccamlr_combo_mismatch');
 
 CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
 SELECT id FROM recon.raw_catch WHERE eez_id = 0 and eez <> 'High Seas';
 
+select recon.refresh_validation_result_partition('v_raw_catch_high_seas_mismatch');
+
 CREATE OR REPLACE VIEW recon.v_catch_antarctic_ccamlr_null AS
 SELECT id FROM recon.catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
 
+select recon.refresh_validation_result_partition('v_catch_antarctic_ccamlr_null');
+
 CREATE OR REPLACE VIEW recon.v_catch_outside_antarctic_ccamlr_not_null AS
 SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
+
+select recon.refresh_validation_result_partition('v_catch_outside_antarctic_ccamlr_not_null');
 
 CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
 SELECT c.id 
@@ -49,6 +61,8 @@ SELECT c.id
    and c.ccamlr_area is not null 
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
+   
+select recon.refresh_validation_result_partition('v_catch_ccamlr_combo_mismatch');
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_raw_catch AS
 WITH distributions(taxon_key) as (
@@ -66,6 +80,7 @@ SELECT rc.taxon_key as id, sum(amount)
  GROUP BY rc.taxon_key 
 HAVING sum(amount) <= 1000;
 
+select recon.refresh_validation_result_partition('v_distribution_taxa_has_no_distribution_low_raw_catch');
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_raw_catch AS
 WITH distributions(taxon_key) as (
@@ -83,6 +98,7 @@ SELECT rc.taxon_key as id, sum(amount)
  GROUP BY rc.taxon_key 
 HAVING sum(amount) > 1000;
 
+select recon.refresh_validation_result_partition('v_distribution_taxa_has_no_distribution_high_raw_catch');
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_substitute_high_raw_catch AS
 WITH distributions(taxon_key) as (
@@ -99,5 +115,7 @@ SELECT rc.taxon_key as id, sum(amount)
    and s.taxon_key is not null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) > 1000;
+
+select recon.refresh_validation_result_partition('v_distribution_taxa_has_substitute_high_raw_catch');
 
 select admin.grant_access();
