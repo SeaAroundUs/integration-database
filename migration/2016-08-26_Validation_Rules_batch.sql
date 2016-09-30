@@ -7,8 +7,14 @@ values
 (208, 'E', 'v_catch_antarctic_ccamlr_null', 'CCAMLR null for FAO 48, 58 or 88'),
 (209, 'E', 'v_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
 (210, 'E', 'v_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
-(413, 'E', 'v_distribution_taxa_has_no_distribution_low_raw_catch', 'No distribution for taxa and raw catch <= 1000'),
-(414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'No distribution for taxa and raw catch > 1000');
+(413, 'E', 'v_distribution_taxa_has_no_distribution_low_raw_catch', 'Distribution.taxon_distribution record unavailable, but raw catch <= 1000 (add taxa to substitute table)'),
+(414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'Distribution.taxon_distribution record unavailable and raw catch > 1000 (create extent/distribution)'),
+(415, 'E', 'v_distribution_taxa_has_substitute_high_raw_catch', 'Distribution.taxon_distribution_substitute available and raw catch > 1000 (create extent/distribution)');
+
+UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with lat_north is null' WHERE rule_id = 400;
+UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with lat_south is null' WHERE rule_id = 401;
+UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with min_depth is null' WHERE rule_id = 402;
+UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with max_depth is null' WHERE rule_id = 403;
 
 VACUUM FULL ANALYZE recon.validation_rule;
 
@@ -50,22 +56,50 @@ SELECT c.id
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_low_raw_catch AS
 WITH distributions(taxon_key) as (
   select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
 )
 SELECT rc.taxon_key as id, sum(amount) 
   FROM recon.raw_catch rc
   LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
- WHERE d.taxon_key is null 
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) <= 1000;
+
 
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_no_distribution_high_raw_catch AS
 WITH distributions(taxon_key) as (
   select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
 )
 SELECT rc.taxon_key as id, sum(amount) 
   FROM recon.raw_catch rc
   LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
- WHERE d.taxon_key is null 
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is null
+ GROUP BY rc.taxon_key 
+HAVING sum(amount) > 1000;
+
+
+CREATE OR REPLACE VIEW recon.v_distribution_taxa_has_substitute_high_raw_catch AS
+WITH distributions(taxon_key) as (
+  select distinct taxon_key from distribution.taxon_distribution
+),
+substitutions(taxon_key) as (
+  select distinct original_taxon_key from distribution.taxon_distribution_substitute
+)
+SELECT rc.taxon_key as id, sum(amount) 
+  FROM recon.raw_catch rc
+  LEFT JOIN distributions d on (rc.taxon_key = d.taxon_key)
+  LEFT JOIN substitutions s on (rc.taxon_key = s.taxon_key)
+ WHERE d.taxon_key is null
+   and s.taxon_key is not null
  GROUP BY rc.taxon_key 
 HAVING sum(amount) > 1000;
 
