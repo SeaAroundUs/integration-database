@@ -15,6 +15,8 @@ VACUUM FULL ANALYZE recon.validation_rule;
 
 select * from recon.maintain_validation_result_partition();
 
+CREATE INDEX raw_catch_taxon_key_amount_idx ON recon.raw_catch(taxon_key, amount);
+
 CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
 SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
 
