@@ -11,11 +11,6 @@ values
 (414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'Distribution.taxon_distribution record unavailable and raw catch > 1000 (create extent/distribution)'),
 (415, 'E', 'v_distribution_taxa_has_substitute_high_raw_catch', 'Distribution.taxon_distribution_substitute available and raw catch > 1000 (create extent/distribution)');
 
-UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with lat_north is null' WHERE rule_id = 400;
-UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with lat_south is null' WHERE rule_id = 401;
-UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with min_depth is null' WHERE rule_id = 402;
-UPDATE recon.validation_rule SET description = 'Distribution.taxon_habitat record with max_depth is null' WHERE rule_id = 403;
-
 VACUUM FULL ANALYZE recon.validation_rule;
 
 select * from recon.maintain_validation_result_partition();
