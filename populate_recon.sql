@@ -53,10 +53,10 @@ values
 (309, 'W', 'v_catch_year_max', 'Year greater than the max year'),
 
 -- Distribution error rules
-(400, 'E', 'v_distribution_taxon_lat_north_null', 'Master.taxon record with lat_north is null'),
-(401, 'E', 'v_distribution_taxon_lat_south_null', 'Master.taxon record with lat_south is null'),
-(402, 'E', 'v_distribution_taxon_min_depth_null', 'Master.taxon record with min_depth is null'),
-(403, 'E', 'v_distribution_taxon_max_depth_null', 'Master.taxon record with max_depth is null'),
+(400, 'E', 'v_distribution_taxon_lat_north_null', 'Distribution.taxon_habitat record with lat_north is null'),
+(401, 'E', 'v_distribution_taxon_lat_south_null', 'Distribution.taxon_habitat record with lat_south is null'),
+(402, 'E', 'v_distribution_taxon_min_depth_null', 'Distribution.taxon_habitat record with min_depth is null'),
+(403, 'E', 'v_distribution_taxon_max_depth_null', 'Distribution.taxon_habitat record with max_depth is null'),
 (410, 'E', 'v_distribution_taxon_habitat_fao_not_overlap_extent', 'Distribution.taxon_habitat record found_in_fao_area_id not overlapping with taxon extent'),
 (411, 'E', 'v_distribution_taxon_extent_available_but_no_habitat', 'Distribution.taxon_extent record available, but no corresponding taxon habitat found'),
 (412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet'),
