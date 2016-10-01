@@ -120,4 +120,6 @@ HAVING sum(amount) > 1000;
 
 select recon.refresh_validation_result_partition('v_distribution_taxa_has_substitute_high_raw_catch');
 
+VACUUM FULL ANALYZE recon.raw_catch;
+
 select admin.grant_access();
