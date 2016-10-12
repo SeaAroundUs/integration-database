@@ -420,6 +420,20 @@ CREATE TABLE master.access_agreement(
   old_reason_not_used varchar(255)
 );
 
+CREATE TABLE master.country_fishery_profile(
+  profile_id serial PRIMARY KEY,
+  c_number int NULL,
+  count_code varchar(4) NOT NULL,
+  country_name varchar(50) NULL,
+  fish_mgt_plan text NULL,
+  url_fish_mgt_plan text NULL,
+  gov_marine_fish text NULL,
+  major_law_plan text NULL,
+  url_major_law_plan text NULL,
+  gov_protect_marine_env text NULL,
+  url_gov_protect_marine_env text NULL
+);
+
 CREATE TABLE master.price(
 	year int not null,
 	fishing_entity_id int not null,
