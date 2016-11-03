@@ -14,6 +14,6 @@ CREATE TABLE master.country_fishery_profile(
 
 CREATE INDEX country_fishery_profile_count_code_idx ON master.country_fishery_profile(count_code);
 
-\copy master.country_fishery_profile from 'country_fishery_profile_updated_2016-10-11.txt' with (format csv, header, delimiter E'\t')
+\copy master.country_fishery_profile from 'country_fishery_profile_updated_2016-11-03.txt' with (format csv, header, delimiter E'\t')
 
 select admin.grant_access();
