@@ -693,6 +693,35 @@ BEGIN
 			inherited_att_allows_coastal_fishing_for_layer2_data
             FROM allocation.v_internal_generate_allocation_simple_area_table');
   ALTER INDEX ALL ON [imported].[AllocationSimpleArea] REORGANIZE;
+  
+SET @msg = char(10) + 'Pulling down recon.data_raw_layer3'; 
+  RAISERROR (@msg, 0, 1) WITH NOWAIT;	
+  TRUNCATE TABLE  [dbo].[DataRaw_Layer3];
+  INSERT INTO  [dbo].[DataRaw_Layer3](
+	        [RowID]
+           ,[RFMOID]
+           ,[Year]
+           ,[FishingEntityID]
+           ,[Layer3GearID]
+           ,[TaxonKey]
+           ,[BigCellID]
+           ,[Catch]
+           ,[CatchTypeID]
+)
+  SELECT *
+    FROM openquery(
+           SAU_INTEGRATION_DB, 
+           'SELECT row_id,
+		     rfmo_id,
+		    year,
+			fishing_entity_id,
+			layer3_gear_id,
+			taxon_key,
+			big_cell_id,
+			catch,
+			catch_type_id
+            FROM recon.data_raw_layer3');
+  ALTER INDEX ALL ON [dbo].[DataRaw_Layer3] REORGANIZE;
 END            
 
 GO
