@@ -28,6 +28,14 @@ CREATE TABLE admin.datatransfer_tables(
   last_transfer_success BOOLEAN
 );
 
+CREATE TABLE admin.database_foreign_key (
+  drop_fk_cmd TEXT,
+  add_fk_cmd TEXT,
+  modified TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  one_row_condition BOOLEAN PRIMARY KEY DEFAULT TRUE,
+  CONSTRAINT database_foreign_key_one_row_condition_uk CHECK(one_row_condition)
+);
+
 /*
 Forward declaration of this function to allow for its inclusion in each scripts below
 */
