@@ -353,6 +353,12 @@ CREATE TABLE geo.eez_nafo_combo(
   is_ifa boolean NOT NULL DEFAULT false
 );
 
+CREATE TABLE geo.fao_lme_combo(
+  fao_lme_combo_id int PRIMARY KEY,
+  fao_area_id smallint NOT NULL,
+  lme_number int NOT NULL,
+);
+
 CREATE TABLE geo.fao_cell(
   fao_area_id smallint NOT NULL,
   cell_id int NOT NULL
