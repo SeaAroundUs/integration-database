@@ -356,7 +356,8 @@ CREATE TABLE geo.eez_nafo_combo(
 CREATE TABLE geo.fao_lme_combo(
   fao_lme_combo_id int PRIMARY KEY,
   fao_area_id smallint NOT NULL,
-  lme_number int NOT NULL
+  lme_number int NOT NULL,
+  CONSTRAINT unique_fao_lme UNIQUE (fao_area_id, lme_number)
 );
 
 CREATE TABLE geo.fao_cell(
