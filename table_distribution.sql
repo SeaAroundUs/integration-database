@@ -24,7 +24,8 @@ CREATE TABLE distribution.taxon_distribution_log (
 CREATE TABLE distribution.taxon_distribution_substitute(
   original_taxon_key int primary key,
   use_this_taxon_key_instead int not null,
-  is_manual_override boolean not null default false
+  is_manual_override boolean not null default false,
+  comments text
 );
 
 CREATE TABLE distribution.grid (
