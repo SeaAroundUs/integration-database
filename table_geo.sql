@@ -380,7 +380,7 @@ CREATE TABLE geo.ices_area(
 CREATE TABLE geo.simple_area_cell_assignment_raw(
   id SERIAL PRIMARY KEY,
   marine_layer_id smallint NULL,
-  area_id smallint NULL,
+  area_id int NULL,
   fao_area_id smallint NULL,
   cell_id int NULL,
   water_area float NULL,
