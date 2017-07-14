@@ -48,6 +48,7 @@ CREATE TABLE distribution.taxon_habitat (
     habitat_diversity_index double precision,
     estuaries double precision not null,
     coral double precision not null,
+    front double precision not null,
     sea_grass double precision,
     sea_mount double precision not null,
     others double precision not null,
@@ -85,6 +86,7 @@ SELECT taxon_key,
        effective_distance as effective_d,
        estuaries,
        coral,
+       front,
        sea_grass as seagrass,
        sea_mount as seamount,
        others,
@@ -92,8 +94,7 @@ SELECT taxon_key,
        slope,
        abyssal,
        inshore,
-       offshore,
-       temperature
+       offshore
   FROM distribution.taxon_habitat;
 
 CREATE TABLE distribution.taxon_extent_rollup(
