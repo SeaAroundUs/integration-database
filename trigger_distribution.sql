@@ -49,9 +49,10 @@ $body$
 BEGIN
   IF TG_OP = 'INSERT' OR (TG_OP = 'UPDATE' AND TG_NAME = 'taxon_habitat_before_update_trigger_for_hdi') THEN
     NEW.habitat_diversity_index := 
-      (SELECT COUNT(*)/5.0 
+      (SELECT COUNT(*)/6.0 
          FROM unnest(ARRAY[COALESCE(NEW.estuaries, 0) > 0,
                            COALESCE(NEW.coral, 0) > 0,
+                           COALESCE(NEW.front, 0) > 0,
                            COALESCE(NEW.sea_grass, 0) > 0,
                            COALESCE(NEW.sea_mount, 0) > 0,
                            COALESCE(NEW.others, 0) > 0]) AS t(f)  
@@ -88,6 +89,7 @@ BEFORE UPDATE ON distribution.taxon_habitat
 FOR EACH ROW
 WHEN (OLD.estuaries IS DISTINCT FROM NEW.estuaries OR 
       OLD.coral IS DISTINCT FROM NEW.coral OR 
+      OLD.front IS DISTINCT FROM NEW.front OR 
       OLD.sea_grass IS DISTINCT FROM NEW.sea_grass OR 
       OLD.sea_mount IS DISTINCT FROM NEW.sea_mount OR 
       OLD.others IS DISTINCT FROM NEW.others)    
