@@ -1,7 +1,7 @@
 -- backup master.cell, distribution.taxon_distribution and distribution.taxon_distribution_log
--- select * into log.cell_table_2017_07_13 from master.cell;
--- select * into log.taxon_distribution_2017_07_13 from distribution.taxon_distribution;
--- select * into log.taxon_distribution_log_2017_07_13 from distribution.taxon_distribution_log;
+select * into log.cell_table_2017_07_13 from master.cell;
+select * into log.taxon_distribution_2017_07_13 from distribution.taxon_distribution;
+select * into log.taxon_distribution_log_2017_07_13 from distribution.taxon_distribution_log;
 
 -- master.cell dependent views
 drop view if exists v_test_cell_assigned_water_area_exceeds_entire_cell_area;
