@@ -416,6 +416,7 @@ CREATE TABLE geo.world(
   seamount_saup float,
   seamount float,
   coral float,
+  front float,
   p_prod float,
   ice_con float,
   sst float,
