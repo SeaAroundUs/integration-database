@@ -341,6 +341,7 @@ CREATE TABLE master.cell (
   seamount_saup double precision,
   seamount double precision,
   coral double precision,
+  front double precision,
   pprod double precision,
   ice_con double precision,
   sst double precision,
@@ -513,4 +514,3 @@ CREATE TABLE master.continent(
   name varchar(128) not null,
   geo_name_id int not null        
 );
-
