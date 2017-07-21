@@ -16,6 +16,8 @@ drop view if exists recon.v_distribution_taxa_has_no_distribution_high_raw_catch
 drop view if exists recon.v_distribution_taxa_has_substitute_high_raw_catch;
 drop view if exists recon.v_distribution_taxon_extent_available_but_no_distribution;
 
+truncate distribution.taxon_distribution_log;
+
 drop table distribution.taxon_distribution; -- dependent on master.cell
 drop table master.cell; -- drop table to 'position' the front column beside coral
 
@@ -62,7 +64,7 @@ CREATE TABLE master.cell (
   pp_annual double precision
 );
 
-\copy master.cell from 'WorldTable_fronts_2017-07-13.txt' with (format csv, header, delimiter E'\t')
+\copy master.cell from 'WorldTable_fronts_2017-07-18.txt' with (format csv, header, delimiter E'\t')
 
 VACUUM FULL ANALYZE master.cell;
 

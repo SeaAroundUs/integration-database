@@ -59,15 +59,15 @@ CREATE TABLE distribution.taxon_habitat (
     offshore double precision not null,
     max_depth integer,
     min_depth integer,
+	true_max_depth integer,
+	water_column_position character varying(255),
+	intertidal boolean,
     lat_north integer,
     lat_south integer,
     found_in_fao_area_id int[] not null,
     fao_limits smallint,
     sl_max double precision,
-    intertidal boolean,
     temperature double precision,
-    water_column_position character varying(255),
-    depth_comments text,
     general_comments text
 );
 
@@ -86,7 +86,7 @@ SELECT taxon_key,
        effective_distance as effective_d,
        estuaries,
        coral,
-       front,
+	   front,
        sea_grass as seagrass,
        sea_mount as seamount,
        others,
@@ -94,8 +94,9 @@ SELECT taxon_key,
        slope,
        abyssal,
        inshore,
-       offshore
-  FROM distribution.taxon_habitat;
+       offshore,
+	   temperature
+FROM distribution.taxon_habitat;
 
 CREATE TABLE distribution.taxon_extent_rollup(
     taxon_key int primary key,
