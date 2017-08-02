@@ -15,12 +15,14 @@ values
 (11, 'E', 'v_raw_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
 (12, 'E', 'v_raw_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
 (13, 'E', 'v_raw_catch_high_seas_mismatch', 'High Seas ID mismatch'),
+(14, 'E', 'v_raw_catch_ices_null', 'ICES area null for FAO 27'),
+(15, 'E', 'v_raw_catch_outside_ices_not_null', 'ICES area not null for catch outside of FAO 27'),
+(16, 'E', 'v_raw_catch_nafo_null', 'NAFO area null for FAO 21'),
+(17, 'E', 'v_raw_catch_outside_nafo_not_null', 'NAFO area not null for catch outside of FAO 21'),
 
 -- Raw_catch warning rules
 (100, 'W', 'v_raw_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
 (101, 'W', 'v_raw_catch_amount_greater_than_threshold', 'Amount > 5e6'),
-(102, 'W', 'v_raw_catch_fao_21_nafo_null', 'Null NAFO for FAO 21'),
-(103, 'W', 'v_raw_catch_fao_27_ices_null', 'Null ICES for FAO 27'),
 (104, 'W', 'v_raw_catch_original_country_fishing_not_null', 'Original country fishing is not null'),
 (105, 'W', 'v_raw_catch_original_sector_not_null', 'Original sector is not null'),
 (106, 'W', 'v_raw_catch_original_taxon_not_null', 'Original taxon name is not null'),
@@ -39,12 +41,14 @@ values
 (208, 'E', 'v_catch_antarctic_ccamlr_null', 'CCAMLR null for FAO 48, 58 or 88'),
 (209, 'E', 'v_catch_outside_antarctic_ccamlr_not_null', 'CCAMLR not null for catch outside of the Antarctic'),
 (210, 'E', 'v_catch_ccamlr_combo_mismatch', 'CCAMLR combo does not exist'),
+(211, 'E', 'v_catch_ices_null', 'ICES area null for FAO 27'),
+(212, 'E', 'v_catch_outside_ices_not_null', 'ICES area not null for catch outside of FAO 27'),
+(213, 'E', 'v_catch_nafo_null', 'NAFO area null for FAO 21'),
+(214, 'E', 'v_catch_outside_nafo_not_null', 'NAFO area not null for catch outside of FAO 21'),
 
 -- Catch warning rules
 (300, 'W', 'v_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
 (301, 'W', 'v_catch_amount_greater_than_threshold', 'Amount > 5e6'),
-(302, 'W', 'v_catch_fao_21_nafo_null', 'Null NAFO for FAO 21'),
-(303, 'W', 'v_catch_fao_27_ices_null', 'Null ICES for FAO 27'),
 (304, 'W', 'v_catch_original_country_fishing_not_null', 'Original country fishing is not null'),
 (305, 'W', 'v_catch_original_sector_not_null', 'Original sector is not null'),
 (306, 'W', 'v_catch_original_taxon_not_null', 'Original taxon name is not null'),

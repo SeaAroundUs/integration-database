@@ -66,9 +66,26 @@ SELECT rc.id
    and cc.ccamlr_area_id is null
    and cc.eez_id is null;
 
+-- ICES area null for FAO 27
+CREATE OR REPLACE VIEW recon.v_raw_catch_ices_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id = 27 and ices_area is null;
+   
+-- ICES area not null for catch outside of FAO 27
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_ices_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id <> 27 and ices_area is not null;
+
+-- NAFO area null for FAO 21
+CREATE OR REPLACE VIEW recon.v_raw_catch_nafo_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id = 21 and nafo_division is null;
+
+-- NAFO area not null for catch outside of FAO 21
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_nafo_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id <> 21 and nafo_division is not null;
+
 -- High Seas ID mismatch
 CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
 SELECT id FROM recon.raw_catch WHERE eez_id = 0 and eez <> 'High Seas';
+
 
 --
 -- raw_catch errors (blocking)
@@ -204,46 +221,14 @@ CREATE OR REPLACE VIEW recon.v_catch_peru_catch_amount_greater_than_threshold AS
 CREATE OR REPLACE VIEW recon.v_catch_amount_greater_than_threshold AS
   SELECT id FROM recon.catch WHERE amount > 5e6 AND eez_id != 604;
 
--- FAO is 27 and ICES is null
-CREATE OR REPLACE VIEW recon.v_catch_fao_27_ices_null AS
-  SELECT id FROM recon.catch WHERE fao_area_id = 27 AND ices_area_id IS NULL;
-
--- FAO is 21 and NAFO is null
-CREATE OR REPLACE VIEW recon.v_catch_fao_21_nafo_null AS
-  SELECT id FROM recon.catch WHERE fao_area_id = 21 AND nafo_division_id IS NULL;
-
 -- Sector is subsistence and Layer is not 1
 CREATE OR REPLACE VIEW recon.v_catch_subsistence_and_layer_not_1 AS
   SELECT id FROM recon.catch WHERE sector_type_id = 2 AND layer != 1;
 
 -- Layer is 2 or 3 and sector is not industrial
 CREATE OR REPLACE VIEW recon.v_catch_layer_2_or_3_and_sector_not_industrial AS
-  SELECT id FROM recon.catch WHERE layer IN (2,3) AND sector_type_id != 1;
-
--- Rare taxa should be excluded
-CREATE OR REPLACE VIEW recon.v_catch_taxa_is_rare AS
-  SELECT c.id FROM recon.catch c, rare_taxon rt WHERE c.taxon_key = rt.taxon_key;
-
--- CCAMLR null for FAO 48, 58 or 88
-CREATE OR REPLACE VIEW recon.v_catch_antarctic_ccamlr_null AS
-SELECT id FROM recon.catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
-
--- CCAMLR not null for catch outside of the Antarctic
-CREATE OR REPLACE VIEW recon.v_catch_outside_antarctic_ccamlr_not_null AS
-SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
-
--- CCAMLR combo does not exist
--- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
-CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
-SELECT c.id 
-  FROM recon.catch c
-  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = c.ccamlr_area and cc.eez_id = c.eez_id)
- WHERE c.fao_area_id in (48, 58, 88)
-   and c.eez_id <> 999
-   and c.ccamlr_area is not null 
-   and cc.ccamlr_area_id is null
-   and cc.eez_id is null;
-
+  SELECT id FROM recon.catch WHERE layer IN (2,3) AND sector_type_id != 1; 
+   
 
 --
 -- catch errors
@@ -308,6 +293,47 @@ CREATE OR REPLACE VIEW recon.v_catch_no_corresponding_aa_found AS
    WHERE c.layer = 2
      AND aa.fishing_entity_id is null;  
 
+-- Rare taxa should be excluded
+CREATE OR REPLACE VIEW recon.v_catch_taxa_is_rare AS
+  SELECT c.id FROM recon.catch c, rare_taxon rt WHERE c.taxon_key = rt.taxon_key;
+
+-- CCAMLR null for FAO 48, 58 or 88
+CREATE OR REPLACE VIEW recon.v_catch_antarctic_ccamlr_null AS
+SELECT id FROM recon.catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area IS NULL;
+
+-- CCAMLR not null for catch outside of the Antarctic
+CREATE OR REPLACE VIEW recon.v_catch_outside_antarctic_ccamlr_not_null AS
+SELECT id FROM recon.catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area IS NOT NULL;
+
+-- CCAMLR combo does not exist
+-- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
+CREATE OR REPLACE VIEW recon.v_catch_ccamlr_combo_mismatch AS
+SELECT c.id 
+  FROM recon.catch c
+  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = c.ccamlr_area and cc.eez_id = c.eez_id)
+ WHERE c.fao_area_id in (48, 58, 88)
+   and c.eez_id <> 999
+   and c.ccamlr_area is not null 
+   and cc.ccamlr_area_id is null
+   and cc.eez_id is null;
+
+-- ICES area null for FAO 27
+CREATE OR REPLACE VIEW recon.v_catch_ices_null AS
+SELECT id FROM recon.catch WHERE fao_area_id = 27 and ices_area_id IS NULL;
+   
+-- ICES area not null for catch outside of FAO 27
+CREATE OR REPLACE VIEW recon.v_catch_outside_ices_not_null AS
+SELECT id FROM recon.catch WHERE fao_area_id <> 27 and ices_area_id IS NOT NULL;
+
+-- NAFO area null for FAO 21
+CREATE OR REPLACE VIEW recon.v_catch_nafo_null AS
+SELECT id FROM recon.catch WHERE fao_area_id = 21 and nafo_division_id IS NULL;
+
+-- NAFO area not null for catch outside of FAO 21
+CREATE OR REPLACE VIEW recon.v_catch_outside_nafo_not_null AS
+SELECT id FROM recon.catch WHERE fao_area_id <> 21 and nafo_division_id IS NOT NULL;  
+
+     
 --
 -- custom views
 --
