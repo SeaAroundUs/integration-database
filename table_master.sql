@@ -100,7 +100,7 @@ CREATE TABLE master.isscaap(
 CREATE TABLE master.taxon(
   taxon_key int PRIMARY KEY,
   scientific_name varchar(255) NOT NULL,
-  common_name varchar(255),
+  common_name varchar(255) NOT NULL,
   phylum varchar(255),
   sub_phylum varchar(255),
   super_class varchar(255),
