@@ -66,5 +66,9 @@ values
 (412, 'E', 'v_distribution_taxon_extent_available_but_no_distribution', 'Distribution.taxon_extent record available, but no distribution generated yet'),
 (413, 'E', 'v_distribution_taxa_has_no_distribution_low_raw_catch', 'Distribution.taxon_distribution record unavailable, but raw catch <= 1000 (add taxa to substitute table)'),
 (414, 'E', 'v_distribution_taxa_has_no_distribution_high_raw_catch', 'Distribution.taxon_distribution record unavailable and raw catch > 1000 (create extent/distribution)'),
-(415, 'E', 'v_distribution_taxa_has_substitute_high_raw_catch', 'Distribution.taxon_distribution_substitute available and raw catch > 1000 (create extent/distribution)')
-;
+(415, 'E', 'v_distribution_taxa_has_substitute_high_raw_catch', 'Distribution.taxon_distribution_substitute available and raw catch > 1000 (create extent/distribution)'),
+(416, 'E', 'v_distribution_taxa_substitute_has_distribution', 'Distribution.taxon_distribution_substitute original key already has a distribution, consider removing it from the table'), 
+(417, 'E', 'v_distribution_taxa_substitute_has_no_distribution', 'Distribution.taxon_distribution_substitute suggested key does not have a distribution'),
+(418, 'E', 'v_distribution_taxa_override_has_distribution', 'Distribution.taxon_distribution_substitute original key with manual override has a distribution'),
+(419, 'E', 'v_distribution_taxa_substitute_has_different_functional_groups', 'Distribution.taxon_distribution_substitute original key and the substitute have different FunctionalGroupIDs and may interfere with Access Agreements')
+;                    
