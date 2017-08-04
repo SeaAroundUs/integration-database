@@ -42,50 +42,6 @@ SELECT id FROM recon.raw_catch WHERE sector_type_id = 2 AND layer != 1;
 CREATE OR REPLACE VIEW recon.v_raw_catch_layer_2_or_3_and_sector_not_industrial AS
 SELECT id FROM recon.raw_catch WHERE layer IN (2,3) AND sector_type_id != 1; 
 
--- Rare taxa should be excluded
-CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_rare AS
-SELECT rc.id FROM recon.raw_catch rc, rare_taxon rt WHERE rc.taxon_key = rt.taxon_key;
-
--- CCAMLR null for FAO 48, 58 or 88
-CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
-
--- CCAMLR not null for catch outside of the Antarctic
-CREATE OR REPLACE VIEW recon.v_raw_catch_outside_antarctic_ccamlr_not_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
-
--- CCAMLR combo does not exist
--- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
-CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
-SELECT rc.id 
-  FROM recon.raw_catch rc
-  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
- WHERE rc.fao_area_id in (48, 58, 88)
-   and rc.eez_id <> 999 
-   and rc.ccamlr_area is not null 
-   and cc.ccamlr_area_id is null
-   and cc.eez_id is null;
-
--- ICES area null for FAO 27
-CREATE OR REPLACE VIEW recon.v_raw_catch_ices_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id = 27 and ices_area is null;
-   
--- ICES area not null for catch outside of FAO 27
-CREATE OR REPLACE VIEW recon.v_raw_catch_outside_ices_not_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id <> 27 and ices_area is not null;
-
--- NAFO area null for FAO 21
-CREATE OR REPLACE VIEW recon.v_raw_catch_nafo_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id = 21 and nafo_division is null;
-
--- NAFO area not null for catch outside of FAO 21
-CREATE OR REPLACE VIEW recon.v_raw_catch_outside_nafo_not_null AS
-SELECT id FROM recon.raw_catch WHERE fao_area_id <> 21 and nafo_division is not null;
-
--- High Seas ID mismatch
-CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
-SELECT id FROM recon.raw_catch WHERE eez_id = 0 and eez <> 'High Seas';
-
 
 --
 -- raw_catch errors (blocking)
@@ -193,6 +149,154 @@ SELECT id
  WHERE ts.original_taxon_key IS NULL AND rc.taxon_name IS NULL
 ;
 
+
+-- Rare taxa should be excluded
+CREATE OR REPLACE VIEW recon.v_raw_catch_taxa_is_rare AS
+SELECT rc.id FROM recon.raw_catch rc, rare_taxon rt WHERE rc.taxon_key = rt.taxon_key;
+
+-- CCAMLR null for FAO 48, 58 or 88
+CREATE OR REPLACE VIEW recon.v_raw_catch_antarctic_ccamlr_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id in (48, 58, 88) and ccamlr_area is null;
+
+-- CCAMLR not null for catch outside of the Antarctic
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_antarctic_ccamlr_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id not in (48, 58, 88) and ccamlr_area is not null;
+
+-- CCAMLR combo does not exist
+-- As long as CCAMLR area is not null, then EEZ = 999 can be excluded; all combos have a corresponding HS shard
+CREATE OR REPLACE VIEW recon.v_raw_catch_ccamlr_combo_mismatch AS
+SELECT rc.id 
+  FROM recon.raw_catch rc
+  LEFT JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
+ WHERE rc.fao_area_id in (48, 58, 88)
+   and rc.eez_id <> 999 
+   and rc.ccamlr_area is not null 
+   and cc.ccamlr_area_id is null
+   and cc.eez_id is null;
+
+-- ICES area null for FAO 27
+CREATE OR REPLACE VIEW recon.v_raw_catch_ices_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id = 27 and ices_area is null;
+   
+-- ICES area not null for catch outside of FAO 27
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_ices_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id <> 27 and ices_area is not null;
+
+-- NAFO area null for FAO 21
+CREATE OR REPLACE VIEW recon.v_raw_catch_nafo_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id = 21 and nafo_division is null;
+
+-- NAFO area not null for catch outside of FAO 21
+CREATE OR REPLACE VIEW recon.v_raw_catch_outside_nafo_not_null AS
+SELECT id FROM recon.raw_catch WHERE fao_area_id <> 21 and nafo_division is not null;
+
+-- High Seas ID mismatch
+CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
+SELECT id FROM recon.raw_catch WHERE eez_id = 0 and eez <> 'High Seas';
+
+-- ICES combo does not exist
+CREATE OR REPLACE VIEW recon.v_raw_catch_high_seas_mismatch AS
+SELECT rc.id
+  FROM recon.raw_catch rc
+  LEFT JOIN geo.eez_ices_combo ic ON (ic.ices_area_id = rc.ices_area and ic.eez_id = rc.eez_id)
+WHERE rc.fao_area_id = 27
+  and rc.eez_id <> 999
+  and rc.ices_area is not null
+  and ic.ices_area_id is null
+  and ic.eez_id is null;
+
+-- NAFO combo does not exist
+CREATE OR REPLACE VIEW recon.v_raw_catch_nafo_combo_mismatch AS
+SELECT rc.id
+  FROM recon.raw_catch rc
+  LEFT JOIN geo.eez_nafo_combo nc ON (nc.nafo_division = rc.nafo_division and nc.eez_id = rc.eez_id)
+WHERE rc.fao_area_id = 21
+  and rc.eez_id <> 999
+  and rc.nafo_division is not null
+  and nc.nafo_division is null
+  and nc.eez_id is null;
+
+-- The EEZ and ICES combination for small-scale catch does not occur in an IFA area
+-- Note: the eez_ices_combo table contains two entries for certain eez and ices combos
+-- i.e., for some combinations of ices and eez, there is an is_ifa set to both true and false (2 records)
+-- This is a workaround for the current table's format, and replaces the (simpler) validation rule:
+
+/*
+SELECT rc.id
+FROM recon.raw_catch rc
+INNER JOIN geo.eez_ices_combo ic ON (ic.ices_area_id = rc.ices_area and ic.eez_id = rc.eez_id)
+WHERE not ic.is_ifa and rc.sector_type_id in (2,3,4);
+*/
+
+CREATE OR REPLACE VIEW recon.v_raw_catch_eez_ices_combo_ifa_mismatch AS
+WITH list(ices_area_id, eez_id) AS (
+  SELECT ices_area_id, eez_id, count(*) 
+  FROM geo.eez_ices_combo 
+  GROUP BY ices_area_id, eez_id 
+  HAVING count(*) < 2
+)
+SELECT rc.id
+  FROM recon.raw_catch rc
+    INNER JOIN list l ON (l.ices_area_id = rc.ices_area and l.eez_id = rc.eez_id)
+    INNER JOIN geo.eez_ices_combo ic ON (ic.ices_area_id = rc.ices_area and ic.eez_id = rc.eez_id)
+  WHERE not ic.is_ifa 
+    and rc.sector_type_id in (2,3,4);  
+
+    
+-- The EEZ and NAFO combination for small-scale catch does not occur in an IFA area
+-- Note: the eez_nafo_combo table contains two entries for certain eez and nafo combos
+-- i.e., for some combinations of nafo and eez, there is an is_ifa set to both true and false (2 records)
+-- This is a workaround for the current table's format, and replaces the (simpler) validation rule:
+
+/*
+SELECT rc.id
+FROM recon.raw_catch rc
+INNER JOIN geo.eez_nafo_combo nc ON (nc.nafo_division = rc.nafo_division and nc.eez_id = rc.eez_id)
+WHERE not nc.is_ifa and rc.sector_type_id in (2,3,4);
+*/
+
+CREATE OR REPLACE VIEW recon.v_raw_catch_eez_nafo_combo_ifa_mismatch AS
+WITH list(nafo_division, eez_id) AS (
+  SELECT nafo_division, eez_id, count(*) 
+  FROM geo.eez_nafo_combo 
+  GROUP BY nafo_division, eez_id 
+  HAVING count(*) < 2
+)
+SELECT rc.id
+  FROM recon.raw_catch rc
+    INNER JOIN list l ON (l.nafo_division = rc.nafo_division and l.eez_id = rc.eez_id)
+    INNER JOIN geo.eez_nafo_combo nc ON (nc.nafo_division = rc.nafo_division and nc.eez_id = rc.eez_id)
+  WHERE not nc.is_ifa 
+    and rc.sector_type_id in (2,3,4);    
+
+    
+-- The EEZ and CCAMLR combination for small-scale catch does not occur in an IFA area
+-- Note: the eez_ccamlr_combo table contains two entries for certain eez and ccamlr combos
+-- i.e., for some combinations of ccamlr and eez, there is an is_ifa set to both true and false (2 records)
+-- This is a workaround for the current table's format, and replaces the (simpler) validation rule:
+
+/*
+SELECT rc.id
+FROM recon.raw_catch rc
+INNER JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
+WHERE not cc.is_ifa and rc.sector_type_id in (2,3,4);
+*/
+
+CREATE OR REPLACE VIEW recon.v_raw_catch_eez_ccamlr_combo_ifa_mismatch AS
+WITH list(ccamlr_area_id, eez_id) AS (
+  SELECT ccamlr_area_id, eez_id, count(*) 
+  FROM geo.eez_ccamlr_combo 
+  GROUP BY ccamlr_area_id, eez_id 
+  HAVING count(*) < 2
+)
+SELECT rc.id
+  FROM recon.raw_catch rc
+    INNER JOIN list l ON (l.ccamlr_area_id = rc.ccamlr_area and l.eez_id = rc.eez_id)
+    INNER JOIN geo.eez_ccamlr_combo cc ON (cc.ccamlr_area_id = rc.ccamlr_area and cc.eez_id = rc.eez_id)
+  WHERE not cc.is_ifa 
+    and rc.sector_type_id in (2,3,4);
+
+    
 --
 -- catch warnings
 --

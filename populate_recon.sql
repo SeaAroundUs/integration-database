@@ -19,6 +19,11 @@ values
 (15, 'E', 'v_raw_catch_outside_ices_not_null', 'ICES area not null for catch outside of FAO 27'),
 (16, 'E', 'v_raw_catch_nafo_null', 'NAFO area null for FAO 21'),
 (17, 'E', 'v_raw_catch_outside_nafo_not_null', 'NAFO area not null for catch outside of FAO 21'),
+(18, 'E', 'v_raw_catch_ices_combo_mismatch', 'ICES combo does not exist'),
+(19, 'E', 'v_raw_catch_nafo_combo_mismatch', 'NAFO combo does not exist'),
+(20, 'E', 'v_raw_catch_eez_ices_combo_ifa_mismatch', 'The EEZ and ICES combination for small-scale catch does not occur in an IFA area'),
+(21, 'E', 'v_raw_catch_eez_nafo_combo_ifa_mismatch', 'The EEZ and NAFO combination for small-scale catch does not occur in an IFA area'),
+(22, 'E', 'v_raw_catch_eez_ccamlr_combo_ifa_mismatch', 'The EEZ and CCAMLR combination for small-scale catch does not occur in an IFA area'),
 
 -- Raw_catch warning rules
 (100, 'W', 'v_raw_catch_layer_2_or_3_and_sector_not_industrial', 'Layer is 2 or 3 and Sector is not industrial'),
