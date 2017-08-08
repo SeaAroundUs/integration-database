@@ -516,6 +516,12 @@ create or replace view recon.v_distribution_taxon_max_depth_null as
     from distribution.taxon_habitat h
     join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
    where h.max_depth is null;
+   
+create or replace view recon.v_distribution_taxon_sl_max_null as
+  select h.taxon_key as id 
+    from distribution.taxon_habitat h
+    join master.taxon t on (t.taxon_key = h.taxon_key and not t.is_retired)
+   where h.sl_max is null;
   
 create or replace view recon.v_distribution_taxon_habitat_fao_not_overlap_extent as
   select h.taxon_key as id 

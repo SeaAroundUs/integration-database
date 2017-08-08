@@ -75,5 +75,6 @@ values
 (416, 'E', 'v_distribution_taxa_substitute_has_distribution', 'Distribution.taxon_distribution_substitute original key already has a distribution, consider removing it from the table'), 
 (417, 'E', 'v_distribution_taxa_substitute_has_no_distribution', 'Distribution.taxon_distribution_substitute suggested key does not have a distribution'),
 (418, 'E', 'v_distribution_taxa_override_has_distribution', 'Distribution.taxon_distribution_substitute original key with manual override has a distribution'),
-(419, 'E', 'v_distribution_taxa_substitute_has_different_functional_groups', 'Distribution.taxon_distribution_substitute original key and the substitute have different FunctionalGroupIDs and may interfere with Access Agreements')
+(419, 'E', 'v_distribution_taxa_substitute_has_different_functional_groups', 'Distribution.taxon_distribution_substitute original key and the substitute have different FunctionalGroupIDs and may interfere with Access Agreements'),
+(420, 'E', 'v_distribution_taxon_sl_max_null', 'Distribution.taxon_habitat record with sl_max is null')
 ;                    
