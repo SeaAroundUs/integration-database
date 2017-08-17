@@ -1,0 +1,44 @@
+gear_id	name	super_code	notes
+100	bottom trawl	bottom trawl	"Nets dragged by vessels in contact with the ocean floor. Use for bottom trawls, and where the exact type of bottom trawl is unknown"
+101	shrimp trawl	bottom trawl	Use if gear is solely shrimp trawls.
+102	beam trawl	bottom trawl	Use if gear is solely beam trawls.
+103	otter trawl	bottom trawl	Use if gear is solely otter trawls.
+200	pelagic trawl	pelagic trawl	Nets dragged by vessels not in contact with the ocean floor and targetting pelagic or semi-pelagic organisms
+300	lines	longline	Includes all gear where lines of any kind are the primary fishing gear used for the catch. This category is used when there is a mix of line gear used that are indistinguishable in the catch.
+301	pole and line	longline	Pole and line and baitboats included
+302	longline	longline	Longline gears including squid jigging
+303	hand lines	longline	Gears specifically indicated as hand lines
+400	encircling nets	purse seine	All net based gear that encirlcles its catch rather than attempts to entangle the catch in the net. 
+401	purse seine	purse seine	Main gear type of encircling nets category and ths gear_type includes all seine types
+402	small encircling nets	purse seine	Other encircling nets used by industrial sector
+500	gillnet	gillnets	"Primary gear assignment for gears reported as gillnets or more broadly entangling nets. Where there is a combination of encircling and entangling (i.e. surrounding gillnets), these are assigned as entangling. "
+501	trammel nets	gillnets	
+600	other	other	Primary gear assignment for all other gears not part of the 5 main gear types listed above. 
+601	pots or traps	other	All pots or trap based gear included here. Includes fyke nets
+602	other nets	other	Nets that cannot be distinguished between encircling and entangling
+603	dredge	other	Bottom dragged gear for collecting shellfish
+604	hand or tools	other	"Including collecting, spears, harpoons, etc. "
+605	dragged gear	other	Dragged gear that is not bottom trawls or dredges
+606	mixed gear	other	"Mixed gear should be assigned when the catch is reported as caught by two or more different gear types and not distinguished. These gear types should primarily be of the major classes listed above, rather than in the 'other' category"
+700	artisanal fishing gear	small scale	Artisanal fishing. Other gear uses can be included in the gear notes column
+701	long distance small scale	small scale	Artisanal fishing (based on original reported sector or other information) that is outside the domestic EEZ
+702	recreational fishing gear	small scale	Recreational fishing. Other gear uses can be included in the gear notes column
+703	subsistence fishing gear	small scale	Subsistence fishing. Other gear uses can be included in the gear notes column
+704	cast nets	small scale	
+705	bagnets	small scale	
+706	harpoon	small scale	
+707	hand or tools	small scale	
+708	small scale seine nets	small scale	Small scale seine fishing
+709	small scale encircling nets	small scale	
+710	small scale trammel net	small scale	
+711	small scale gillnets	small scale	
+712	small scale other nets	small scale	
+713	small scale pots or traps	small scale	
+714	small scale lines	small scale	
+715	small scale hand lines	small scale	
+716	small scale pole lines	small scale	
+717	small scale longline	small scale	
+718	small scale purse seine	small scale	
+800	unknown class	unknown	Classified as unknown
+801	unknown by source	unknown	"Classified as unknown by reporting agency (e.g., national report, etc.)"
+802	unknown by author	unknown	Classified as unknown by author of report or paper
