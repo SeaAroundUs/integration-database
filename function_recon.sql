@@ -9,6 +9,7 @@ $body$
          input_type_id = coalesce(it.input_type_id, 0),
          catch_type_id = coalesce(ct.catch_type_id, 0),
          reporting_status_id = coalesce(rs.reporting_status_id, 0),
+		 gear_type_id = coalesce(gt.gear_id, 0),
          nafo_division_id = case 
                             when coalesce(r.nafo_division, '') = '' then null::int 
                             else coalesce(nf.nafo_division_id, 0)
@@ -33,6 +34,7 @@ $body$
     left join master.input_type it on (lower(trim(it.name)) = lower(trim(r.input_type)))
     left join master.catch_type ct on (lower(trim(ct.name)) = lower(trim(r.catch_type)))
     left join master.reporting_status rs on (lower(trim(rs.name)) = lower(trim(r.reporting_status)))
+	left join master.gear gt on (lower(trim(gt.name)) = lower(trim(r.gear_type)))
     left join recon.nafo nf on (lower(trim(nf.nafo_division)) = lower(trim(r.nafo_division)))
     left join master.taxon otn on (lower(trim(otn.scientific_name)) = lower(trim(r.original_taxon_name)))
     left join master.taxon ofn on (lower(trim(ofn.scientific_name)) = lower(trim(r.original_fao_name)))
