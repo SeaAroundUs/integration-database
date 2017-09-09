@@ -641,6 +641,9 @@ SELECT original_taxon_key as id
   WHERE is_manual_override AND (original_taxon_key IN ( SELECT taxon_key
     FROM taxa_with_distribution));
     
+--
+-- distribution warnings
+--    
     
 -- Distribution.taxon_distribution_substitute original key and the substitute have different FunctionalGroupIDs and may interfere with Access Agreements
 CREATE OR REPLACE VIEW recon.v_distribution_taxa_substitute_has_different_functional_groups AS
