@@ -141,6 +141,73 @@ $body$
 $body$
 LANGUAGE sql;
 
+CREATE OR REPLACE FUNCTION recon.extract_ref_id(integer)
+RETURNS TABLE (
+	"fishing entity" character varying(200), 
+	"EEZ" character varying(200), 
+	"FAO area" character varying(200), 
+	layer integer, 
+	sector character varying(200), 
+	"catch type" character varying(200), 
+	"reporting status" character varying(200), 
+	year integer, 
+	"taxon name" character varying(200), 
+	amount double precision, 
+	"input type" character varying(200), 
+	"gear type" character varying(200), 
+	"ICES area" character varying(50), 
+	"NAFO division" character varying(200), 
+	"CCAMLR area" character varying(200), 
+	"original country fishing" character varying(200), 
+	"EEZ sub area" character varying(200), 
+	"subregional area" character varying(200), 
+	"province state" character varying(200), 
+	"original sector" character varying(200), 
+	"original taxon name" character varying(200), 
+	"original FAO name" character varying(200), 
+	"adjustment factor" numeric(20,12), 
+	"forward carry rule" character varying(400), 
+	"disaggregation rule" character varying(400), 
+	"layer rule" character varying(400), 
+	notes text, 
+	"taxon notes" text, 
+	"gear notes" text
+) AS
+$body$
+SELECT fishing_entity,
+	eez,
+	fao_area,
+	layer,
+	sector,
+	catch_type,
+	reporting_status,
+	year,
+	taxon_name,
+	amount,
+	input_type,
+	gear_type,
+	ICES_area,
+	NAFO_division,
+	CCAMLR_area,
+	original_country_fishing,
+	EEZ_sub_area,
+	subregional_area,
+	province_state,
+	original_sector,
+	original_taxon_name,
+	original_FAO_name,
+	adjustment_factor,
+	forward_carry_rule,
+	disaggregation_rule,
+	layer_rule,
+	notes,
+	taxon_notes,
+	gear_notes
+FROM recon.raw_catch
+WHERE reference_id=$1;
+$body$
+LANGUAGE sql;
+
 /*
 The command below should be maintained as the last command in this entire script.
 */
