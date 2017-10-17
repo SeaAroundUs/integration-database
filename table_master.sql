@@ -62,6 +62,11 @@ CREATE TABLE master.lme(
   profile_url varchar(255) DEFAULT 'http://www.lme.noaa.gov/' NOT NULL
 );
 
+CREATE TABLE master.meow(
+  meow_id smallserial PRIMARY KEY,
+  name varchar(70) NOT NULL
+);
+
 CREATE TABLE master.rfmo(
   rfmo_id smallserial PRIMARY KEY,
   name varchar(50) NOT NULL,
@@ -351,7 +356,8 @@ CREATE TABLE master.cell (
   bt_2001 double precision,
   pp_10yr_avg double precision,
   sst_avg double precision,
-  pp_annual double precision
+  pp_annual double precision,
+  meow_id double precision
 );
 
 CREATE TABLE master.input_type(

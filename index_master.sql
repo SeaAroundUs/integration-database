@@ -3,6 +3,7 @@ CREATE UNIQUE INDEX time_ak ON master.time(year ASC);
 
 CREATE INDEX cell_fao_area_id_idx ON master.cell(fao_area_id);
 CREATE INDEX cell_lme_id_idx ON master.cell(lme_id);
+CREATE INDEX cell_meow_id_idx ON master.cell(meow_id);
 
 CREATE INDEX country_fishery_profile_count_code_idx ON master.country_fishery_profile(count_code);
 
