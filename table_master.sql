@@ -63,9 +63,10 @@ CREATE TABLE master.lme(
 );
 
 CREATE TABLE master.meow(
-  meow_id smallserial PRIMARY KEY,
-  name varchar(70) NOT NULL
-);
+	meow_id int PRIMARY KEY,
+	name varchar(70) NOT NULL,
+	profile_url varchar(255) DEFAULT 'https://www.worldwildlife.org/publications/marine-ecoregions-of-the-world-a-bioregionalization-of-coastal-and-shelf-areas' NOT NULL
+);	
 
 CREATE TABLE master.rfmo(
   rfmo_id smallserial PRIMARY KEY,
