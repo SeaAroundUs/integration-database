@@ -21,7 +21,7 @@ $body$
          --tables.measurements[3],
          pg_size_pretty(tables.measurements[4]),
          --tables.measurements[4],
-         to_char(tables.measurements[4], '999,999,999,999'::text) 
+         to_char(tables.measurements[5], '999,999,999,999'::text)
     FROM (SELECT c.relname, ARRAY[(c.reltuples)::bigint, pg_relation_size(c.oid), pg_indexes_size(c.oid), pg_total_relation_size(c.oid), (c.relpages)::bigint] AS measurements 
             FROM pg_class c, pg_namespace n 
            WHERE c.relnamespace = n.oid AND n.nspname = $1 AND c.relkind = 'r' 
