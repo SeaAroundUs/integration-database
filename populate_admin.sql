@@ -17,4 +17,5 @@ VALUES
 ,('sau_geo', 'geo.mariculture_entity', '*', NULL, 'geo', 'mariculture_entity', '{}'::TEXT[])
 ,('sau_geo', 'geo.area', '*', NULL, 'geo', 'area', '{}'::TEXT[])
 ,('sau_geo', 'geo.big_cell', '*', NULL, 'geo', 'big_cell', '{}'::TEXT[])
+,('sau_geo', 'geo.meow', '*', NULL, 'geo', 'big_cell', '{}'::TEXT[])
 ;

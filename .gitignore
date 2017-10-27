@@ -2,3 +2,6 @@ log/
 rmv.sql
 *.*~
 db_dump
+data_dump/recon.raw_catch
+migration/World_table_03-08-2017.txt
+migration/2017-08-10_meows.sql
