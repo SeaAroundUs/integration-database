@@ -26,7 +26,7 @@ CREATE TABLE recon.template(
   forward_carry_rule text,
   disaggregation_rule text,
   layer_rule text,
-  notes text
+  notes text,
   taxon_notes text,
   gear_notes
 );
