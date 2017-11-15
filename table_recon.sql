@@ -28,7 +28,7 @@ CREATE TABLE recon.template(
   layer_rule text,
   notes text,
   taxon_notes text,
-  gear_notes
+  gear_notes text
 );
 
 CREATE TABLE recon.catch (
