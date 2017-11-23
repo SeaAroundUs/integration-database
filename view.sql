@@ -1,18 +1,32 @@
 /* Content Views */
 /* Administrative and System-viewer Views */
 CREATE OR REPLACE FUNCTION public.schema_v(i_schema TEXT) 
-RETURNS TABLE(table_name TEXT, row_count TEXT, disk_size TEXT, ds_raw BIGINT, disk_pages TEXT) AS
+RETURNS TABLE(
+	table_name TEXT, 
+	row_count TEXT, 
+	disk_size TEXT, 
+	--ds_raw BIGINT, 
+	index_size TEXT, 
+	--is_raw BIGINT, 
+	total_size TEXT, 
+	--ts_raw BIGINT, 
+	disk_pages TEXT) 
+AS
 $body$
   SELECT tables.relname::TEXT, 
          to_char(tables.measurements[1], '999,999,999,999'::text), 
          pg_size_pretty(tables.measurements[2]), 
-         tables.measurements[2], 
-         to_char(tables.measurements[3], '999,999,999,999'::text) 
-    FROM (SELECT c.relname, ARRAY[(c.reltuples)::bigint, pg_relation_size(c.oid), (c.relpages)::bigint] AS measurements 
+         --tables.measurements[2],
+         pg_size_pretty(tables.measurements[3]),
+         --tables.measurements[3],
+         pg_size_pretty(tables.measurements[4]),
+         --tables.measurements[4],
+         to_char(tables.measurements[5], '999,999,999,999'::text)
+    FROM (SELECT c.relname, ARRAY[(c.reltuples)::bigint, pg_relation_size(c.oid), pg_indexes_size(c.oid), pg_total_relation_size(c.oid), (c.relpages)::bigint] AS measurements 
             FROM pg_class c, pg_namespace n 
            WHERE c.relnamespace = n.oid AND n.nspname = $1 AND c.relkind = 'r' 
           UNION ALL 
-          SELECT 'TOTALS: ' AS relname, ARRAY[(sum(c.reltuples))::bigint, (sum(pg_relation_size(c.oid)))::bigint, sum(c.relpages)] AS measurements 
+          SELECT 'TOTALS: ' AS relname, ARRAY[(sum(c.reltuples))::bigint, (sum(pg_relation_size(c.oid)))::bigint, (sum(pg_indexes_size(c.oid)))::bigint, (sum(pg_total_relation_size(c.oid)))::bigint, sum(c.relpages)] AS measurements 
             FROM pg_class c, pg_namespace n 
            WHERE c.relnamespace = n.oid AND n.nspname = $1 AND c.relkind = 'r') tables 
    ORDER BY CASE WHEN tables.relname = 'TOTALS: ' THEN (-1)::bigint ELSE tables.measurements[1] END DESC, tables.relname;
