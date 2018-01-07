@@ -372,6 +372,13 @@ CREATE TABLE geo.fao_lme_combo(
   CONSTRAINT unique_fao_lme UNIQUE (fao_area_id, lme_number)
 );
 
+CREATE TABLE geo.fao_meow_combo(
+  fao_meow_combo_id int PRIMARY KEY,
+  fao_area_id smallint NOT NULL,
+  ecoregion_id int NOT NULL,
+  CONSTRAINT unique_fao_meow UNIQUE (fao_area_id, meow_number)
+);
+
 CREATE TABLE geo.fao_cell(
   fao_area_id smallint NOT NULL,
   cell_id int NOT NULL

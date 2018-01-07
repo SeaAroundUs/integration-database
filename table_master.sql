@@ -240,7 +240,8 @@ CREATE TABLE master.eez(
   allows_coastal_fishing_for_layer2_data boolean DEFAULT true NOT NULL,
   ohi_link VARCHAR(400),
   is_retired BOOLEAN NOT NULL DEFAULT false,
-  gsi_link VARCHAR(400)
+  gsi_link VARCHAR(400),
+  issf_link VARCHAR(400)
 );
 
 COMMENT ON COLUMN master.eez.alternate_name IS 'semicolon separated: alt_name1;alt_name2;alt_name3';
