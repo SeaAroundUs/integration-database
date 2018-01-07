@@ -8,9 +8,13 @@ CREATE TABLE log.table_edits(
 
 CREATE TABLE log.adhoc_query(
   id serial primary key,
+  description text not null,
   query text not null,
+  requested_by varchar(100) not null,
   notes text,
+  estimated_duration interval,
   is_active boolean not null default true,
+  is_allocated boolean not null default false,
   created_by_auth_user_id int not null,
   reviewed_by_auth_user_id int,
   grantee_auth_user_id int[],
