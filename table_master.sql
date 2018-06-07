@@ -224,26 +224,28 @@ CREATE TABLE master.country(
 CREATE TABLE master.eez(
   eez_id int PRIMARY KEY,
   name varchar(50) NOT NULL,
-  alternate_name varchar(500),
+  alternate_name varchar(500) NULL,
   geo_entity_id int NOT NULL,
   area_status_id int DEFAULT 2 NOT NULL,
   legacy_c_number int NOT NULL,
   legacy_count_code varchar(4) NOT NULL,
   fishbase_id varchar(4) NOT NULL,
-  coords varchar(400),
+  coords varchar(400) NULL,
   can_be_displayed_on_web boolean DEFAULT true NOT NULL,
   is_currently_used_for_web boolean DEFAULT false NOT NULL,
   is_currently_used_for_reconstruction boolean DEFAULT false NOT NULL,
   declaration_year int DEFAULT 1982 NOT NULL,
-  earliest_access_agreement_date int,
+  earliest_access_agreement_date int NULL,
   is_home_eez_of_fishing_entity_id smallint NOT NULL,
   allows_coastal_fishing_for_layer2_data boolean DEFAULT true NOT NULL,
   ohi_link VARCHAR(400),
   is_retired BOOLEAN NOT NULL DEFAULT false,
   gsi_link VARCHAR(400),
-  issf_link VARCHAR(400)
+  issf_link VARCHAR(400),
+  hdi_link VARCHAR(400),
+  ISO_3 VARCHAR(3),
+  ISO_2 VARCHAR(2)
 );
-
 COMMENT ON COLUMN master.eez.alternate_name IS 'semicolon separated: alt_name1;alt_name2;alt_name3';
 COMMENT ON COLUMN master.eez.coords IS 'coords of the map on this page: http://www.seaaroundus.org/eez/';
 
@@ -522,4 +524,27 @@ CREATE TABLE master.continent(
   code char(2) primary key,
   name varchar(128) not null,
   geo_name_id int not null        
+);
+
+CREATE TABLE master.meow_eez_combo(
+	meow_id smallint,
+	meow varchar (128) not null,
+	eez_id smallint,
+	eez varchar (128) not null,
+	intersection_area double precision,
+	meow_area double precision,
+	eez_area double precision,
+	percentage_meow_in_eez double precision,
+	percentage_eez_in_meow double precision
+);
+
+CREATE TABLE master.meow_pdf(
+	region varchar(300) not null,
+	meow_id int,
+	meow varchar(250) not null,
+	taxon_key int,
+	scientific_name varchar(128),
+	stock varchar(300),
+	b_bmsy double precision,
+	pdf_url varchar(500)
 );
