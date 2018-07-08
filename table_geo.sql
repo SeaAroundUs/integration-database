@@ -346,7 +346,8 @@ CREATE TABLE geo.eez_ccamlr_combo(
 CREATE TABLE geo.eez_fao_combo(
   eez_fao_area_id SERIAL PRIMARY KEY,
   reconstruction_eez_id int NOT NULL,
-  fao_area_id int NOT NULL
+  fao_area_id int NOT NULL,
+  socio_economic_area_id int
 );
 
 CREATE TABLE geo.eez_ices_combo(
