@@ -121,7 +121,7 @@ CREATE TABLE recon.raw_catch (
 );
 
 CREATE TABLE recon.data_raw_layer3(
-  row_id int NOT NULL,
+  row_id serial NOT NULL,
   rfmo_id int NOT NULL,
   year int NOT NULL,
   fishing_entity_id int NOT NULL,
