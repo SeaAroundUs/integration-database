@@ -551,3 +551,22 @@ CREATE TABLE master.meow_pdf(
 	b_bmsy double precision,
 	pdf_url varchar(500)
 );
+
+CREATE TABLE master.end_use(
+	id serial,
+	fishing_entity_id int not null,
+	year int not null,
+	taxon_key int not null,
+	sector_type_id int not null,
+	catch_type_id int not null,
+	reporting_status_id int not null,
+	gear_type_id int not null,
+	end_use_type_id int not null,
+	end_use_percentage float not null
+);
+
+CREATE TABLE master.end_use_type(
+	end_use_type_id int not null,
+	end_use_name varchar(100)
+);
+
