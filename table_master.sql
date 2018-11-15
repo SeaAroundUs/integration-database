@@ -570,3 +570,18 @@ CREATE TABLE master.end_use_type(
 	end_use_name varchar(100)
 );
 
+CREATE TABLE master.area(      
+  area_key serial PRIMARY KEY,                                                                             
+  marine_layer_id int NOT NULL,
+  main_area_id int NOT NULL,
+  sub_area_id int NOT NULL,
+  area decimal(50,20) NULL,
+  shelf_area decimal(50,20) NULL,
+  ifa decimal(50,20) NULL,
+  coral_reefs decimal(50,20) NULL,                 
+  sea_mounts decimal(50,20) NULL,
+  ppr decimal(50,20) NULL,
+  number_of_cells int DEFAULT 0 NOT NULL,
+  date_updated timestamp DEFAULT current_timestamp NULL
+);
+
