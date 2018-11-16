@@ -585,3 +585,13 @@ CREATE TABLE master.area(
   date_updated timestamp DEFAULT current_timestamp NULL
 );
 
+CREATE TABLE master.meow_fishbase_link(
+  e_code int primary key,
+  eco_region_name text,
+  eco_region_type text,
+  ready boolean,
+  meow_id int,
+  ecoregion_id int
+);
+
+
