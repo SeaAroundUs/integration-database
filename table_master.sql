@@ -541,16 +541,17 @@ CREATE TABLE master.meow_eez_combo(
 	percentage_eez_in_meow double precision
 );
 
-CREATE TABLE master.meow_pdf(
-	region varchar(300) not null,
-	meow_id int,
-	meow varchar(250) not null,
-	taxon_key int,
-	scientific_name varchar(128),
-	stock varchar(300),
-	b_bmsy double precision,
-	pdf_url varchar(500)
-);
+CREATE TABLE master.meow_pdf (
+	region varchar(300) NOT NULL,
+	meow_id int4 NULL,
+	meow varchar(250) NOT NULL,
+	subregion varchar(500) NOT NULL,
+	taxon_key int4 NULL,
+	scientific_name varchar(128) NULL,
+	stock varchar(300) NULL,
+	b_bmsy float8 NULL,
+	pdf_url varchar(500) NULL
+)
 
 CREATE TABLE master.end_use(
 	id serial,
