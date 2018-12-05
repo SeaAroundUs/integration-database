@@ -552,7 +552,7 @@ CREATE TABLE master.meow_pdf (
 	b_bmsy float8 NULL,
 	pdf_url varchar(500) NULL,
 	common_name varchar(128),
-	group_type varchar(128),
+	group_type varchar(128)
 )
 
 CREATE TABLE master.end_use(
