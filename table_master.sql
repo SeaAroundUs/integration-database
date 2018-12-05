@@ -550,7 +550,9 @@ CREATE TABLE master.meow_pdf (
 	scientific_name varchar(128) NULL,
 	stock varchar(300) NULL,
 	b_bmsy float8 NULL,
-	pdf_url varchar(500) NULL
+	pdf_url varchar(500) NULL,
+	common_name varchar(128),
+	group_type varchar(128),
 )
 
 CREATE TABLE master.end_use(
