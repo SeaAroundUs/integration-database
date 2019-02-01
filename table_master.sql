@@ -450,12 +450,12 @@ CREATE TABLE master.country_fishery_profile(
 );
 
 CREATE TABLE master.price(
-	year int not null,
-	fishing_entity_id int not null,
-	taxon_key int not null,
-	price float not null,
-    CONSTRAINT price_pkey PRIMARY KEY (year, fishing_entity_id, taxon_key)
-); 
+	fishing_entity int,
+	year int,
+	taxon_key int,
+	end_use_type_id int,
+	price float
+);
 
 CREATE TABLE master.fao_rfb(
   fid smallint primary key,
