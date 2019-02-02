@@ -450,7 +450,7 @@ CREATE TABLE master.country_fishery_profile(
 );
 
 CREATE TABLE master.price(
-	fishing_entity int,
+	fishing_entity_id int,
 	year int,
 	taxon_key int,
 	end_use_type_id int,
