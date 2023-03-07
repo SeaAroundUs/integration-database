@@ -75,7 +75,7 @@ values
 (416, 'E', 'v_distribution_taxa_substitute_has_distribution', 'Distribution.taxon_distribution_substitute original key already has a distribution, consider removing it from the table'), 
 (417, 'E', 'v_distribution_taxa_substitute_has_no_distribution', 'Distribution.taxon_distribution_substitute suggested key does not have a distribution'),
 (418, 'E', 'v_distribution_taxa_override_has_distribution', 'Distribution.taxon_distribution_substitute original key with manual override has a distribution'),
-(420, 'E', 'v_distribution_taxon_sl_max_null', 'Distribution.taxon_habitat record with sl_max is null'),
+(420, 'E', 'v_distribution_taxon_habitat_sl_max_null', 'Distribution.taxon_habitat record with sl_max is null'),
 (501, 'E', 'v_distribution_taxon_tl_null', 'Distribution.taxon record with tl is null'),
 (502, 'E', 'v_distribution_taxon_with_catch_habitat_null', 'Distribution.taxon record and catch available but no extent'),
 
