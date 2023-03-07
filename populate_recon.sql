@@ -78,6 +78,7 @@ values
 (420, 'E', 'v_distribution_taxon_habitat_sl_max_null', 'Distribution.taxon_habitat record with sl_max is null'),
 (501, 'E', 'v_distribution_taxon_tl_null', 'Distribution.taxon record with tl is null'),
 (502, 'E', 'v_distribution_taxon_with_catch_habitat_null', 'Distribution.taxon record and catch available but no extent'),
+(503, 'E', 'v_distribution_taxon_sl_max_null', 'Distribution.taxon record with sl_max is null'),
 
 -- Distribution warning rules
 (500, 'W', 'v_distribution_taxa_substitute_has_different_functional_groups', 'Distribution.taxon_distribution_substitute original key and the substitute have different FunctionalGroupIDs and may interfere with Access Agreements')
